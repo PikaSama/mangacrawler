@@ -1,6 +1,6 @@
 {
   "name": "spider-manga",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A tool to download manga by using spider.",
   "main": "manga.js",
   "dependencies": {
