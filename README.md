@@ -18,6 +18,8 @@
    - html模版
  - html-minifier
    - 用于压缩html
+ - single-line-log
+   - 
    
 ```bash
 npm install
