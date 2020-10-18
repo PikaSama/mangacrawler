@@ -19,7 +19,7 @@
  - html-minifier
    - 用于压缩html
  - single-line-log
-   - 
+   - 下载进度条
    
 ```bash
 npm install
