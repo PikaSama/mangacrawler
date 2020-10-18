@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manga</title>
+    <style>
+        body {
+            background: dimgray;
+        }
+        img {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <% for(let i = 0;i < imgs;i++) { %>
+        <% let j = i + 1;%>
+        <img src="./split/<%= j %>.jpg" alt="" />
+    <% } %>
+</body>
+</html>

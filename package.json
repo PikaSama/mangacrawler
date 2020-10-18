@@ -5,6 +5,8 @@
   "main": "manga.js",
   "dependencies": {
     "bufferutil": "^4.0.1",
+    "ejs": "^3.1.5",
+    "html-minifier": "^4.0.0",
     "inquirer": "^7.3.3",
     "puppeteer": "^5.3.1",
     "single-line-log": "^1.1.2",
