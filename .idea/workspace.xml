@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manga.js" beforeDir="false" afterPath="$PROJECT_DIR$/manga.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progressbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/progressbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +68,7 @@
       <workItem from="1602844036710" duration="15040000" />
       <workItem from="1602912821296" duration="691000" />
       <workItem from="1602913971279" duration="19158000" />
-      <workItem from="1602994345288" duration="13729000" />
+      <workItem from="1602994345288" duration="16121000" />
     </task>
     <servers />
   </component>
@@ -152,5 +152,9 @@
       <screen x="0" y="26" width="1366" height="742" />
     </state>
     <state width="1343" height="220" key="GridCell.Tab.3.right/0.26.1366.742@0.26.1366.742" timestamp="1602513268297" />
+    <state x="346" y="88" width="672" height="678" key="search.everywhere.popup" timestamp="1603012196279">
+      <screen x="0" y="26" width="1366" height="742" />
+    </state>
+    <state x="346" y="88" width="672" height="678" key="search.everywhere.popup/0.26.1366.742@0.26.1366.742" timestamp="1603012196279" />
   </component>
 </project>
