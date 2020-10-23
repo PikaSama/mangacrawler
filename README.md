@@ -18,6 +18,8 @@
    - html模版
  - html-minifier
    - 用于压缩html
+ - single-line-log
+   - 下载进度条
  - node >= 12
    - 项目基于Nodejs v12.19.0开发
    
