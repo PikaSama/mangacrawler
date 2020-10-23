@@ -18,11 +18,17 @@
    - html模版
  - html-minifier
    - 用于压缩html
+ - node >= 12
+   - 项目基于Nodejs v12.19.0开发
    
+使用npm
 ```bash
 npm install
 ```
-
+使用yarn
+```bash
+yarn
+```
 本项目仅在Linux平台运行并测试，因个人时间和精力有限，未在Windows平台进行测试，如果你尝试以Windows平台运行，可能会造成问题（如果真有问题还请发至Issues）
 
 注：安装puppeteer需要下载chromium（187MB），请耐心等待（以自带chrome/chromium运行的功能还在开发中）
@@ -83,8 +89,8 @@ A3：这个项目本来就是给自己写来用的，放在这里分享一下自
 
 - [x] 辨析漫画类型
 - [x] 漫画类型AB的下载实现
-- [ ] 爬取漫画更多信息
 - [ ] 多线程下载
+- [ ] 爬取漫画更多信息
 - [ ] 获取漫画更新
 
 ## 更新日志

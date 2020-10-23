@@ -1,7 +1,7 @@
 {
   "name": "spider-manga",
   "version": "1.1.0",
-  "description": "A tool to download manga by using spider.",
+  "description": "Download manga by using puppeteer.",
   "main": "manga.js",
   "dependencies": {
     "bufferutil": "^4.0.1",
@@ -16,10 +16,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pikasama/spider-manga.git"
-  },
+  "repository": "git+https://github.com/pikasama/spider-manga.git",
   "keywords": [
     "manga",
     "spider",
