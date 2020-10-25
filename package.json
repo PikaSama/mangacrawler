@@ -1,6 +1,6 @@
 {
   "name": "spider-manga",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Download manga by using puppeteer.",
   "main": "manga.js",
   "dependencies": {
