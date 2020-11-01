@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="" />
+    <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manga.js" beforeDir="false" afterPath="$PROJECT_DIR$/manga.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,7 +36,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -74,7 +78,13 @@
       <workItem from="1603520236845" duration="3226000" />
       <workItem from="1603528295409" duration="19712000" />
       <workItem from="1603562657362" duration="424000" />
-      <workItem from="1603609994728" duration="2867000" />
+      <workItem from="1603609994728" duration="3860000" />
+      <workItem from="1604052005724" duration="11240000" />
+      <workItem from="1604120135265" duration="379000" />
+      <workItem from="1604120604703" duration="592000" />
+      <workItem from="1604135408418" duration="4940000" />
+      <workItem from="1604155682663" duration="3351000" />
+      <workItem from="1604203524649" duration="15081000" />
     </task>
     <servers />
   </component>
@@ -94,22 +104,22 @@
       <screen x="0" y="26" width="1366" height="742" />
     </state>
     <state x="467" y="156" key="FileChooserDialogImpl/0.26.1366.742@0.26.1366.742" timestamp="1602929609871" />
-    <state width="1343" height="255" key="GridCell.Tab.0.bottom" timestamp="1603560198851">
+    <state width="1343" height="250" key="GridCell.Tab.0.bottom" timestamp="1604225490357">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state width="1343" height="255" key="GridCell.Tab.0.bottom/0.26.1366.742@0.26.1366.742" timestamp="1603560198851" />
-    <state width="1343" height="255" key="GridCell.Tab.0.center" timestamp="1603560198851">
+    <state width="1343" height="250" key="GridCell.Tab.0.bottom/0.26.1366.742@0.26.1366.742" timestamp="1604225490357" />
+    <state width="1343" height="250" key="GridCell.Tab.0.center" timestamp="1604225490352">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state width="1343" height="255" key="GridCell.Tab.0.center/0.26.1366.742@0.26.1366.742" timestamp="1603560198851" />
-    <state width="1343" height="255" key="GridCell.Tab.0.left" timestamp="1603560198851">
+    <state width="1343" height="250" key="GridCell.Tab.0.center/0.26.1366.742@0.26.1366.742" timestamp="1604225490352" />
+    <state width="1343" height="250" key="GridCell.Tab.0.left" timestamp="1604225490316">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state width="1343" height="255" key="GridCell.Tab.0.left/0.26.1366.742@0.26.1366.742" timestamp="1603560198851" />
-    <state width="1343" height="255" key="GridCell.Tab.0.right" timestamp="1603560198851">
+    <state width="1343" height="250" key="GridCell.Tab.0.left/0.26.1366.742@0.26.1366.742" timestamp="1604225490316" />
+    <state width="1343" height="250" key="GridCell.Tab.0.right" timestamp="1604225490355">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state width="1343" height="255" key="GridCell.Tab.0.right/0.26.1366.742@0.26.1366.742" timestamp="1603560198851" />
+    <state width="1343" height="250" key="GridCell.Tab.0.right/0.26.1366.742@0.26.1366.742" timestamp="1604225490355" />
     <state width="1343" height="220" key="GridCell.Tab.1.bottom" timestamp="1603523317297">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
@@ -162,6 +172,18 @@
       <screen x="0" y="26" width="1366" height="742" />
     </state>
     <state x="321" y="161" key="MultipleFileMergeDialog/0.26.1366.742@0.26.1366.742" timestamp="1603451231427" />
+    <state x="287" y="37" width="1007" height="731" key="SettingsEditor" timestamp="1604136879599">
+      <screen x="0" y="26" width="1366" height="742" />
+    </state>
+    <state x="287" y="37" width="1007" height="731" key="SettingsEditor/0.26.1366.742@0.26.1366.742" timestamp="1604136879599" />
+    <state x="26" y="26" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1604138742298">
+      <screen x="0" y="26" width="1366" height="742" />
+    </state>
+    <state x="26" y="26" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.26.1366.742@0.26.1366.742" timestamp="1604138742298" />
+    <state x="343" y="176" key="run.anything.popup" timestamp="1604136669084">
+      <screen x="0" y="26" width="1366" height="742" />
+    </state>
+    <state x="343" y="176" key="run.anything.popup/0.26.1366.742@0.26.1366.742" timestamp="1604136669084" />
     <state x="346" y="88" width="672" height="678" key="search.everywhere.popup" timestamp="1603012196279">
       <screen x="0" y="26" width="1366" height="742" />
     </state>

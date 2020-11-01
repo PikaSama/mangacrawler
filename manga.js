@@ -4,6 +4,7 @@ const puppeteer = require("puppeteer");
 const ejs = require("ejs");
 const minify = require("html-minifier").minify;
 const asyncMap = require("async/map");
+const asyncMapLimit = require("async/mapLimit");
 const inquirer = require("inquirer");
 const ProgressBar = require("./progressbar");
 const home = require("os").homedir();
@@ -11,20 +12,29 @@ const fs = require("fs");
 let mangaUrl;
 let savePath;
 let headless;
-let crawlSpeed;
+let crawlLimit;
 let crawlList = [];
 let picAmount;
 let dlTime;
-let loadedPage = 0;
+const nodeList = [
+    "61-174-50-98.cdndm5.com",
+    "61-174-50-99.cdndm5.com",
+    "104-250-139-219.cdnmanhua.net",
+    "104-250-150-12.cdnmanhua.net"
+]
 inquirer.prompt([
     {
         type:'input',
         name: 'url',
         message: "Please enter the manga's URL:",
         validate: val => {
-            val = val.slice(0,8);
-            if (val.match(/http:\/\//g) || val.match(/https:\/\//g)) {
-                return true;
+            if (val.slice(0,8).match(/http:\/\//g) || val.slice(0,8).match(/https:\/\//g)) {
+                if (val.slice(-1) == "/" && val.length > 1) {
+                    return '\033[41;37m Error \033[0m You don\'t need to add "/" at the end of the URL.';
+                }
+                else {
+                    return true;
+                }
             }
             else {
                 return "\033[41;37m Error \033[0m Invalid URL.";
@@ -114,31 +124,10 @@ function getMangaInfo() {
             inquirer.prompt([
                 {
                     type:'input',
-                    name: 'speed',
-                    message: "Crawling speed LEVEL(0.1~0.9):",
-                    validate: val => {
-                        if(val >= 0.1 && val <= 0.9) {
-                            return true;
-                        }
-                        else {
-                            return "\033[41;37m Error \033[0m Invalid number.";
-                        }
-                    },
-                    filter: val => {
-                        if(val >= 0.1 && val <= 0.9) {
-                            return parseFloat(val);
-                        }
-                        else {
-                            return val;
-                        }
-                    }
-                },
-                {
-                    type:'input',
                     name: 'request',
-                    message: "Please type the number of download requests.(1-8):",
+                    message: "Download request limits(1-32):",
                     validate: val => {
-                        if (val >=1 && val <= 8) {
+                        if (val >=1 && val <= 32) {
                             return true;
                         }
                         else {
@@ -146,7 +135,7 @@ function getMangaInfo() {
                         }
                     },
                     filter: val => {
-                        if (val >= 1 && val <= 8) {
+                        if (val >= 1 && val <= 32) {
                             return parseInt(val);
                         }
                         else {
@@ -155,39 +144,7 @@ function getMangaInfo() {
                     }
                 }
             ]).then(async answer => {
-                crawlSpeed = answer.speed;
-                let arr = [];
-                const quot = parseInt(picAmount/answer.request);
-                const rmdr = picAmount%answer.request;
-                function addFront(index) {
-                    let val=0;
-                    for (let i=0;i<index;i++) {
-                        val+=arr[i];
-                    }
-                    return val;
-                }
-                if (picAmount < answer.request) {
-                    crawlList[0]=1+"-"+picAmount;
-                }
-                else {
-                    for (let i=0;i<answer.request;i++) {
-                        arr.push(quot);
-                    }
-                    if (rmdr) {
-                        for (let i=0;i<rmdr;i++) {
-                            arr[i]++;
-                        }
-                    }
-                    for (let i in arr) {
-                        let j = parseInt(i);
-                        if (j == 0) {
-                            crawlList[0]=1+"-"+arr[0];
-                        }
-                        else {
-                            crawlList[j]=addFront(j)+1+"-"+addFront(j+1);
-                        }
-                    }
-                }
+                crawlLimit = answer.request;
                 downloadMangaB().catch(err => {
                     console.error("\n\033[41;37m Error \033[0m "+err+"\n");
                     process.exit(1);
@@ -226,6 +183,7 @@ function getMangaInfo() {
     }).catch(err => console.error("\n\033[41;37m Error \033[0m "+err+"\n"));
 }
 async function downloadMangaA() {
+    dlTime = new Date().getTime();
     console.log("\033[44;37m Info \033[0m Starting browser...\n");
     const browser = await puppeteer.launch({headless:headless});
     console.log("\033[44;37m Info \033[0m Opening page...\n");
@@ -238,7 +196,6 @@ async function downloadMangaA() {
         $("div.rightToolBar").attr("style","display:none");
     });
     console.log("\033[44;37m Info \033[0m Downloading manga...");
-    dlTime = new Date().getTime();
     const pb = new ProgressBar('\033[43;37m Progress \033[0m',picAmount);
     pb.render({ completed: 0,total: picAmount });
     const splitPics = await page.$$("img.load-src");
@@ -261,13 +218,98 @@ async function downloadMangaA() {
     }
 }
 async function downloadMangaB() {
+    dlTime = new Date().getTime();
     console.log("\033[44;37m Info \033[0m Starting browser...\n");
     const browser = await puppeteer.launch();
+    console.log("\033[44;37m Info \033[0m Opening page...\n");
+    const page = await browser.newPage();
+    await page.goto(mangaUrl,{waitUntil:'networkidle2'});
+    console.log("\033[44;37m Info \033[0m Resolving images...\n");
+    crawlList = await page.evaluate(pics => {
+        let results = [];
+        window.ajaxloadimage = page => {
+            let mkey = '';
+            $.ajax({
+                url: 'chapterfun.ashx',
+                data: { cid: DM5_CID, page: page, key: mkey, language: 1, gtk: 6, _cid: DM5_CID, _mid: DM5_MID, _dt: DM5_VIEWSIGN_DT, _sign: DM5_VIEWSIGN },
+                type: 'GET',
+                async: false,
+                error: msg => console.error(msg),
+                success: msg => {
+                    if (msg != '') {
+                        eval(msg);
+                        results.push(d[0]);
+                    }
+                }
+            });
+        }
+       for (let i=0;i<pics;i++) {
+           window.ajaxloadimage(i+1);
+       }
+       return results;
+    },picAmount);
+    console.log(crawlList);
+    const download = (item,callback) => {
+        let picNum = item.split("/")[6].split("_")[0];
+        axios.get(item,{headers:{'Referer':mangaUrl},responseType:'arraybuffer',timeout:10000}).then(resp => resp.data).then(data => {
+            fs.writeFile(`${savePath}/${picNum}.jpg`,data,err => {
+                if (err) {
+                    console.error(err);
+                }
+                else {
+                    console.log(picNum,"done");
+                    callback(null);
+                }
+            });
+        }).catch(() => {
+            console.log(picNum,"Download failed. Trying another server...");
+            downloadByNode(1);
+        });
+        function downloadByNode(node) {
+            let url = item;
+            url=url.split("/");
+            url[2]=url[2].split("-")[0]+"-"+nodeList[node-1];
+            url=url.join("/");
+            axios.get(url,{headers:{'Referer':mangaUrl},responseType:'arraybuffer',timeout:10000}).then(resp => resp.data).then(data => {
+                fs.writeFile(`${savePath}/${picNum}.jpg`,data,err => {
+                    if (err) {
+                        console.error(err);
+                    }
+                    else {
+                        console.log(picNum,"done");
+                        callback(null);
+                    }
+                });
+            }).catch(() => {
+                if (node == nodeList.length) {
+                    console.log("Failed: max tries...");
+                    callback(null);
+                }
+                else {
+                    console.log(picNum,"Download failed. Trying another server...");
+                    downloadByNode(node+1);
+                }
+            });
+        }
+    }
+    asyncMapLimit(crawlList,crawlLimit,download,err => {
+        if (err) {
+            console.error("\n\033[41;37m Error \033[0m "+err+"\n");
+            process.exit(1);
+        }
+        else {
+            browser.close();
+            console.timeEnd();
+            console.log("\n\n\033[44;37m Info \033[0m DONE");
+        }
+    });
+
+    /*
     console.log("\033[44;37m Info \033[0m Downloading manga...");
     let downloaded = 0;
     const pb = new ProgressBar('\033[43;37m Progress \033[0m',picAmount);
     pb.render({ completed: downloaded,total: picAmount });
-    const download = async function(item) {
+    const download = async (item) => {
         let url;
         item=item.split("-");
         item[0]=parseInt(item[0]);
@@ -286,10 +328,6 @@ async function downloadMangaB() {
             $("body").attr("style","overflow:hidden;");
             $("div.rightToolBar").attr("style","display:none");
         });
-        loadedPage++;
-        if (loadedPage == crawlList.length) {
-            dlTime = new Date().getTime();
-        }
         let isFirst=1;
         for (let i=item[0];i<=item[1];i++) {
             if(isFirst) {
@@ -312,6 +350,26 @@ async function downloadMangaB() {
             pb.render({ completed: downloaded,total: picAmount });
         }
     }
+    const neodown = async (item) => {
+        const page = await browser.newPage();
+        await page.goto("http://www.dm5.com/m170924-p"+item,{waitUntil:'load'});
+        await page.waitForSelector("img#cp_image");
+        await page.close();
+        console.log(item,"loaded");
+    }
+    console.time();
+    asyncMapLimit(crawlList,4,neodown,err => {
+        if (err) {
+            console.error("\n\033[41;37m Error \033[0m "+err+"\n");
+            process.exit(1);
+        }
+        else {
+            browser.close();
+            console.timeEnd();
+            console.log("\n\n\033[44;37m Info \033[0m DONE");
+        }
+    })
+    /*
     asyncMap(crawlList,download,err => {
         if (err) {
             console.error("\n\033[41;37m Error \033[0m "+err+"\n");
@@ -323,6 +381,8 @@ async function downloadMangaB() {
             genHTML();
         }
     });
+
+     */
 }
 function genHTML() {
     ejs.renderFile('./template.ejs',{imgs:picAmount},(err,data) => {
