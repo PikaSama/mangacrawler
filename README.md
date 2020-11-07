@@ -1,8 +1,11 @@
 # Spider-Manga
-![author](https://img.shields.io/static/v1?label=AUTHOR&message=Zorin&color=9cf&style=for-the-badge)
-![license](https://img.shields.io/github/license/pikasama/spider-manga?style=for-the-badge)
-![language](https://img.shields.io/github/languages/top/pikasama/spider-manga?style=for-the-badge)
-![release](https://img.shields.io/github/v/release/pikasama/spider-manga?include_prereleases&style=for-the-badge)
+![Author](https://img.shields.io/static/v1?label=Author&message=Zorin&color=9cf&style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/PikaSama/spider-manga?color=success&style=for-the-badge)
+![Platform](https://img.shields.io/static/v1?label=Platform&message=Linux&color=orange&style=for-the-badge)
+
+![GitHub top language](https://img.shields.io/github/languages/top/pikasama/spider-manga?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/PikaSama/spider-manga?color=ff69b4&style=for-the-badge)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/PikaSama/spider-manga?color=%23007ec6&include_prereleases&style=for-the-badge)
 
 一个自己写的nodejs爬虫小练习（2），用于下载漫画
 
@@ -11,7 +14,7 @@
 ## 安装
 项目依赖于：
  - async
-   - 并发请求下载（async.map）
+   - 并发请求下载（async.queue）
  - axios
    - 爬取漫画信息
  - cheerio
@@ -49,32 +52,23 @@ yarn
  - A：单页面多图片的漫画
  - B：多页面单图片的漫画
 
-### 全局输入项
+### 选项
  - 输入项1：Manga URL
    - 打开网站中的漫画，选择你要下载的一话，复制粘贴这一话的链接
    - 链接格式：http://www.dm5.com/m123456/
  - 输入项2：Save Dir
    - 输入保存漫画的目录，可填家目录符号“～”，程序会自动补全路径
    - 若路径不存在，程序会尝试创建
+ - 输入项3：Download requests
+   - 并发下载请求数限制，范围在1～16
+   - 推荐范围：4～10
+ - 选项：Servers
+   - 节点列表，选择其中一个进行图片下载
    
-### 漫画A输入项
-  - 输入项4：GUI or non-GUI
-    - 是否显示浏览器界面（puppeteer的headless选项）
-    - GUI模式将以图片形式生成完整漫画，non-GUI模式将以html文档形式生成完整漫画
-    
-### 漫画B输入项
- - 输入项1：DL Speed Level
-   - 下载速度等级（0.1~0.9），建议范围：0.1～0.7，注：下载速度提升不会很大
-   - 含义：在图片加载完后，“加载中”的图片透明度开始降低，0.1～0.9表示当“加载中”图片的透明度降至什么程度时进行下一步操作
- - 输入项2：DL requests
-   - 下载请求数（1-8），注：下载速度有显著提升，但也因请求数多了，网页响应时间也会增长
+### 目录
+- split : 单张图片的存放位置
+- manga.html ：完整漫画文件
 
-### 文件
-若你是以non-GUI模式下载漫画（A），则完整漫画文件为保存路径中的`manga.html`文件
-
-若你是以GUI模式下载漫画（A），则完整漫画文件为保存路径中的`manga.jpg`
-
-漫画B只能以non-GUI模式下载，保存的文件和上面一致
 ## 预览
 暂无
 
@@ -85,22 +79,20 @@ A1：我并不知道怎么在node中拼接图片（尝试过gm但无果），所
 
 如果有更好的方法，欢迎提出
 
-Q2：下载请求数最高才8个，怎么提高它？
+Q2：为什么我有时候下载图片会卡在一个地方？
 
-A2：下载请求数多了，下载速度会快，但网页响应的速度也会变慢，所以只设置最高8个，后续会进行优化
+A2：经测试，均未发现是async.mapLimit或async.queue的锅，推测是axios的问题
 
-如果你想提高下载请求数，请在`manga.js`中修改：
+解决方法：
 
-在`getMangaInfo()`函数中找到`inquirer.prompt()`函数
+1. 重新下载，尝试补全图片文件
 
-在函数里数组的第二个对象中找到`validate`和`filter`方法，修改两个方法中if语句的“8”为其他数字即可
+2. 更换节点，降低请求数并重新下载
 
-Q3：你这东西好垃圾啊，怎么就支持这一个网站
-
-A3：这个项目本来就是给自己写来用的，放在这里分享一下自己的代码交流一下技术，你要是看不顺眼可以自己找个替代品，例如：[BiliBili漫画](https://manga.bilibili.com)，浏览器拓展[图片助手](http://www.pullywood.com/ImageAssistant/)
+本问题暂无最优解，欢迎提出更好的解决方案
 
 ## bug
- 1. 受网络环境影响，图片可能会有爬取不完整的问题
+ 1. 下载请求数提高后，有几率会卡在某一次请求中（暂无最优解）
  2. 通过html文档拼接的图片有概率会有白条间隔（已设置css样式尽量避免此问题）
  3. 暂未知晓
  
@@ -111,11 +103,28 @@ A3：这个项目本来就是给自己写来用的，放在这里分享一下自
 - [x] 辨析漫画类型
 - [x] 漫画类型AB的下载实现
 - [x] 并发请求下载
+- [x] 并发请求下载·优化
+- [ ] 上传未知节点信息至服务器
+- [ ] 对网站 漫画堆 做支持
 - [ ] 使用本地chrome/chromium代替
 - [ ] 爬取漫画更多信息
 - [ ] 获取漫画更新
 
 ## 更新日志
+2020.11.8 2:08 v1.3.0-rc.1
+- 优化：重构部分代码，解析图片，下载图片速度提升
+- 修改：使用async.queue限制下载请求
+- 修改：选项菜单优化，取消对GUI界面的支持
+- 修改：解析图片，下载图片时一旦发生错误，立即终止进程
+
+2020.11.7 21:23 v1.3.0-alpha.2
+- 增加：判断当前节点是否在节点列表中，选择节点下载功能
+- 修改：取消自动切换节点功能
+
+2020.11.1-19:24 v1.3.0-alpha.1
+- 增加：服务器节点列表
+- 修改：使用async.mapLimit限制下载请求
+
 2020.10.25-15:35 v1.2.0 
 - 优化：重写部分代码，优化漫画解析速度
 - 优化：选项菜单逻辑
