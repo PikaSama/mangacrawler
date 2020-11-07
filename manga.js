@@ -4,7 +4,7 @@ const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const ejs = require("ejs");
 const minify = require("html-minifier").minify;
-const asyncMapLimit = require("async/mapLimit");
+const async = require("async");
 const inquirer = require("inquirer");
 const home = require("os").homedir();
 const fs = require("fs");
@@ -188,29 +188,33 @@ async function downloadMangaB() {
     console.log("\033[44;37m Info \033[0m Resolving images...\n");
     // 获取请求参数
     const userInfo = await page.evaluate(()=>{ return {cid: window.DM5_CID, mid: window.DM5_MID, sign: window.DM5_VIEWSIGN, signdate: window.DM5_VIEWSIGN_DT } });
-    // 遍历数组
-    let list = [];
-    for (let i=0;i<picAmount;i++) {
-        list[i]=i+1;
-    }
     // 获取图片链接
-    function gerImgUrl(item,callback) {
-        axios.get(`${mangaUrl}/chapterfun.ashx?cid=${userInfo.cid}&page=${item}&key=&language=1&gtk=6&_cid=${userInfo.cid}&_mid=${userInfo.mid}&_dt=${encodeURIComponent(userInfo.signdate)}&_sign=${userInfo.sign}`,{headers:{ 'Referer': mangaUrl }}).then(resp => {
+    // 并发控制
+    const getPicUrl = async.queue((obj,callback) => {
+        axios.get(`${mangaUrl}/chapterfun.ashx?cid=${userInfo.cid}&page=${obj.pic}&key=&language=1&gtk=6&_cid=${userInfo.cid}&_mid=${userInfo.mid}&_dt=${encodeURIComponent(userInfo.signdate)}&_sign=${userInfo.sign}`,{headers:{ 'Referer': mangaUrl }}).then(resp => {
             eval(resp.data);
-            callback(null,d[0])
+            callback(null,d[0]);
         }).catch(err => callback(err));
-    }
-    // 并发请求限制
-    asyncMapLimit(list,crawlLimit,gerImgUrl,(err,result) => {
-        if (err) {
-            console.error(err);
-        }
-        else {
-            crawlList = result;
-            console.log(crawlList.length);
-            checkNode(crawlList[0]);
-        }
+    },crawlLimit);
+    // 全部成功后触发
+    getPicUrl.drain(() => {
+        console.log(crawlList.length);
+        checkNode(crawlList[0]);
     });
+    // 推送任务至队列
+    for (let i=0;i<picAmount;i++) {
+        // 错误时，结束进程
+        getPicUrl.push({pic:i+1},(err,picUrl) => {
+            if (err) {
+                console.error(err);
+                console.error("Oops! Something went wrong, try again?")
+                process.exit(1);
+            }
+            else {
+                crawlList.push(picUrl);
+            }
+        });
+    }
     function checkNode(defaultNode) {
         // 获取当前下载节点
         defaultNode = defaultNode.split("/")[2].split("-");
@@ -228,6 +232,7 @@ async function downloadMangaB() {
             console.log("Known node");
         }
         else {
+            console.log("Unknown node");
             nodeList.unshift(defaultNode);
         }
         inquirer.prompt([
@@ -243,44 +248,46 @@ async function downloadMangaB() {
         });
     }
     function downloadImages(node) {
+        // 替换节点
         for (let i in crawlList) {
             let url = crawlList[i].split("/");
             url[2] = url[2].split("-")[0]+"-"+node;
             crawlList[i] = url.join("/");
             console.log(crawlList[i]);
         }
-        let fails = 0;
-        function download(item,callback) {
-            let picNum = item.split("/")[6].split("_")[0];
-            axios.get(item,{headers:{ 'Referer':mangaUrl },responseType:'arraybuffer',timeout:6000}).then(resp => resp.data).then(data => {
-                fs.writeFile(`${savePath}/${picNum}.jpg`,data,err => {
+        // 下载图片
+        // 并发控制
+        const download = async.queue((obj,callback) => {
+            let picNum = obj.url.split("/")[6].split("_")[0];
+            axios.get(obj.url,{headers: { 'Referer': mangaUrl }, responseType:'arraybuffer', timeout:6000}).then(resp => resp.data).then(data => {
+                fs.writeFile(`${savePath}/split/${picNum}.jpg`,data,err => {
                     if (err) {
                         callback(err);
                     }
                     else {
-                        console.log("Get:",picNum);
                         callback(null,picNum);
                     }
-                })
-            }).catch(err => {
-                console.error(err);
-                fails++;
-                if (fails > 2) {
-                    callback("Download failed: The number of failures reached the threshold and the download was stopped.");
+                });
+            }).catch(err => callback(err));
+        },crawlLimit);
+        // 全部完成时触发
+        download.drain(() => {
+            console.log("Done");
+        });
+        // 推送任务至队列
+        for (let i in crawlList) {
+            // 错误时，结束进程
+            download.push({url: crawlList[i]},(err,result) => {
+                if (err) {
+                    console.error(err);
+                    console.error("Oops! Something went wrong, try again?")
+                    process.exit(1);
                 }
                 else {
-                    callback(null,"err"+fails);
+                    console.log("Done:",result);
                 }
             });
         }
-        asyncMapLimit(crawlList,crawlLimit,download,(err,result) => {
-            if (err) {
-                console.log(err)
-            }
-            else {
-                console.log(result)
-            }
-        });
     }
     /*
     console.log(crawlList);
