@@ -1,4 +1,5 @@
 const fs = require("fs");
+const manga = require("./manga")
 exports.check = path => { checkPath(path) }
 function checkPath(savePath) {
     fs.readdir(savePath+'',err => {
@@ -19,6 +20,7 @@ function checkPath(savePath) {
             }
             else {
                 console.log('\033[44;37m Info \033[0m Found directory: "'+savePath+'/split".\n');
+                manga.getInfo();
             }
         });
     }
@@ -40,6 +42,7 @@ function checkPath(savePath) {
             }
             else {
                 console.log("\033[46;37m Succeed \033[0m Created.\n");
+                manga.getInfo();
             }
         });
     }
