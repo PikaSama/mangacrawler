@@ -1,14 +1,16 @@
+// 依赖
 const axios = require("axios");
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const ejs = require("ejs");
 const minify = require("html-minifier").minify;
-const asyncMap = require("async/map");
 const asyncMapLimit = require("async/mapLimit");
 const inquirer = require("inquirer");
-const ProgressBar = require("./progressbar");
 const home = require("os").homedir();
 const fs = require("fs");
+// 本地模块
+const pathChecker = require("./DirCheck");
+const ProgressBar = require("./progressbar");
 let mangaUrl;
 let savePath;
 let headless;
@@ -16,12 +18,16 @@ let crawlLimit;
 let crawlList = [];
 let picAmount;
 let dlTime;
+// 节点列表
 const nodeList = [
+    "112-53-225-216.cdndm5.com",
+    "101-69-161-98.cdndm5.com",
+    "101-69-161-99.cdndm5.com",
     "61-174-50-98.cdndm5.com",
     "61-174-50-99.cdndm5.com",
     "104-250-139-219.cdnmanhua.net",
     "104-250-150-12.cdnmanhua.net"
-]
+];
 inquirer.prompt([
     {
         type:'input',
@@ -66,54 +72,9 @@ inquirer.prompt([
 ]).then(answer => {
     mangaUrl = answer.url;
     savePath = answer.path;
-    checkPath();
+    pathChecker.check(savePath);
+    getMangaInfo();
 });
-function checkPath() {
-    fs.readdir(savePath+'',err => {
-        if (err) {
-            console.warn('\033[41;37m Warn \033[0m Directory "'+savePath+'" doesn\'t exist. Creating...');
-            mkdir();
-        }
-        else {
-            console.log('\033[44;37m Info \033[0m Found directory: "'+savePath+'".\n');
-            readSplit();
-        }
-    });
-    function readSplit() {
-        fs.readdir(savePath+'/split',err => {
-            if (err) {
-                console.warn('\033[41;37m Warn \033[0m Directory "'+savePath+'/split" doesn\'t exist. Creating...');
-                mkSplit();
-            }
-            else {
-                console.log('\033[44;37m Info \033[0m Found directory: "'+savePath+'/split".\n');
-                getMangaInfo();
-            }
-        });
-    }
-    function mkdir() {
-        fs.mkdir(savePath+'',err => {
-            if (err) {
-                console.error("\033[41;37m Error \033[0m "+err+"\n");
-            }
-            else {
-                console.log("\033[46;37m Succeed \033[0m Created.\n");
-                readSplit();
-            }
-        });
-    }
-    function mkSplit() {
-        fs.mkdir(savePath+'/split',err => {
-            if (err) {
-                console.error("\033[41;37m Error \033[0m "+err+"\n");
-            }
-            else {
-                console.log("\033[46;37m Succeed \033[0m Created.\n");
-                getMangaInfo();
-            }
-        });
-    }
-}
 function getMangaInfo() {
     console.log("\033[44;37m Info \033[0m Fetching manga info...\n");
     axios.get(mangaUrl).then(resp => {
@@ -125,9 +86,9 @@ function getMangaInfo() {
                 {
                     type:'input',
                     name: 'request',
-                    message: "Download request limits(1-32):",
+                    message: "Download request limits(1-16):",
                     validate: val => {
-                        if (val >=1 && val <= 32) {
+                        if (val >=1 && val <= 16) {
                             return true;
                         }
                         else {
@@ -135,7 +96,7 @@ function getMangaInfo() {
                         }
                     },
                     filter: val => {
-                        if (val >= 1 && val <= 32) {
+                        if (val >= 1 && val <= 16) {
                             return parseInt(val);
                         }
                         else {
@@ -225,29 +186,103 @@ async function downloadMangaB() {
     const page = await browser.newPage();
     await page.goto(mangaUrl,{waitUntil:'networkidle2'});
     console.log("\033[44;37m Info \033[0m Resolving images...\n");
-    crawlList = await page.evaluate(pics => {
-        let results = [];
-        window.ajaxloadimage = page => {
-            let mkey = '';
-            $.ajax({
-                url: 'chapterfun.ashx',
-                data: { cid: DM5_CID, page: page, key: mkey, language: 1, gtk: 6, _cid: DM5_CID, _mid: DM5_MID, _dt: DM5_VIEWSIGN_DT, _sign: DM5_VIEWSIGN },
-                type: 'GET',
-                async: false,
-                error: msg => console.error(msg),
-                success: msg => {
-                    if (msg != '') {
-                        eval(msg);
-                        results.push(d[0]);
+    // 获取请求参数
+    const userInfo = await page.evaluate(()=>{ return {cid: window.DM5_CID, mid: window.DM5_MID, sign: window.DM5_VIEWSIGN, signdate: window.DM5_VIEWSIGN_DT } });
+    // 遍历数组
+    let list = [];
+    for (let i=0;i<picAmount;i++) {
+        list[i]=i+1;
+    }
+    // 获取图片链接
+    function gerImgUrl(item,callback) {
+        axios.get(`${mangaUrl}/chapterfun.ashx?cid=${userInfo.cid}&page=${item}&key=&language=1&gtk=6&_cid=${userInfo.cid}&_mid=${userInfo.mid}&_dt=${encodeURIComponent(userInfo.signdate)}&_sign=${userInfo.sign}`,{headers:{ 'Referer': mangaUrl }}).then(resp => {
+            eval(resp.data);
+            callback(null,d[0])
+        }).catch(err => callback(err));
+    }
+    // 并发请求限制
+    asyncMapLimit(list,crawlLimit,gerImgUrl,(err,result) => {
+        if (err) {
+            console.error(err);
+        }
+        else {
+            crawlList = result;
+            console.log(crawlList.length);
+            checkNode(crawlList[0]);
+        }
+    });
+    function checkNode(defaultNode) {
+        // 获取当前下载节点
+        defaultNode = defaultNode.split("/")[2].split("-");
+        defaultNode.shift();
+        defaultNode=defaultNode.join("-");
+        // 与节点列表比对
+        let isKnownNode = 0;
+        for (let i in nodeList) {
+            if (defaultNode == nodeList[i]) {
+                isKnownNode = 1;
+                break;
+            }
+        }
+        if (isKnownNode) {
+            console.log("Known node");
+        }
+        else {
+            nodeList.unshift(defaultNode);
+        }
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'node',
+                message: 'Please select a server to download images.',
+                choices: nodeList
+            }
+        ]).then(answer => {
+            console.log(answer)
+            downloadImages(answer.node);
+        });
+    }
+    function downloadImages(node) {
+        for (let i in crawlList) {
+            let url = crawlList[i].split("/");
+            url[2] = url[2].split("-")[0]+"-"+node;
+            crawlList[i] = url.join("/");
+            console.log(crawlList[i]);
+        }
+        let fails = 0;
+        function download(item,callback) {
+            let picNum = item.split("/")[6].split("_")[0];
+            axios.get(item,{headers:{ 'Referer':mangaUrl },responseType:'arraybuffer',timeout:6000}).then(resp => resp.data).then(data => {
+                fs.writeFile(`${savePath}/${picNum}.jpg`,data,err => {
+                    if (err) {
+                        callback(err);
                     }
+                    else {
+                        console.log("Get:",picNum);
+                        callback(null,picNum);
+                    }
+                })
+            }).catch(err => {
+                console.error(err);
+                fails++;
+                if (fails > 2) {
+                    callback("Download failed: The number of failures reached the threshold and the download was stopped.");
+                }
+                else {
+                    callback(null,"err"+fails);
                 }
             });
         }
-       for (let i=0;i<pics;i++) {
-           window.ajaxloadimage(i+1);
-       }
-       return results;
-    },picAmount);
+        asyncMapLimit(crawlList,crawlLimit,download,(err,result) => {
+            if (err) {
+                console.log(err)
+            }
+            else {
+                console.log(result)
+            }
+        });
+    }
+    /*
     console.log(crawlList);
     const download = (item,callback) => {
         let picNum = item.split("/")[6].split("_")[0];
@@ -299,7 +334,6 @@ async function downloadMangaB() {
         }
         else {
             browser.close();
-            console.timeEnd();
             console.log("\n\n\033[44;37m Info \033[0m DONE");
         }
     });
