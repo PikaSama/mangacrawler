@@ -13,25 +13,50 @@
 
 ## 安装
 项目依赖于：
- - async
-   - 并发请求下载（async.queue）
- - axios
-   - 爬取漫画信息
- - cheerio
-   - 解析漫画信息
- - ejs
-   - html模版
- - html-minifier
-   - 用于压缩html
- - inquirer
-   - 输入菜单
- - puppeteer
-   - 用于爬取和下载漫画
- - single-line-log
-   - 下载进度条
- - utf8-validate
- - node >= 12
-   - 项目基于Nodejs v12.19.0开发
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/async?style=flat-square)
+   
+并发请求下载（async.queue）
+
+ ![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/axios?style=flat-square)
+   
+爬取漫画信息
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/cheerio?style=flat-square)
+
+解析漫画信息
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/ejs?style=flat-square)
+ 
+html模版
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/html-minifier?style=flat-square)
+
+用于压缩html
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/inquirer?style=flat-square)
+
+输入菜单
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/puppeteer?style=flat-square)
+
+用于爬取和下载漫画
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/single-line-log?style=flat-square)
+
+下载进度条
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/utf-8-validate?style=flat-square)
+
+puppeteer依赖
+
+![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/bufferutil?style=flat-square)
+
+puppeteer依赖
+
+![Node version](https://img.shields.io/static/v1?label=node&message=>=12&color=success&style=flat-square)
+
+项目基于Nodejs v12.19.0开发
    
 使用npm
 ```bash
