@@ -5,18 +5,34 @@
     <title>Manga</title>
     <style>
         body {
-            background: dimgray;
+            background: #212121;
         }
         img {
             display: block;
             margin: 0 auto;
         }
+        div.images {
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
+    <div class="images">
     <% for(let i = 0;i < imgs;i++) { %>
         <% let j = i + 1;%>
         <img src="./split/<%= j %>.jpg" alt="" />
     <% } %>
+    </div>
+    <script>
+        window.onload = () => {
+            let div = document.querySelector("div");
+            let imglist = document.querySelectorAll("img");
+            let maxWidth = 0;
+            for (let i = 0;i < imglist.length;i++) {
+                maxWidth = Math.max(maxWidth,imglist[i].naturalWidth);
+            }
+            div.style.width = maxWidth+'px';
+        }
+    </script>
 </body>
 </html>

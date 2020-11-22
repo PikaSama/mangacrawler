@@ -1,6 +1,6 @@
 const fs = require("fs");
-const manga = require("./manga")
-exports.check = path => { checkPath(path) }
+const getMangaInfo = require("../mangaSites/dm5")
+module.exports = checkPath;
 function checkPath(savePath) {
     fs.readdir(savePath+'',err => {
         if (err) {
@@ -20,7 +20,11 @@ function checkPath(savePath) {
             }
             else {
                 console.log('\033[44;37m Info \033[0m Found directory: "'+savePath+'/split".\n');
-                manga.getInfo();
+                getMangaInfo().catch(err => {
+                    //  发生错误，结束浏览器进程
+                    console.error("\n\033[41;37m Error \033[0m "+err+"\n");
+                    process.exit(1);
+                });
             }
         });
     }
@@ -42,7 +46,11 @@ function checkPath(savePath) {
             }
             else {
                 console.log("\033[46;37m Succeed \033[0m Created.\n");
-                manga.getInfo();
+                getMangaInfo().catch(err => {
+                    //  发生错误，结束浏览器进程
+                    console.error("\n\033[41;37m Error \033[0m "+err+"\n");
+                    process.exit(1);
+                });
             }
         });
     }

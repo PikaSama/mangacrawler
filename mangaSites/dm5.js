@@ -2,15 +2,14 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
-const ejs = require("ejs");
-const minify = require("html-minifier").minify;
 const async = require("async");
 const inquirer = require("inquirer");
 const home = require("os").homedir();
 const fs = require("fs");
 // 本地模块
-const pathChecker = require("./DirCheck");
-const ProgressBar = require("./progressbar");
+const checkPath = require("../modules/dirCheck");
+const generateManga = require("../modules/generator");
+const ProgressBar = require("../modules/progressbar");
 let mangaUrl;
 let savePath;
 let crawlLimit;
@@ -31,7 +30,7 @@ inquirer.prompt([
     {
         type:'input',
         name: 'url',
-        message: "Please enter the manga's URL:",
+        message: "Please enter the manga's URL :",
         validate: val => {
             if (val.slice(0,8).match(/http:\/\//g) || val.slice(0,8).match(/https:\/\//g)) {
                 if (val.slice(-1) == "/" && val.length > 1) {
@@ -49,7 +48,7 @@ inquirer.prompt([
     {
         type:'input',
         name: 'path',
-        message: "Please enter the path to save it:",
+        message: "Please enter the path to save it :",
         validate: val => {
             if (val.slice(-1) == "/" && val.length > 1) {
                 return '\033[41;37m Error \033[0m You don\'t need to add "/" at the end of the path.';
@@ -71,7 +70,7 @@ inquirer.prompt([
     {
         type:'input',
         name: 'request',
-        message: "Download requests limit (1-16):",
+        message: "Download requests limit (1-16) :",
         validate: val => {
             if (val >=1 && val <= 16) {
                 return true;
@@ -93,15 +92,9 @@ inquirer.prompt([
     mangaUrl = answer.url;
     savePath = answer.path;
     crawlLimit = answer.request;
-    pathChecker.check(savePath);
+    checkPath(savePath);
 });
-exports.getInfo = () => {
-    getMangaInfo().catch(err => {
-        //  发生错误，结束浏览器进程
-        console.error("\n\033[41;37m Error \033[0m "+err+"\n");
-        process.exit(1);
-    });
-}
+module.exports = getMangaInfo;
 async function getMangaInfo() {
     dlTime = new Date().getTime();
     console.log("\033[44;37m Info \033[0m Starting browser...\n");
@@ -137,6 +130,14 @@ async function getMangaInfo() {
     resolveImages();
 }
 function resolveImages() {
+    let status = 0;
+    // 超时，结束进程
+    const timer = setTimeout(() => {
+        if (!status) {
+            console.error("n\\n\033[41;37m Error \033[0m Timed out for 30 secconds.");
+            process.exit(1);
+        }
+    },30000);
     console.log("\033[44;37m Info \033[0m Resolving images...\n");
     // 获取图片的进度条
     let resolvedImgs = 0;
@@ -145,13 +146,15 @@ function resolveImages() {
     // 获取图片链接
     // 并发控制
     const getPicUrl = async.queue((obj,callback) => {
-        axios.get(`${mangaUrl}/chapterfun.ashx?cid=${info.cid}&page=${obj.pic}&key=&language=1&gtk=6&_cid=${info.cid}&_mid=${info.mid}&_dt=${encodeURIComponent(info.signdate)}&_sign=${info.sign}`,{ headers:{ 'Referer': mangaUrl } }).then(resp => {
+        axios.get(`${mangaUrl}/chapterfun.ashx?cid=${info.cid}&page=${obj.pic}&key=&language=1&gtk=6&_cid=${info.cid}&_mid=${info.mid}&_dt=${encodeURIComponent(info.signdate)}&_sign=${info.sign}`,{ headers:{ 'Referer': mangaUrl }, timeout:10000 }).then(resp => {
             eval(resp.data);
             callback(null,d[0]);
         }).catch(err => callback(err));
     },crawlLimit);
     // 全部成功后触发
     getPicUrl.drain(() => {
+        status = 1;
+        clearTimeout(timer);
         console.log("\n\n\033[44;37m Info \033[0m Checking the server node...\n");
         checkNode(crawlList[0]);
     });
@@ -204,6 +207,14 @@ function checkNode(defaultNode) {
     });
 }
 function downloadImages(node) {
+    let status = 0;
+    // 超时，结束进程
+    const timer = setTimeout(() => {
+        if (!status) {
+            console.error("\n\n\033[41;37m Error \033[0m Timed out for 30 secconds.");
+            process.exit(1);
+        }
+    },30000);
     // 替换节点
     for (let i in crawlList) {
         let url = crawlList[i].split("/");
@@ -214,7 +225,7 @@ function downloadImages(node) {
     // 并发控制
     const download = async.queue((obj,callback) => {
         let picNum = obj.url.split("/")[6].split("_")[0];
-        axios.get(obj.url,{headers: { 'Referer': mangaUrl }, responseType:'arraybuffer', timeout:6000}).then(resp => resp.data).then(data => {
+        axios.get(obj.url,{headers: { 'Referer': mangaUrl }, responseType:'arraybuffer', timeout:10000 }).then(resp => resp.data).then(data => {
             fs.writeFile(`${savePath}/split/${picNum}.jpg`,data,err => {
                 if (err) {
                     callback(err);
@@ -227,8 +238,10 @@ function downloadImages(node) {
     },crawlLimit);
     // 全部完成时触发
     download.drain(() => {
+        status = 1;
+        clearTimeout(timer);
         console.log("\n\n\033[44;37m Info \033[0m Generating HTML format file...\n");
-        genHTML();
+        generateManga({ imgAmount: info.picAmount, path: savePath, dlTime: dlTime });
     });
     // 下载进度条
     let downloadedImgs = 0;
@@ -249,22 +262,4 @@ function downloadImages(node) {
             }
         });
     }
-}
-function genHTML() {
-    ejs.renderFile('./template.ejs',{ imgs: info.picAmount },(err,data) => {
-        if (err) {
-            console.error("\033[41;37m Error \033[0m "+err+"\n");
-        }
-        else {
-            fs.writeFile(savePath+'/manga.html',minify(data,{ collapseWhitespace:true, minifyCSS:true }),err1 => {
-                if (err1) {
-                    console.error("\033[41;37m Error \033[0m "+err1+"\n");
-                }
-                else {
-                    dlTime = Math.round((new Date().getTime()-dlTime)/100)/10+"s";
-                    console.log("\033[42;37m Success \033[0m Manga has been downloaded in",dlTime);
-                }
-            });
-        }
-    });
 }
