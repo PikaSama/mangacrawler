@@ -1,18 +1,15 @@
 {
   "name": "spider-manga",
-  "version": "1.3.0",
+  "version": "1.4.0-alpha.2",
   "description": "Download manga by using puppeteer.",
-  "main": "mangaSites/dm5.js",
+  "main": "main.js",
   "dependencies": {
     "async": "^3.2.0",
     "axios": "^0.21.0",
-    "bufferutil": "^4.0.1",
     "cheerio": "^1.0.0-rc.3",
     "ejs": "^3.1.5",
     "inquirer": "^7.3.3",
-    "puppeteer": "^5.3.1",
-    "single-line-log": "^1.1.2",
-    "utf-8-validate": "^5.0.2"
+    "single-line-log": "^1.1.2"
   },
   "devDependencies": {
     "canvas": "^2.6.1",
@@ -36,6 +33,9 @@
   },
   "homepage": "https://github.com/pikasama/spider-manga#readme",
   "optionalDependencies": {
-    "html-minifier": "^4.0.0"
+    "bufferutil": "^4.0.1",
+    "html-minifier": "^4.0.0",
+    "puppeteer": "^5.3.1",
+    "utf-8-validate": "^5.0.2"
   }
 }

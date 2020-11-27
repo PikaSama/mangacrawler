@@ -1,7 +1,6 @@
 const fs = require("fs");
-const getMangaInfo = require("../mangaSites/dm5")
-module.exports = checkPath;
-function checkPath(savePath) {
+const dm5 = require("../mangaSites/dm5")
+function checkPath(savePath,mgSite) {
     fs.readdir(savePath+'',err => {
         if (err) {
             console.warn('\033[41;37m Warn \033[0m Directory "'+savePath+'" doesn\'t exist. Creating...');
@@ -20,11 +19,7 @@ function checkPath(savePath) {
             }
             else {
                 console.log('\033[44;37m Info \033[0m Found directory: "'+savePath+'/split".\n');
-                getMangaInfo().catch(err => {
-                    //  发生错误，结束浏览器进程
-                    console.error("\n\033[41;37m Error \033[0m "+err+"\n");
-                    process.exit(1);
-                });
+                callbacks();
             }
         });
     }
@@ -46,12 +41,18 @@ function checkPath(savePath) {
             }
             else {
                 console.log("\033[46;37m Succeed \033[0m Created.\n");
-                getMangaInfo().catch(err => {
-                    //  发生错误，结束浏览器进程
-                    console.error("\n\033[41;37m Error \033[0m "+err+"\n");
-                    process.exit(1);
-                });
+                callbacks();
             }
         });
     }
+    function callbacks() {
+        if (mgSite === "dm5") {
+            dm5().catch(err => {
+                //  发生错误，结束浏览器进程
+                console.error("\n\033[41;37m Error \033[0m "+err+"\n");
+                process.exit(1);
+            });
+        }
+    }
 }
+module.exports = checkPath;

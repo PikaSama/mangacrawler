@@ -6,7 +6,7 @@ axios.get("https://m.mhxin.com/manhua/douluodalu4zhongjidouluo/1077515.html")
     .then(resp => {
         const $ = cheerio.load(resp.data);
         let command = $("div#images").next().html().split("}");
-        command[7]="let pushFunc=p.split(';').slice(0,5);let url=pushFunc[4].split('\"')[1];pushFunc[3]=pushFunc[3].split('}').slice(0,3).join('}')+'}result.push(getImageUrl(\\''+url+'\\'))';console.log(url);return pushFunc.slice(0,4).join(';')";
+        command[7]="console.log(p.split('<p>')[1].split('</p>')[0].split('/')[1]);let pushFunc=p.split(';').slice(0,5);let url=pushFunc[4].split('\"')[1];pushFunc[3]=pushFunc[3].split('}').slice(0,3).join('}')+'}result.push(getImageUrl(\\''+url+'\\'))';console.log(url);return pushFunc.slice(0,4).join(';')";
         eval(command.join("}"));
         console.log(command);
         console.log(result)

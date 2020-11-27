@@ -5,16 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/codes/experimentalCodes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/codes/wasteCodes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generator.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DirCheck.js" beforeDir="false" afterPath="$PROJECT_DIR$/dirCheck.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manga.js" beforeDir="false" afterPath="$PROJECT_DIR$/mangaSites/dm5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codes/experimentalCodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/codes/experimentalCodes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mangaSites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/mangaSites/dm5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/dirCheck.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/dirCheck.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/generator.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/generator.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/template.ejs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,27 +43,29 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/modules" />
       <recent name="$PROJECT_DIR$/codes" />
       <recent name="$PROJECT_DIR$/mangaSites" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.experimentalCodes.js">
+  <component name="RunManager" selected="Node.js.test.js">
     <configuration name="1.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/spider-manga/1.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
     <configuration name="manga.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/spider-manga/yl/manga.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
-    <configuration name="dm5.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/mangaSites/dm5.js" working-dir="$PROJECT_DIR$">
+    <configuration name="experimentalCodes.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/codes/experimentalCodes.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
-    <configuration name="experimentalCodes.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/codes/experimentalCodes.js" working-dir="$PROJECT_DIR$">
+    <configuration name="test.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/test.js" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
     <configuration name="wasteCodes.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/codes/wasteCodes.js" working-dir="$PROJECT_DIR$">
@@ -73,11 +73,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Node.js.test.js" />
         <item itemvalue="Node.js.experimentalCodes.js" />
         <item itemvalue="Node.js.wasteCodes.js" />
         <item itemvalue="JavaScript Debug.manga.html" />
         <item itemvalue="JavaScript Debug.1.html" />
-        <item itemvalue="Node.js.dm5.js" />
       </list>
     </recent_temporary>
   </component>
@@ -126,7 +126,13 @@
       <workItem from="1605413340227" duration="17360000" />
       <workItem from="1605529517343" duration="5381000" />
       <workItem from="1605949300064" duration="7778000" />
-      <workItem from="1606044514071" duration="7883000" />
+      <workItem from="1606044514071" duration="8700000" />
+      <workItem from="1606215398760" duration="3016000" />
+      <workItem from="1606229234048" duration="203000" />
+      <workItem from="1606229479467" duration="146000" />
+      <workItem from="1606229643634" duration="682000" />
+      <workItem from="1606481468423" duration="464000" />
+      <workItem from="1606482025315" duration="9609000" />
     </task>
     <servers />
   </component>
@@ -146,22 +152,22 @@
       <screen x="0" y="26" width="1366" height="742" />
     </state>
     <state x="467" y="156" key="FileChooserDialogImpl/0.26.1366.742@0.26.1366.742" timestamp="1602929609871" />
-    <state width="1343" height="268" key="GridCell.Tab.0.bottom" timestamp="1606053428092">
+    <state width="1343" height="266" key="GridCell.Tab.0.bottom" timestamp="1606489592350">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state width="1343" height="268" key="GridCell.Tab.0.bottom/0.26.1366.742@0.26.1366.742" timestamp="1606053428092" />
-    <state width="1343" height="268" key="GridCell.Tab.0.center" timestamp="1606053428091">
+    <state width="1343" height="266" key="GridCell.Tab.0.bottom/0.26.1366.742@0.26.1366.742" timestamp="1606489592350" />
+    <state width="1343" height="266" key="GridCell.Tab.0.center" timestamp="1606489592349">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state width="1343" height="268" key="GridCell.Tab.0.center/0.26.1366.742@0.26.1366.742" timestamp="1606053428091" />
-    <state width="1343" height="268" key="GridCell.Tab.0.left" timestamp="1606053428090">
+    <state width="1343" height="266" key="GridCell.Tab.0.center/0.26.1366.742@0.26.1366.742" timestamp="1606489592349" />
+    <state width="1343" height="266" key="GridCell.Tab.0.left" timestamp="1606489592348">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state width="1343" height="268" key="GridCell.Tab.0.left/0.26.1366.742@0.26.1366.742" timestamp="1606053428090" />
-    <state width="1343" height="268" key="GridCell.Tab.0.right" timestamp="1606053428092">
+    <state width="1343" height="266" key="GridCell.Tab.0.left/0.26.1366.742@0.26.1366.742" timestamp="1606489592348" />
+    <state width="1343" height="266" key="GridCell.Tab.0.right" timestamp="1606489592349">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state width="1343" height="268" key="GridCell.Tab.0.right/0.26.1366.742@0.26.1366.742" timestamp="1606053428092" />
+    <state width="1343" height="266" key="GridCell.Tab.0.right/0.26.1366.742@0.26.1366.742" timestamp="1606489592349" />
     <state width="1343" height="216" key="GridCell.Tab.1.bottom" timestamp="1604750397308">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
@@ -214,10 +220,14 @@
       <screen x="0" y="26" width="1366" height="742" />
     </state>
     <state x="321" y="161" key="MultipleFileMergeDialog/0.26.1366.742@0.26.1366.742" timestamp="1603451231427" />
-    <state x="287" y="37" width="1007" height="731" key="SettingsEditor" timestamp="1604136879599">
+    <state x="287" y="34" width="1007" height="734" key="SettingsEditor" timestamp="1606229624310">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state x="287" y="37" width="1007" height="731" key="SettingsEditor/0.26.1366.742@0.26.1366.742" timestamp="1604136879599" />
+    <state x="287" y="34" width="1007" height="734" key="SettingsEditor/0.26.1366.742@0.26.1366.742" timestamp="1606229624310" />
+    <state x="0" y="26" key="VCS.ChangeListViewerDialog" timestamp="1606230367595">
+      <screen x="0" y="26" width="1366" height="742" />
+    </state>
+    <state x="0" y="26" key="VCS.ChangeListViewerDialog/0.26.1366.742@0.26.1366.742" timestamp="1606230367595" />
     <state x="26" y="26" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1604138742298">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
@@ -226,9 +236,9 @@
       <screen x="0" y="26" width="1366" height="742" />
     </state>
     <state x="343" y="176" key="run.anything.popup/0.26.1366.742@0.26.1366.742" timestamp="1604136669084" />
-    <state x="346" y="88" width="672" height="678" key="search.everywhere.popup" timestamp="1606051003489">
+    <state x="346" y="88" width="672" height="678" key="search.everywhere.popup" timestamp="1606485944966">
       <screen x="0" y="26" width="1366" height="742" />
     </state>
-    <state x="346" y="88" width="672" height="678" key="search.everywhere.popup/0.26.1366.742@0.26.1366.742" timestamp="1606051003489" />
+    <state x="346" y="88" width="672" height="678" key="search.everywhere.popup/0.26.1366.742@0.26.1366.742" timestamp="1606485944966" />
   </component>
 </project>

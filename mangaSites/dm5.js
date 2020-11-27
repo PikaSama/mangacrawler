@@ -1,18 +1,22 @@
+// 解决循环依赖，在require前导出
+module.exports = getMangaInfo;
 // 依赖
 const axios = require("axios");
-const cheerio = require("cheerio");
 const puppeteer = require("puppeteer");
 const async = require("async");
 const inquirer = require("inquirer");
+// Node API
 const home = require("os").homedir();
 const fs = require("fs");
 // 本地模块
 const checkPath = require("../modules/dirCheck");
 const generateManga = require("../modules/generator");
 const ProgressBar = require("../modules/progressbar");
+// 输入项
 let mangaUrl;
 let savePath;
 let crawlLimit;
+// 变量
 let crawlList = [];
 let info = {};
 let dlTime;
@@ -26,39 +30,58 @@ const nodeList = [
     "104-250-139-219.cdnmanhua.net",
     "104-250-150-12.cdnmanhua.net"
 ];
+// CLI交互界面
 inquirer.prompt([
+    // 漫画url
     {
         type:'input',
         name: 'url',
         message: "Please enter the manga's URL :",
         validate: val => {
-            if (val.slice(0,8).match(/http:\/\//g) || val.slice(0,8).match(/https:\/\//g)) {
-                if (val.slice(-1) == "/" && val.length > 1) {
-                    return '\033[41;37m Error \033[0m You don\'t need to add "/" at the end of the URL.';
+            let blocks = val.split("/");
+            // 判断url包含的斜杠，至少需3个
+            if (blocks.length < 4) {
+                return "\033[41;37m Error \033[0m Invalid URL format. [0x001]";
+            }
+            // 判断协议是否合法
+            else if (blocks[0].match("http:") || blocks[0].match("https:")) {
+                // 判断第一个斜杠与第二个之间是否无值
+                if (!(blocks[1] === '')) {
+                    return "\033[41;37m Error \033[0m Invalid URL. [0x003]";
+                }
+                // 判断末尾是否有斜杠
+                else if (val.slice(-1) === "/") {
+                    return '\033[41;37m Error \033[0m You dont need to add "/" at the end of the URL. [0x0004]';
+                }
+                // 判断网站是否正确 && 是否以'm'+'xxxxx'结尾 && 是否包含分页符号“-”
+                else if (blocks[2].match("www.dm5.com") && blocks[3].slice(0,1) === "m" && !(blocks[3].match("-"))){
+                    return true;
                 }
                 else {
-                    return true;
+                    return "\033[41;37m Error \033[0m Invalid domain or Manga ID. [0x0005]";
                 }
             }
             else {
-                return "\033[41;37m Error \033[0m Invalid URL.";
+                return "\033[41;37m Error \033[0m Unsupported transport protocol. [0x0002]";
             }
         }
     },
+    // 保存路径
     {
         type:'input',
         name: 'path',
         message: "Please enter the path to save it :",
         validate: val => {
-            if (val.slice(-1) == "/" && val.length > 1) {
-                return '\033[41;37m Error \033[0m You don\'t need to add "/" at the end of the path.';
+            // 判断末尾是否含斜杠
+            if (val.slice(-1) === "/" && val.length > 1) {
+                return '\033[41;37m Error \033[0m You don\'t need to add "/" at the end of the path. [0x0006]';
             }
             else {
                 return true;
             }
         },
         filter: val => {
-            if (val.slice(0,1) == "~") {
+            if (val.slice(0,1) === "~") {
                 val = home + val.slice(1);
                 return val;
             }
@@ -67,19 +90,22 @@ inquirer.prompt([
             }
         }
     },
+    // 下载请求限制
     {
         type:'input',
         name: 'request',
         message: "Download requests limit (1-16) :",
         validate: val => {
+            // 判断输入数字是否合法
             if (val >=1 && val <= 16) {
                 return true;
             }
             else {
-                return "\033[41;37m Error \033[0m Invalid number.";
+                return "\033[41;37m Error \033[0m Invalid number. [0x0007]";
             }
         },
         filter: val => {
+            // 防止返回parseInt后的数导致无法重新输入，仅在true时返回
             if (val >= 1 && val <= 16) {
                 return parseInt(val);
             }
@@ -92,9 +118,8 @@ inquirer.prompt([
     mangaUrl = answer.url;
     savePath = answer.path;
     crawlLimit = answer.request;
-    checkPath(savePath);
+    checkPath(savePath,"dm5");
 });
-module.exports = getMangaInfo;
 async function getMangaInfo() {
     dlTime = new Date().getTime();
     console.log("\033[44;37m Info \033[0m Starting browser...\n");
@@ -183,7 +208,7 @@ function checkNode(defaultNode) {
     // 与节点列表比对
     let isKnownNode = 0;
     for (let i in nodeList) {
-        if (defaultNode == nodeList[i]) {
+        if (defaultNode === nodeList[i]) {
             isKnownNode = 1;
             break;
         }
