@@ -2,7 +2,15 @@
 module.exports = getMangaInfo;
 // 依赖
 const axios = require("axios");
-const puppeteer = require("puppeteer");
+let puppeteer;
+try {
+    puppeteer = require("puppeteer");
+    console.log("\033[44;37m Info \033[0m Found module : 'puppeteer'.\n");
+    cli();
+}
+catch (err) {
+    console.error("\033[41;37m Error \033[0m Could not find module 'puppeteer', have you already installed it ? [0x0001\n]");
+}
 const async = require("async");
 const inquirer = require("inquirer");
 // Node API
@@ -31,95 +39,97 @@ const nodeList = [
     "104-250-150-12.cdnmanhua.net"
 ];
 // CLI交互界面
-inquirer.prompt([
-    // 漫画url
-    {
-        type:'input',
-        name: 'url',
-        message: "Please enter the manga's URL :",
-        validate: val => {
-            let blocks = val.split("/");
-            // 判断url包含的斜杠，至少需3个
-            if (blocks.length < 4) {
-                return "\033[41;37m Error \033[0m Invalid URL format. [0x001]";
+function cli() {
+    inquirer.prompt([
+        // 漫画url
+        {
+            type:'input',
+            name: 'url',
+            message: "Please enter the manga's URL :",
+            validate: val => {
+                let blocks = val.split("/");
+                // 判断url包含的斜杠，至少需3个
+                if (blocks.length < 4) {
+                    return "\033[41;37m Error \033[0m Invalid URL format. [0x0101]";
+                }
+                // 判断协议是否合法
+                else if (blocks[0].match("http:") || blocks[0].match("https:")) {
+                    // 判断第一个斜杠与第二个之间是否无值
+                    if (!(blocks[1] === '')) {
+                        return "\033[41;37m Error \033[0m Invalid URL. [0x0103]";
+                    }
+                    // 判断末尾是否有斜杠
+                    else if (val.slice(-1) === "/") {
+                        return '\033[41;37m Error \033[0m You dont need to add "/" at the end of the URL. [0x0104]';
+                    }
+                    // 判断网站是否正确 && 是否以'm'+'xxxxx'结尾 && 是否包含分页符号“-”
+                    else if (blocks[2].match("www.dm5.com") && blocks[3].slice(0,1) === "m" && !(blocks[3].match("-"))){
+                        return true;
+                    }
+                    else {
+                        return "\033[41;37m Error \033[0m Invalid domain or Manga ID. [0x0105]";
+                    }
+                }
+                else {
+                    return "\033[41;37m Error \033[0m Unsupported transport protocol. [0x0102]";
+                }
             }
-            // 判断协议是否合法
-            else if (blocks[0].match("http:") || blocks[0].match("https:")) {
-                // 判断第一个斜杠与第二个之间是否无值
-                if (!(blocks[1] === '')) {
-                    return "\033[41;37m Error \033[0m Invalid URL. [0x003]";
+        },
+        // 保存路径
+        {
+            type:'input',
+            name: 'path',
+            message: "Please enter the path to save it :",
+            validate: val => {
+                // 判断末尾是否含斜杠
+                if (val.slice(-1) === "/" && val.length > 1) {
+                    return '\033[41;37m Error \033[0m You don\'t need to add "/" at the end of the path. [0x0106]';
                 }
-                // 判断末尾是否有斜杠
-                else if (val.slice(-1) === "/") {
-                    return '\033[41;37m Error \033[0m You dont need to add "/" at the end of the URL. [0x0004]';
+                else {
+                    return true;
                 }
-                // 判断网站是否正确 && 是否以'm'+'xxxxx'结尾 && 是否包含分页符号“-”
-                else if (blocks[2].match("www.dm5.com") && blocks[3].slice(0,1) === "m" && !(blocks[3].match("-"))){
+            },
+            filter: val => {
+                if (val.slice(0,1) === "~") {
+                    val = home + val.slice(1);
+                    return val;
+                }
+                else {
+                    return val;
+                }
+            }
+        },
+        // 下载请求限制
+        {
+            type:'input',
+            name: 'request',
+            message: "Download requests limit (1-16) :",
+            validate: val => {
+                // 判断输入数字是否合法
+                if (val >=1 && val <= 16) {
                     return true;
                 }
                 else {
-                    return "\033[41;37m Error \033[0m Invalid domain or Manga ID. [0x0005]";
+                    return "\033[41;37m Error \033[0m Invalid number. [0x0107]";
+                }
+            },
+            filter: val => {
+                // 防止返回parseInt后的数导致无法重新输入，仅在true时返回
+                if (val >= 1 && val <= 16) {
+                    return parseInt(val);
+                }
+                else {
+                    return val;
                 }
             }
-            else {
-                return "\033[41;37m Error \033[0m Unsupported transport protocol. [0x0002]";
-            }
         }
-    },
-    // 保存路径
-    {
-        type:'input',
-        name: 'path',
-        message: "Please enter the path to save it :",
-        validate: val => {
-            // 判断末尾是否含斜杠
-            if (val.slice(-1) === "/" && val.length > 1) {
-                return '\033[41;37m Error \033[0m You don\'t need to add "/" at the end of the path. [0x0006]';
-            }
-            else {
-                return true;
-            }
-        },
-        filter: val => {
-            if (val.slice(0,1) === "~") {
-                val = home + val.slice(1);
-                return val;
-            }
-            else {
-                return val;
-            }
-        }
-    },
-    // 下载请求限制
-    {
-        type:'input',
-        name: 'request',
-        message: "Download requests limit (1-16) :",
-        validate: val => {
-            // 判断输入数字是否合法
-            if (val >=1 && val <= 16) {
-                return true;
-            }
-            else {
-                return "\033[41;37m Error \033[0m Invalid number. [0x0007]";
-            }
-        },
-        filter: val => {
-            // 防止返回parseInt后的数导致无法重新输入，仅在true时返回
-            if (val >= 1 && val <= 16) {
-                return parseInt(val);
-            }
-            else {
-                return val;
-            }
-        }
-    }
-]).then(answer => {
-    mangaUrl = answer.url;
-    savePath = answer.path;
-    crawlLimit = answer.request;
-    checkPath(savePath,"dm5");
-});
+    ]).then(answer => {
+        mangaUrl = answer.url;
+        savePath = answer.path;
+        crawlLimit = answer.request;
+        checkPath(savePath,"dm5");
+    });
+}
 async function getMangaInfo() {
     dlTime = new Date().getTime();
     console.log("\033[44;37m Info \033[0m Starting browser...\n");
@@ -147,7 +157,7 @@ async function getMangaInfo() {
             cid: window.DM5_CID,
             mid: window.DM5_MID,
             sign: window.DM5_VIEWSIGN,
-            signdate: window.DM5_VIEWSIGN_DT
+            signdate: window.DM5_VIEWSIGN_DT,
         }
     });
     console.log(info.msg);
@@ -166,13 +176,27 @@ function resolveImages() {
     console.log("\033[44;37m Info \033[0m Resolving images...\n");
     // 获取图片的进度条
     let resolvedImgs = 0;
-    const resolvePB = new ProgressBar('\033[43;37m Progress \033[0m',info.picAmount);
+    const resolvePB = new ProgressBar('\033[43;37m Progress \033[0m', info.picAmount);
     resolvePB.render({ completed: 0, total: info.picAmount });
     // 获取图片链接
     // 并发控制
     const getPicUrl = async.queue((obj,callback) => {
-        axios.get(`${mangaUrl}/chapterfun.ashx?cid=${info.cid}&page=${obj.pic}&key=&language=1&gtk=6&_cid=${info.cid}&_mid=${info.mid}&_dt=${encodeURIComponent(info.signdate)}&_sign=${info.sign}`,{ headers:{ 'Referer': mangaUrl }, timeout:10000 }).then(resp => {
-            eval(resp.data);
+        axios.get(`${mangaUrl}/chapterfun.ashx`, {
+            params: {
+                cid: info.cid,
+                page: obj.pic,
+                key: '',
+                language: 1,
+                gtk: 6,
+                _cid: info.cid,
+                _mid: info.mid,
+                _dt: encodeURIComponent(info.signdate),
+                _sign: info.sign,
+            },
+            headers: { 'Referer': mangaUrl },
+            timeout: 10000
+        }).then(({ data }) => {
+            eval(data);
             callback(null,d[0]);
         }).catch(err => callback(err));
     },crawlLimit);
@@ -227,9 +251,7 @@ function checkNode(defaultNode) {
             message: 'Please select a server to download images.',
             choices: nodeList
         }
-    ]).then(answer => {
-        downloadImages(answer.node);
-    });
+    ]).then(answer => { downloadImages(answer.node) });
 }
 function downloadImages(node) {
     let status = 0;
@@ -250,7 +272,11 @@ function downloadImages(node) {
     // 并发控制
     const download = async.queue((obj,callback) => {
         let picNum = obj.url.split("/")[6].split("_")[0];
-        axios.get(obj.url,{headers: { 'Referer': mangaUrl }, responseType:'arraybuffer', timeout:10000 }).then(resp => resp.data).then(data => {
+        axios.get(obj.url, {
+            headers: { 'Referer': mangaUrl },
+            responseType: 'arraybuffer',
+            timeout: 10000
+        }).then(({ data }) => {
             fs.writeFile(`${savePath}/split/${picNum}.jpg`,data,err => {
                 if (err) {
                     callback(err);
