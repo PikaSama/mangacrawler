@@ -1,6 +1,6 @@
-const fs = require("fs");
 const axios = require("axios");
 const cheerio = require("cheerio");
+const fs = require("fs");
 let result = [];
 axios.get("https://m.mhxin.com/manhua/douluodalu4zhongjidouluo/1077515.html")
     .then(resp => {

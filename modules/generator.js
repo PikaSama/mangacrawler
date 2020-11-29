@@ -3,7 +3,7 @@ const fs = require("fs");
 function genHTML(opt) {
     ejs.renderFile('./template.ejs',{ imgs: opt.imgAmount },(err,data) => {
         if (err) {
-            console.error("\033[41;37m Error \033[0m "+err+"\n");
+            console.error("\033[41;37m Error \033[0m "+err+"[G-0x0001]\n");
         }
         else {
             try {
@@ -24,7 +24,7 @@ function genHTML(opt) {
     function writeHTML(data) {
         fs.writeFile(opt.path+'/manga.html',data,err => {
             if (err) {
-                console.error("\033[41;37m Error \033[0m "+err+"\n");
+                console.error("\033[41;37m Error \033[0m "+err+"[G-0x0101]\n");
             }
             else {
                 opt.dlTime = Math.round((new Date().getTime()-opt.dlTime)/100)/10+"s";

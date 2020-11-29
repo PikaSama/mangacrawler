@@ -1,9 +1,8 @@
 const fs = require("fs");
-const dm5 = require("../mangaSites/dm5")
-function checkPath(savePath,mgSite) {
-    fs.readdir(savePath+'',err => {
+function checkPath(savePath,callback) {
+    fs.readdir(savePath,err => {
         if (err) {
-            console.warn('\033[41;37m Warn \033[0m Directory "'+savePath+'" doesn\'t exist. Creating...');
+            console.warn('\033[41;37m Warn \033[0m Directory "'+savePath+'" does not exist. Creating...');
             mkdir();
         }
         else {
@@ -14,19 +13,19 @@ function checkPath(savePath,mgSite) {
     function readSplit() {
         fs.readdir(savePath+'/split',err => {
             if (err) {
-                console.warn('\033[41;37m Warn \033[0m Directory "'+savePath+'/split" doesn\'t exist. Creating...');
+                console.warn('\033[41;37m Warn \033[0m Directory "'+savePath+'/split" does not exist. Creating...');
                 mkSplit();
             }
             else {
                 console.log('\033[44;37m Info \033[0m Found directory: "'+savePath+'/split".\n');
-                callbacks();
+                callback();
             }
         });
     }
     function mkdir() {
-        fs.mkdir(savePath+'',err => {
+        fs.mkdir(savePath,err => {
             if (err) {
-                console.error("\033[41;37m Error \033[0m "+err+"\n");
+                console.error("\033[41;37m Error \033[0m "+err+"[C-0x0001]\n");
             }
             else {
                 console.log("\033[46;37m Succeed \033[0m Created.\n");
@@ -37,22 +36,13 @@ function checkPath(savePath,mgSite) {
     function mkSplit() {
         fs.mkdir(savePath+'/split',err => {
             if (err) {
-                console.error("\033[41;37m Error \033[0m "+err+"\n");
+                console.error("\033[41;37m Error \033[0m "+err+"[C-0x0101]\n");
             }
             else {
                 console.log("\033[46;37m Succeed \033[0m Created.\n");
-                callbacks();
+                callback();
             }
         });
-    }
-    function callbacks() {
-        if (mgSite === "dm5") {
-            dm5().catch(err => {
-                //  发生错误，结束浏览器进程
-                console.error("\n\033[41;37m Error \033[0m "+err+"\n");
-                process.exit(1);
-            });
-        }
     }
 }
 module.exports = checkPath;
