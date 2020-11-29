@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codes/experimentalCodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/codes/experimentalCodes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codes/wasteCodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/codes/wasteCodes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mangaSites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/mangaSites/dm5.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/dirCheck.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/dirCheck.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/generator.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/generator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-    </list>
+    <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -135,7 +127,7 @@
       <workItem from="1606481468423" duration="464000" />
       <workItem from="1606482025315" duration="9609000" />
       <workItem from="1606574807264" duration="6680000" />
-      <workItem from="1606621616173" duration="22055000" />
+      <workItem from="1606621616173" duration="22375000" />
     </task>
     <servers />
   </component>
