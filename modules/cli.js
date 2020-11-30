@@ -4,6 +4,15 @@ const inquirer = require("inquirer");
 const home = require("os").homedir();
 // 输入结果
 const cliResults = {};
+/**
+ * @author Zorin
+ * @license GPL-3.0
+ * @project Spider-Manga
+ * @github https://github.com/PikaSama
+ * @description 通用CLI界面模块
+ * @param mgSite {string} 漫画站点
+ * @param callback {function} 回调函数
+ */
 function cli(mgSite,callback) {
     switch (mgSite) {
         case "dm5":

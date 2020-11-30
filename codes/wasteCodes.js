@@ -1,18 +1,10 @@
-const a = require("./experimentalCodes");
-let b = "";
-a((err,data) => {
-    if (err) {
-        console.error(err);
-    }
-    else {
-        b = data;
-        t();
-    }
-});
-function t() {
-    console.log(b);
-}
-/*
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: 废弃但仍有参考价值的代码
+ * License: GPL-3.0
+ */
 // Description: 使用sharp进行图片拼接，因运行时间过慢，拼接后的效果无法达到预期废弃
 const fs = require("fs");
 const sharp = require("sharp");
@@ -81,4 +73,3 @@ let maxWidth = 0;
     const imgData = fullImg.toBuffer();
     fs.writeFileSync("test.png",imgData);
 })();
-*/

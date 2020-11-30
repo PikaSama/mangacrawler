@@ -4,6 +4,7 @@ const fs = require("fs");
  * @author Zorin
  * @license GPL-3.0
  * @project Spider-Manga
+ * @github https://github.com/PikaSama
  * @description html文件（完整漫画）生成模块
  * @param opt {object} 生成html的参数
  * @property {number} opt.imgAmount 图片数量

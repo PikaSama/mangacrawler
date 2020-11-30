@@ -1,18 +1,19 @@
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: 实验性代码
+ * License: GPL-3.0
+ */
 const axios = require("axios");
 const cheerio = require("cheerio");
 const fs = require("fs");
-const str = "dm5"
-switch (str) {
-        case "dm5":
-                console.log("yes");
-                break;
-}
 let result = [];
 axios.get("https://m.mhxin.com/manhua/douluodalu4zhongjidouluo/1077515.html")
     .then(resp => {
         const $ = cheerio.load(resp.data);
         let command = $("div#images").next().html().split("}");
-        command[7]="console.log(p.split('<p>')[1].split('</p>')[0].split('/')[1]);let pushFunc=p.split(';').slice(0,5);let url=pushFunc[4].split('\"')[1];pushFunc[3]=pushFunc[3].split('}').slice(0,3).join('}')+'}result.push(getImageUrl(\\''+url+'\\'))';console.log(url);return pushFunc.slice(0,4).join(';')";
+        command[7]="let images = p.split('<p>')[1].split('</p>')[0].split('/')[1];let pushFunc = p.split(';').slice(0,5);let url = pushFunc[4].split('\"')[1];pushFunc[3] = pushFunc[3].split('}').slice(0,3).join('}') + '}result.push(getImageUrl(\\'' + url + '\\'))';return pushFunc.slice(0,4).join(';')";
         eval(command.join("}"));
         console.log(command);
         console.log(result)

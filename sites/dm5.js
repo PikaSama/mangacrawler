@@ -1,3 +1,10 @@
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: 漫画站点“动漫屋”的漫画下载模块
+ * License: GPL-3.0
+ */
 // 依赖
 const axios = require("axios");
 const async = require("async");

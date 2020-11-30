@@ -1,4 +1,13 @@
 const fs = require("fs");
+/**
+ * @author Zorin
+ * @license GPL-3.0
+ * @project Spider-Manga
+ * @github https://github.com/PikaSama
+ * @description 检查目录存在性的模块
+ * @param savePath {string} 目录
+ * @param callback {function} 回调函数
+ */
 function checkPath(savePath,callback) {
     fs.readdir(savePath,err => {
         if (err) {

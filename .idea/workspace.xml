@@ -7,11 +7,14 @@
     <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/codes/experimentalCodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/codes/experimentalCodes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mangaSites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/sites/dm5.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mangaSites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/sites/mhxin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/codes/wasteCodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/codes/wasteCodes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cli.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cli.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/dirCheck.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/dirCheck.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/generator.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/generator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/progressbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/progressbar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/sites/dm5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/sites/mhxin.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +62,7 @@
       <recent name="$PROJECT_DIR$/mangaSites" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.wasteCodes.js">
+  <component name="RunManager" selected="Node.js.experimentalCodes.js">
     <configuration name="1.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/spider-manga/1.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
@@ -77,8 +80,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Node.js.wasteCodes.js" />
         <item itemvalue="Node.js.experimentalCodes.js" />
+        <item itemvalue="Node.js.wasteCodes.js" />
         <item itemvalue="Node.js.test.js" />
         <item itemvalue="JavaScript Debug.manga.html" />
         <item itemvalue="JavaScript Debug.1.html" />
@@ -139,7 +142,7 @@
       <workItem from="1606482025315" duration="9609000" />
       <workItem from="1606574807264" duration="6680000" />
       <workItem from="1606621616173" duration="22953000" />
-      <workItem from="1606733800839" duration="7105000" />
+      <workItem from="1606733800839" duration="11913000" />
     </task>
     <servers />
   </component>
@@ -167,26 +170,26 @@
       <screen x="0" y="26" width="1366" height="742" />
     </state>
     <state x="467" y="156" key="FileChooserDialogImpl/0.26.1366.742@0.26.1366.742" timestamp="1602929609871" />
-    <state width="1343" height="222" key="GridCell.Tab.0.bottom" timestamp="1606648231772">
+    <state width="1343" height="178" key="GridCell.Tab.0.bottom" timestamp="1606747954702">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
     <state width="1343" height="266" key="GridCell.Tab.0.bottom/0.26.1366.742@0.26.1366.742" timestamp="1606489592350" />
-    <state width="1343" height="222" key="GridCell.Tab.0.bottom/0.32.1366.736@0.32.1366.736" timestamp="1606648231772" />
-    <state width="1343" height="222" key="GridCell.Tab.0.center" timestamp="1606648231771">
+    <state width="1343" height="178" key="GridCell.Tab.0.bottom/0.32.1366.736@0.32.1366.736" timestamp="1606747954702" />
+    <state width="1343" height="178" key="GridCell.Tab.0.center" timestamp="1606747954701">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
     <state width="1343" height="266" key="GridCell.Tab.0.center/0.26.1366.742@0.26.1366.742" timestamp="1606489592349" />
-    <state width="1343" height="222" key="GridCell.Tab.0.center/0.32.1366.736@0.32.1366.736" timestamp="1606648231771" />
-    <state width="1343" height="222" key="GridCell.Tab.0.left" timestamp="1606648231771">
+    <state width="1343" height="178" key="GridCell.Tab.0.center/0.32.1366.736@0.32.1366.736" timestamp="1606747954701" />
+    <state width="1343" height="178" key="GridCell.Tab.0.left" timestamp="1606747954700">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
     <state width="1343" height="266" key="GridCell.Tab.0.left/0.26.1366.742@0.26.1366.742" timestamp="1606489592348" />
-    <state width="1343" height="222" key="GridCell.Tab.0.left/0.32.1366.736@0.32.1366.736" timestamp="1606648231771" />
-    <state width="1343" height="222" key="GridCell.Tab.0.right" timestamp="1606648231772">
+    <state width="1343" height="178" key="GridCell.Tab.0.left/0.32.1366.736@0.32.1366.736" timestamp="1606747954700" />
+    <state width="1343" height="178" key="GridCell.Tab.0.right" timestamp="1606747954702">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
     <state width="1343" height="266" key="GridCell.Tab.0.right/0.26.1366.742@0.26.1366.742" timestamp="1606489592349" />
-    <state width="1343" height="222" key="GridCell.Tab.0.right/0.32.1366.736@0.32.1366.736" timestamp="1606648231772" />
+    <state width="1343" height="178" key="GridCell.Tab.0.right/0.32.1366.736@0.32.1366.736" timestamp="1606747954702" />
     <state width="1343" height="222" key="GridCell.Tab.1.bottom" timestamp="1606648231774">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
