@@ -6,15 +6,13 @@ let puppeteer;
 // Node API
 const fs = require("fs");
 // 本地模块
-const cli = require("../modules/cli")
+const cli = require("../modules/cli");
 const checkPath = require("../modules/dirCheck");
 const generateManga = require("../modules/generator");
 const ProgressBar = require("../modules/progressbar");
-// 输入项
 let mangaUrl;
 let savePath;
 let crawlLimit;
-// 变量
 let crawlList = [];
 let info = {};
 let dlTime;
@@ -28,13 +26,16 @@ const nodeList = [
     "104-250-139-219.cdnmanhua.net",
     "104-250-150-12.cdnmanhua.net"
 ];
-try {
-    puppeteer = require("puppeteer");
-    console.log("\033[44;37m Info \033[0m Found module : 'puppeteer'.\n");
+function initialize() {
+    try {
+        puppeteer = require("puppeteer");
+        console.log("\033[44;37m Info \033[0m Found module : 'puppeteer'.\n");
+    }
+    catch (err) {
+        console.error("\033[41;37m Error \033[0m Could not find module 'puppeteer', have you already installed it ? [M-0x0001]\n");
+        process.exit(1);
+    }
     prepare();
-}
-catch (err) {
-    console.error("\033[41;37m Error \033[0m Could not find module 'puppeteer', have you already installed it ? [M-0x0001]\n");
 }
 function prepare() {
     cli("dm5",result => {
@@ -42,7 +43,7 @@ function prepare() {
         checkPath(savePath,() => {
             getMangaInfo().catch(err => {
                 //  发生错误，结束浏览器进程
-                console.error("\n\033[41;37m Error \033[0m "+err+"[M-0x0101]\n");
+                console.error("\n\033[41;37m Error \033[0m " + err + "[M-0x0101]\n");
                 process.exit(1);
             });
         });
@@ -54,7 +55,7 @@ async function getMangaInfo() {
     const browser = await puppeteer.launch();
     console.log("\033[44;37m Info \033[0m Opening page...\n");
     const page = await browser.newPage();
-    await page.goto(mangaUrl, {waitUntil:'networkidle2'});
+    await page.goto(mangaUrl, { waitUntil: 'networkidle2' });
     console.log("\033[44;37m Info \033[0m Fetching some information...\n");
     // 获取漫画信息，用户信息（请求参数）
     info = await page.evaluate(() => {
@@ -63,11 +64,11 @@ async function getMangaInfo() {
         let log;
         if ($("div.chapterpager").length > 0) {
             imgs = parseInt($("div.chapterpager:eq(0) a:last").text());
-            log = "\033[44;37m Info \033[0m Manga type: B(multi-page manga) | Pictures: "+imgs+"\n";
+            log = "\033[44;37m Info \033[0m Manga type: B(multi-page manga) | Pictures: " + imgs + "\n";
         }
         else {
             imgs = $("img.load-src").length;
-            log = "\033[44;37m Info \033[0m Manga type: A(single-page manga) | Pictures: "+imgs+"\n";
+            log = "\033[44;37m Info \033[0m Manga type: A(single-page manga) | Pictures: " + imgs + "\n";
         }
         return {
             picAmount: imgs,
@@ -94,10 +95,9 @@ function resolveImages() {
     console.log("\033[44;37m Info \033[0m Resolving images...\n");
     // 获取图片的进度条
     let resolvedImgs = 0;
-    const resolvePB = new ProgressBar('\033[43;37m Progress \033[0m', info.picAmount);
+    const resolvePB = new ProgressBar(null,info.picAmount);
     resolvePB.render({ completed: 0, total: info.picAmount });
-    // 获取图片链接
-    // 并发控制
+    // 获取图片链接(并发控制)
     const getPicUrl = async.queue((obj,callback) => {
         let resolveParams = [
             `cid=${info.cid}`,
@@ -123,11 +123,11 @@ function resolveImages() {
         checkNode(crawlList[0]);
     });
     // 推送任务至队列
-    for (let i=0;i<info.picAmount;i++) {
+    for (let i = 0;i < info.picAmount;i++) {
         // 错误时，结束进程
-        getPicUrl.push({ pic:i+1 },(err,picUrl) => {
+        getPicUrl.push({ pic: i + 1 },(err,picUrl) => {
             if (err) {
-                console.error("\n\n\033[41;37m Error \033[0m "+err+"\n");
+                console.error("\n\n\033[41;37m Error \033[0m " + err +"\n");
                 console.error("\033[41;37m Error \033[0m Oops! Something went wrong, try again? [M-0x0202]");
                 process.exit(1);
             }
@@ -147,9 +147,11 @@ function checkNode(defaultNode) {
     // 与节点列表比对
     let isKnownNode = 0;
     for (let i in nodeList) {
-        if (defaultNode === nodeList[i]) {
-            isKnownNode = 1;
-            break;
+        if (nodeList.hasOwnProperty(i)) {
+            if (defaultNode === nodeList[i]) {
+                isKnownNode = 1;
+                break;
+            }
         }
     }
     if (isKnownNode) {
@@ -179,12 +181,13 @@ function downloadImages(node) {
     },30000);
     // 替换节点
     for (let i in crawlList) {
-        let url = crawlList[i].split("/");
-        url[2] = url[2].split("-")[0]+"-"+node;
-        crawlList[i] = url.join("/");
+        if (crawlList.hasOwnProperty(i)) {
+            let url = crawlList[i].split("/");
+            url[2] = url[2].split("-")[0] + "-" + node;
+            crawlList[i] = url.join("/");
+        }
     }
-    // 下载图片
-    // 并发控制
+    // 下载图片(并发控制)
     const download = async.queue((obj,callback) => {
         let picNum = obj.url.split("/")[6].split("_")[0];
         axios.get(obj.url, {
@@ -211,21 +214,24 @@ function downloadImages(node) {
     });
     // 下载进度条
     let downloadedImgs = 0;
-    const downloadPB = new ProgressBar('\n\033[43;37m Progress \033[0m',info.picAmount);
+    const downloadPB = new ProgressBar(null,info.picAmount);
     downloadPB.render({ completed: 0, total: info.picAmount });
     // 推送任务至队列
     for (let i in crawlList) {
-        // 错误时，结束进程
-        download.push({ url: crawlList[i] },(err,result) => {
-            if (err) {
-                console.error("\n\n\033[41;37m Error \033[0m "+err+"\n");
-                console.error("\033[41;37m Error \033[0m Oops! Something went wrong, try again? [M-0x0302]");
-                process.exit(1);
-            }
-            else {
-                downloadedImgs+=result;
-                downloadPB.render({ completed: downloadedImgs, total: info.picAmount });
-            }
-        });
+        if (crawlList.hasOwnProperty(i)) {
+            // 错误时，结束进程
+            download.push({ url: crawlList[i] },(err,result) => {
+                if (err) {
+                    console.error("\n\n\033[41;37m Error \033[0m " + err + "\n");
+                    console.error("\033[41;37m Error \033[0m Oops! Something went wrong, try again? [M-0x0302]");
+                    process.exit(1);
+                }
+                else {
+                    downloadedImgs += result;
+                    downloadPB.render({ completed: downloadedImgs, total: info.picAmount });
+                }
+            });
+        }
     }
 }
+module.exports = initialize;
