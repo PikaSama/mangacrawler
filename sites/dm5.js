@@ -103,7 +103,7 @@ function resolveImages() {
     // 获取图片的进度条
     let resolvedImgs = 0;
     const resolvePB = new ProgressBar(null,info.picAmount);
-    resolvePB.render({ completed: 0, total: info.picAmount });
+    resolvePB.render({ completed: resolvedImgs, total: info.picAmount });
     // 获取图片链接(并发控制)
     const getPicUrl = async.queue((obj,callback) => {
         let resolveParams = [
@@ -119,7 +119,8 @@ function resolveImages() {
         ].join("&");
         axios.get(`${mangaUrl}/chapterfun.ashx?${resolveParams}`, { headers: { 'Referer': mangaUrl }, timeout: 10000 }).then(({ data }) => {
             eval(data);
-            callback(null,d[0]);
+            crawlList.push(d[0]);
+            callback(null,1);
         }).catch(err => callback(err));
     },crawlLimit);
     // 全部成功后触发
@@ -132,15 +133,14 @@ function resolveImages() {
     // 推送任务至队列
     for (let i = 0;i < info.picAmount;i++) {
         // 错误时，结束进程
-        getPicUrl.push({ pic: i + 1 },(err,picUrl) => {
+        getPicUrl.push({ pic: i + 1 },(err,num) => {
             if (err) {
                 console.error("\n\n\033[41;37m Error \033[0m " + err +"\n");
                 console.error("\033[41;37m Error \033[0m Oops! Something went wrong, try again? [M-0x0202]");
                 process.exit(1);
             }
             else {
-                crawlList.push(picUrl);
-                resolvedImgs++;
+                resolvedImgs += num;
                 resolvePB.render({ completed: resolvedImgs, total: info.picAmount });
             }
         });

@@ -2,8 +2,8 @@ const slog = require('single-line-log').stdout;
 /**
  * @source: https://www.jianshu.com/p/00d8f71d367d
  * @description: 封装的Progressbar，用以在同一行打印文本
- * @param description {string || null || undefined} 命令行开头的文字信息
- * @param bar_length {number || null || undefined} 进度条的长度(单位：字符)，默认设为 25
+ * @param description {(number | null | undefined)} 命令行开头的文字信息
+ * @param bar_length {(number | null | undefined)} 进度条的长度(单位：字符)，默认设为 25
  * @constructor
  */
 function ProgressBar(description, bar_length){

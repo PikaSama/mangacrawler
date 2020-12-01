@@ -24,8 +24,8 @@ inquirer.prompt([
             break;
         }
         case "m.mhxin.com": {
-            // const mhxin = require("./sites/mhxin");
-            // mhxin();
+            const mhxin = require("./sites/mhxin");
+            mhxin();
             break;
         }
     }
