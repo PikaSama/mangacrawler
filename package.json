@@ -2,16 +2,20 @@
   "name": "spider-manga",
   "version": "1.4.0-beta.1",
   "description": "Download manga by using axios and puppeteer.",
-  "main": "main.js",
+  "main": "src/main.js",
   "dependencies": {
+    "@types/node": "^14.14.10",
     "async": "^3.2.0",
     "axios": "^0.21.0",
+    "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.3",
     "ejs": "^3.1.5",
     "inquirer": "^7.3.3",
     "single-line-log": "^1.1.2"
   },
   "devDependencies": {
+    "@types/inquirer": "^7.3.1",
+    "@types/node": "^14.14.10",
     "canvas": "^2.6.1",
     "images": "^3.2.3",
     "sharp": "^0.26.3"

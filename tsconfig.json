@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "./dist",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "checkJs": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": false
+  },
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules"
+  ]
+}

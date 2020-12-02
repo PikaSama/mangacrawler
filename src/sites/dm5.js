@@ -14,7 +14,7 @@ let puppeteer;
 const fs = require("fs");
 // 本地模块
 const cli = require("../modules/cli");
-const checkPath = require("../modules/dirCheck");
+const checkPath = require("../modules/dirCheckJS");
 const generateManga = require("../modules/generator");
 const ProgressBar = require("../modules/progressbar");
 let mangaUrl;

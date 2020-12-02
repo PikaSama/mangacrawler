@@ -1,0 +1,51 @@
+import * as fs from 'fs';
+import * as chalk from 'chalk';
+import { callbackFn } from "./cli";
+
+function checkPath(savePath: string,callback: callbackFn): void {
+    fs.readdir(savePath,err => {
+        if (err) {
+            console.warn(`${chalk.whiteBright.bgRed(' Warn ')} "${savePath}" does not exist. Creating...`);
+            mkdir();
+        }
+        else {
+            console.log(`${chalk.whiteBright.bgRed(' Warn ')} Found directory: "${savePath}".\n`);
+            readSplit();
+        }
+    });
+    function readSplit() {
+        fs.readdir(savePath+'/split',err => {
+            if (err) {
+                console.warn(`${chalk.whiteBright.bgRed(' Warn ')} "${savePath}/split" does not exist. Creating...`);
+                mkSplit();
+            }
+            else {
+                console.log(`${chalk.whiteBright.bgRed(' Warn ')} Found directory: "${savePath}/split".\n`);
+                callback();
+            }
+        });
+    }
+    function mkdir() {
+        fs.mkdir(savePath,err => {
+            if (err) {
+                console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [C-0x0001]\n`);
+            }
+            else {
+                console.log(`${chalk.whiteBright.bgGreen(' Success ')} Created.\n`);
+                readSplit();
+            }
+        });
+    }
+    function mkSplit() {
+        fs.mkdir(savePath+'/split',err => {
+            if (err) {
+                console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [C-0x0101]\n`);
+            }
+            else {
+                console.log(`${chalk.whiteBright.bgGreen(' Success ')} Created.\n`);
+                callback();
+            }
+        });
+    }
+}
+export { checkPath };

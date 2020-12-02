@@ -5,6 +5,9 @@
  * Description: 实验性代码
  * License: GPL-3.0
  */
+const assert = require("assert");
+assert.deepStrictEqual(1,1,"ok")
+/*
 const axios = require("axios");
 const cheerio = require("cheerio");
 const fs = require("fs");
