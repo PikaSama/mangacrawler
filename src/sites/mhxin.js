@@ -17,8 +17,8 @@ const fs = require("fs");
 // 本地模块
 const cli = require("../modules/cli")
 const checkPath = require("../modules/dirCheckJS");
-const generateManga = require("../modules/generator");
-const ProgressBar = require("../modules/progressbar");
+const generateManga = require("../modules/generatorJS");
+const ProgressBar = require("../modules/progressbarJS");
 
 /** @type {string} */
 let mangaUrl;
@@ -104,7 +104,7 @@ function resolveImages() {
     },30000);
     // 获取图片的进度条
     let resolvedImgs = 1;
-    const resolvePB = new ProgressBar(null,mangaImages);
+    const resolvePB = new ProgressbarJS(null,mangaImages);
     resolvePB.render({ completed: resolvedImgs, total: mangaImages });
     // 获取图片链接(并发控制)
     const resolveUrl = async.queue(getUrl,crawlLimit);

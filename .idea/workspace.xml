@@ -6,17 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codes/experimentalCodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/codes/experimentalCodes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/codes/wasteCodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/codes/wasteCodes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cli.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/cli.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/dirCheck.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/dirCheckJS.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/generator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/generator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/progressbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/progressbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/dm5.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/mhxin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/template.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/template/template.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/cli.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/cli.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/generator.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/generatorJS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/progressbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/progressbarJS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/dm5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/mhxin.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,14 +67,14 @@
       <recent name="$PROJECT_DIR$/codes" />
     </key>
   </component>
-  <component name="RunManager" selected="Node.js.cli.js">
-    <configuration name="manga.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/spider-manga/yl/manga.html" useBuiltInWebServerPort="true">
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Node.js.test.js (1)">
     <configuration name="cli.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/dist/cli.js" working-dir="$PROJECT_DIR$/dist">
       <method v="2" />
     </configuration>
     <configuration name="experimentalCodes.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/codes/experimentalCodes.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
+    <configuration name="test.js (1)" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/dist/test.js" working-dir="$PROJECT_DIR$/dist">
       <method v="2" />
     </configuration>
     <configuration name="test.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/test.js" working-dir="$PROJECT_DIR$">
@@ -88,11 +85,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Node.js.test.js (1)" />
         <item itemvalue="Node.js.cli.js" />
         <item itemvalue="Node.js.experimentalCodes.js" />
         <item itemvalue="Node.js.wasteCodes.js" />
         <item itemvalue="Node.js.test.js" />
-        <item itemvalue="JavaScript Debug.manga.html" />
       </list>
     </recent_temporary>
   </component>
@@ -153,7 +150,8 @@
       <workItem from="1606733800839" duration="12200000" />
       <workItem from="1606819294584" duration="6143000" />
       <workItem from="1606901899212" duration="305000" />
-      <workItem from="1606902222932" duration="12686000" />
+      <workItem from="1606902222932" duration="14894000" />
+      <workItem from="1607004256521" duration="1516000" />
     </task>
     <servers />
   </component>
@@ -187,26 +185,26 @@
       <screen x="0" y="26" width="1366" height="742" />
     </state>
     <state x="467" y="156" key="FileChooserDialogImpl/0.26.1366.742@0.26.1366.742" timestamp="1602929609871" />
-    <state width="1343" height="256" key="GridCell.Tab.0.bottom" timestamp="1606909328492">
+    <state width="1343" height="256" key="GridCell.Tab.0.bottom" timestamp="1607007271402">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
     <state width="1343" height="266" key="GridCell.Tab.0.bottom/0.26.1366.742@0.26.1366.742" timestamp="1606489592350" />
-    <state width="1343" height="256" key="GridCell.Tab.0.bottom/0.32.1366.736@0.32.1366.736" timestamp="1606909328492" />
-    <state width="1343" height="256" key="GridCell.Tab.0.center" timestamp="1606909328490">
+    <state width="1343" height="256" key="GridCell.Tab.0.bottom/0.32.1366.736@0.32.1366.736" timestamp="1607007271402" />
+    <state width="1343" height="256" key="GridCell.Tab.0.center" timestamp="1607007271399">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
     <state width="1343" height="266" key="GridCell.Tab.0.center/0.26.1366.742@0.26.1366.742" timestamp="1606489592349" />
-    <state width="1343" height="256" key="GridCell.Tab.0.center/0.32.1366.736@0.32.1366.736" timestamp="1606909328490" />
-    <state width="1343" height="256" key="GridCell.Tab.0.left" timestamp="1606909328488">
+    <state width="1343" height="256" key="GridCell.Tab.0.center/0.32.1366.736@0.32.1366.736" timestamp="1607007271399" />
+    <state width="1343" height="256" key="GridCell.Tab.0.left" timestamp="1607007271399">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
     <state width="1343" height="266" key="GridCell.Tab.0.left/0.26.1366.742@0.26.1366.742" timestamp="1606489592348" />
-    <state width="1343" height="256" key="GridCell.Tab.0.left/0.32.1366.736@0.32.1366.736" timestamp="1606909328488" />
-    <state width="1343" height="256" key="GridCell.Tab.0.right" timestamp="1606909328491">
+    <state width="1343" height="256" key="GridCell.Tab.0.left/0.32.1366.736@0.32.1366.736" timestamp="1607007271399" />
+    <state width="1343" height="256" key="GridCell.Tab.0.right" timestamp="1607007271400">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
     <state width="1343" height="266" key="GridCell.Tab.0.right/0.26.1366.742@0.26.1366.742" timestamp="1606489592349" />
-    <state width="1343" height="256" key="GridCell.Tab.0.right/0.32.1366.736@0.32.1366.736" timestamp="1606909328491" />
+    <state width="1343" height="256" key="GridCell.Tab.0.right/0.32.1366.736@0.32.1366.736" timestamp="1607007271400" />
     <state width="1343" height="294" key="GridCell.Tab.1.bottom" timestamp="1606834090690">
       <screen x="0" y="32" width="1366" height="736" />
     </state>

@@ -6,7 +6,7 @@ const slog = require('single-line-log').stdout;
  * @param bar_length {(number | null | undefined)} 进度条的长度(单位：字符)，默认设为 25
  * @constructor
  */
-function ProgressBar(description, bar_length){
+function ProgressbarJS(description, bar_length){
     // 两个基本参数(属性)
     this.description = description || '\033[43;37m Progress \033[0m';
     this.length = bar_length || 25;
@@ -33,4 +33,4 @@ function ProgressBar(description, bar_length){
     };
 }
 // 模块导出
-module.exports = ProgressBar;
+module.exports = ProgressbarJS;

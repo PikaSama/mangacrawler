@@ -10,10 +10,12 @@ interface results {
     savePath: string,
     crawlLimit: number,
 }
+
 // 规定回调函数的接口
 interface callbackFn {
     (result?: object): void;
 }
+
 // 输入结果
 const cliResults: results = {
     mangaUrl: '',

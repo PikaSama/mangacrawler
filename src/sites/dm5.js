@@ -15,8 +15,8 @@ const fs = require("fs");
 // 本地模块
 const cli = require("../modules/cli");
 const checkPath = require("../modules/dirCheckJS");
-const generateManga = require("../modules/generator");
-const ProgressBar = require("../modules/progressbar");
+const generateManga = require("../modules/generatorJS");
+const ProgressBar = require("../modules/progressbarJS");
 let mangaUrl;
 let savePath;
 let crawlLimit;
@@ -102,7 +102,7 @@ function resolveImages() {
     console.log("\033[44;37m Info \033[0m Resolving images...\n");
     // 获取图片的进度条
     let resolvedImgs = 0;
-    const resolvePB = new ProgressBar(null,info.picAmount);
+    const resolvePB = new ProgressbarJS(null,info.picAmount);
     resolvePB.render({ completed: resolvedImgs, total: info.picAmount });
     // 获取图片链接(并发控制)
     const getPicUrl = async.queue((obj,callback) => {
@@ -221,7 +221,7 @@ function downloadImages(node) {
     });
     // 下载进度条
     let downloadedImgs = 0;
-    const downloadPB = new ProgressBar(null,info.picAmount);
+    const downloadPB = new ProgressbarJS(null,info.picAmount);
     downloadPB.render({ completed: 0, total: info.picAmount });
     // 推送任务至队列
     for (let i in crawlList) {
