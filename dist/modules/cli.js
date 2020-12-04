@@ -8,9 +8,9 @@ const os_1 = require("os");
 const home = os_1.homedir();
 // 输入结果
 const cliResults = {
-    mangaUrl: '',
-    savePath: '',
-    crawlLimit: 0,
+    url: '',
+    path: '',
+    limit: 0,
 };
 function cli(mgSite, callback) {
     switch (mgSite) {
@@ -53,7 +53,7 @@ function cli(mgSite, callback) {
                 },
             },
         ]).then(({ url }) => {
-            cliResults.mangaUrl = url;
+            cliResults.url = url;
             defaultPrompts();
         });
     }
@@ -89,7 +89,7 @@ function cli(mgSite, callback) {
                 },
             },
         ]).then(({ url }) => {
-            cliResults.mangaUrl = url;
+            cliResults.url = url;
             defaultPrompts();
         });
     }
@@ -144,8 +144,8 @@ function cli(mgSite, callback) {
                 },
             },
         ]).then(({ path, request }) => {
-            cliResults.savePath = path;
-            cliResults.crawlLimit = request;
+            cliResults.path = path;
+            cliResults.limit = request;
             callback(cliResults);
         });
     }

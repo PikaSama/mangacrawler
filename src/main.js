@@ -19,7 +19,7 @@ inquirer.prompt([
 ]).then(({ site }) => {
     switch (site) {
         case "www.dm5.com": {
-            const dm5 = require("./sites/dm5");
+            const dm5 = require("./sites/dm5JS");
             dm5();
             break;
         }

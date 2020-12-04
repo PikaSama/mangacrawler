@@ -1,8 +1,9 @@
 import * as fs from 'fs';
 import * as chalk from 'chalk';
-import { callbackFn } from "./cli";
 
-function checkPath(savePath: string,callback: callbackFn): void {
+import { CallbackFn } from "./cli";
+
+function checkPath(savePath: string,callback: CallbackFn): void {
     fs.readdir(savePath,err => {
         if (err) {
             console.warn(`${chalk.whiteBright.bgRed(' Warn ')} "${savePath}" does not exist. Creating...`);

@@ -4,7 +4,12 @@
   "description": "Download manga by using axios and puppeteer.",
   "main": "src/main.js",
   "dependencies": {
+    "@types/async": "^3.2.5",
+    "@types/cheerio": "^0.22.22",
+    "@types/ejs": "^3.0.5",
+    "@types/html-minifier": "^4.0.0",
     "@types/node": "^14.14.10",
+    "@types/puppeteer": "^5.4.1",
     "@types/single-line-log": "^1.1.0",
     "async": "^3.2.0",
     "axios": "^0.21.0",

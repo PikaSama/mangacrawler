@@ -5,25 +5,25 @@ import { homedir } from "os";
 // 家目录
 const home: string = homedir();
 // 规定输入结果的接口
-interface results {
-    mangaUrl: string,
-    savePath: string,
-    crawlLimit: number,
+interface Results {
+    url: string,
+    path: string,
+    limit: number,
 }
 
 // 规定回调函数的接口
-interface callbackFn {
-    (result?: object): void;
+interface CallbackFn {
+    (result?: Results): void;
 }
 
 // 输入结果
-const cliResults: results = {
-    mangaUrl: '',
-    savePath: '',
-    crawlLimit: 0,
+const cliResults: Results = {
+    url: '',
+    path: '',
+    limit: 0,
 }
 
-function cli(mgSite: string,callback: callbackFn): void {
+function cli(mgSite: string,callback: CallbackFn): void {
     switch (mgSite) {
         case "dm5":
             dm5();
@@ -65,7 +65,7 @@ function cli(mgSite: string,callback: callbackFn): void {
                 },
             },
         ]).then(({ url }) => {
-            cliResults.mangaUrl = url;
+            cliResults.url = url;
             defaultPrompts();
         });
     }
@@ -102,7 +102,7 @@ function cli(mgSite: string,callback: callbackFn): void {
                 },
             },
         ]).then(({ url }) => {
-            cliResults.mangaUrl = url;
+            cliResults.url = url;
             defaultPrompts();
         });
     }
@@ -158,10 +158,10 @@ function cli(mgSite: string,callback: callbackFn): void {
                 },
             },
         ]).then(({ path, request }) => {
-            cliResults.savePath = path;
-            cliResults.crawlLimit = request;
+            cliResults.path = path;
+            cliResults.limit = request;
             callback(cliResults);
         });
     }
 }
-export { cli, callbackFn };
+export { cli, CallbackFn };
