@@ -150,8 +150,8 @@ function resolveImages() {
     getPicUrl.drain(() => {
         status = 1;
         clearTimeout(timer);
-        console.log(crawlList);
         console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Checking server node list....\n`);
+        checkNode(crawlList[0]);
     });
     // 推送任务至队列
     for (let i = 0; i < mangaInfo.pics; i++) {

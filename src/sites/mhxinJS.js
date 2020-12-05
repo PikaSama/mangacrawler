@@ -20,22 +20,14 @@ const checkPath = require("../modules/dirCheckJS");
 const generateManga = require("../modules/generatorJS");
 const ProgressBar = require("../modules/progressbarJS");
 
-/** @type {string} */
 let mangaUrl;
-
-/** @type {string} */
 let savePath;
-
-/** @type {number} */
 let crawlLimit;
 
-/** @type {Array} */
 let crawlList = [];
 
-/** @type {number} */
 let mangaImages = 0;
 
-/** @type {number} */
 let dlTime;
 
 function prepare() {

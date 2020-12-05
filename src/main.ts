@@ -6,29 +6,36 @@
  * License: GPL-3.0
  */
 import * as inquirer from "inquirer";
-import { prepare as dm5 } from "./sites/dm5";
 
-const sites = [
+const sites: string[] = [
     "www.dm5.com",
     "m.mhxin.com",
 ];
 
-inquirer.prompt([
-    {
-        type: 'list',
-        name: 'site',
-        message: "Which website do you want to download manga on ?",
-        choices: sites,
-    },
-]).then(({ site }): void => {
-    switch (site) {
-        case "www.dm5.com": {
-            dm5();
-            break;
+function main(): void {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'site',
+            message: "Which website do you want to download manga on ?",
+            choices: sites,
+        },
+    ]).then(({ site }): void => {
+        switch (site) {
+            case "www.dm5.com": {
+                import('./sites/dm5')
+                    .then(({ prepare }): void => prepare())
+                    .catch((err): void => console.log(err));
+                break;
+            }
+            case "m.mhxin.com": {
+                import('./sites/mhxin')
+                    .then(({ prepare }): void => prepare())
+                    .catch((err): void => console.log(err));
+                break;
+            }
         }
-        case "m.mhxin.com": {
-            console.log("Coming soon...")
-            break;
-        }
-    }
-});
+    });
+}
+
+export { main };

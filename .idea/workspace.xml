@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="" />
+    <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/sites/mhxin.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/sites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/dm5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sites/dm5.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/dm5.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/mhxinJS.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,16 +25,13 @@
       <list>
         <option value="HTML File" />
         <option value="tsconfig.json" />
-        <option value="TypeScript File" />
         <option value="JavaScript File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/modules/cli.js" root0="SKIP_INSPECTION" />
   </component>
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
@@ -145,29 +152,12 @@
       <workItem from="1607081575424" duration="1198000" />
       <workItem from="1607089746907" duration="12381000" />
       <workItem from="1607143467450" duration="4131000" />
-      <workItem from="1607156390128" duration="5356000" />
+      <workItem from="1607156390128" duration="9244000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-    <option name="exactExcludedFiles">
-      <list>
-        <option value="$PROJECT_DIR$/src/modules/cli.js" />
-        <option value="$PROJECT_DIR$/src/main.d.ts" />
-        <option value="$PROJECT_DIR$/src/main.js" />
-        <option value="$PROJECT_DIR$/src/codes/test.d.ts" />
-        <option value="$PROJECT_DIR$/src/sites/dm5.d.ts" />
-        <option value="$PROJECT_DIR$/src/sites/dm5.js" />
-        <option value="$PROJECT_DIR$/src/modules/generator.js" />
-        <option value="$PROJECT_DIR$/src/modules/dirCheck.js" />
-        <option value="$PROJECT_DIR$/src/modules/progressBar.d.ts" />
-        <option value="$PROJECT_DIR$/src/modules/cli.d.ts" />
-        <option value="$PROJECT_DIR$/src/modules/generator.d.ts" />
-        <option value="$PROJECT_DIR$/src/modules/dirCheck.d.ts" />
-        <option value="$PROJECT_DIR$/src/modules/progressBar.js" />
-      </list>
-    </option>
   </component>
   <component name="WindowStateProjectService">
     <state x="0" y="32" key="#JavaScript" timestamp="1606741034660">

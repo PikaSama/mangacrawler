@@ -20,7 +20,6 @@ import { cli } from '../modules/cli';
 import { checkPath } from "../modules/dirCheck";
 import { genHTML as generateManga } from "../modules/generator";
 import { ProgressBar } from "../modules/progressBar";
-import {down} from "inquirer/lib/utils/readline";
 
 interface AnalyzeResult {
     cid: string,
@@ -162,8 +161,8 @@ function resolveImages(): void {
     getPicUrl.drain((): void => {
         status = 1;
         clearTimeout(timer);
-        console.log(crawlList);
         console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Checking server node list....\n`);
+        checkNode(crawlList[0]);
     });
     // 推送任务至队列
     for (let i = 0;i < mangaInfo.pics;i++) {
@@ -281,4 +280,4 @@ function downloadImages(node: string): void {
     }
 }
 
-export { prepare };
+export { prepare, WorkerCallbackFn };

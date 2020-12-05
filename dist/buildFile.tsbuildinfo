@@ -477,13 +477,18 @@
         "affectsGlobalScope": false
       },
       "../src/sites/dm5.ts": {
-        "version": "e12c1f59f5585cdafa5b248f01fbfe51b830e7390e7a1ffecff72206978a8fa5",
-        "signature": "57f3bd1d90bec730eb84381b202035cbfb807cd417957be06aa5e56126e61045",
+        "version": "1d5f49b47e13523e3c2a87af0844bbcbbc87e53cc3e050885af775a6e642c36e",
+        "signature": "68b4394bcacd70e8c40fdfadfff0f6b9aafc8745e9dc99d56ad995a2393b264f",
+        "affectsGlobalScope": false
+      },
+      "../src/sites/mhxin.ts": {
+        "version": "1552cfa647006fb90f30444635b68d9d7c8953be330cd20d8dc65b7f2c6e83c8",
+        "signature": "77f08d42a2f3eb25cf517e53a69fa9f9782ed67ea762624b49281d2edfa2e7df",
         "affectsGlobalScope": false
       },
       "../src/main.ts": {
-        "version": "76989c48d41310fb5e57ba834ccef01afa683bd2ab4ecb89c1731a524acee6f3",
-        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "version": "13ee84993f9ab0b1323e7b85abea71df857f56c7ea1c6b842c479117c941a771",
+        "signature": "8064997dc7e40f3743e6fbe60cc00c5cb072a9b2346afd1e3f7172da9301bc01",
         "affectsGlobalScope": false
       },
       "../src/codes/test.ts": {
@@ -703,7 +708,8 @@
         "../node_modules/@types/node/stream.d.ts"
       ],
       "../src/main.ts": [
-        "../src/sites/dm5.ts"
+        "../src/sites/dm5.ts",
+        "../src/sites/mhxin.ts"
       ],
       "../src/modules/cli.ts": [
         "../node_modules/@types/node/os.d.ts",
@@ -735,6 +741,19 @@
         "../src/modules/dirCheck.ts",
         "../src/modules/generator.ts",
         "../src/modules/progressBar.ts"
+      ],
+      "../src/sites/mhxin.ts": [
+        "../node_modules/@types/async/index.d.ts",
+        "../node_modules/@types/cheerio/index.d.ts",
+        "../node_modules/@types/node/constants.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/axios/index.d.ts",
+        "../node_modules/chalk/index.d.ts",
+        "../src/modules/cli.ts",
+        "../src/modules/dirCheck.ts",
+        "../src/modules/generator.ts",
+        "../src/modules/progressBar.ts",
+        "../src/sites/dm5.ts"
       ]
     },
     "exportedModulesMap": {
@@ -1002,6 +1021,7 @@
       "../src/modules/generator.ts",
       "../src/modules/progressBar.ts",
       "../src/sites/dm5.ts",
+      "../src/sites/mhxin.ts",
       "../../../../../../usr/lib/node_modules/typescript/lib/lib.dom.d.ts",
       "../../../../../../usr/lib/node_modules/typescript/lib/lib.dom.iterable.d.ts",
       "../../../../../../usr/lib/node_modules/typescript/lib/lib.es2015.collection.d.ts",
