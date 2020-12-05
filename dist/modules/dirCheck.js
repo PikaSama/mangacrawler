@@ -10,7 +10,7 @@ function checkPath(savePath, callback) {
             mkdir();
         }
         else {
-            console.log(`${chalk.whiteBright.bgRed(' Warn ')} Found directory: "${savePath}".\n`);
+            console.log(`${chalk.whiteBright.bgBlue(' Info ')} Found directory: "${savePath}".\n`);
             readSplit();
         }
     });
@@ -21,7 +21,7 @@ function checkPath(savePath, callback) {
                 mkSplit();
             }
             else {
-                console.log(`${chalk.whiteBright.bgRed(' Warn ')} Found directory: "${savePath}/split".\n`);
+                console.log(`${chalk.whiteBright.bgBlue(' Info ')} Found directory: "${savePath}/split".\n`);
                 callback();
             }
         });

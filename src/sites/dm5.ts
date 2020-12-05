@@ -21,28 +21,20 @@ import { checkPath } from "../modules/dirCheck";
 import { genHTML as generateManga } from "../modules/generator";
 import { ProgressBar } from "../modules/progressBar";
 
-interface Result {
+interface AnalyzeResult {
     cid: string,
     mid: string,
     sign: string,
     signdate: string,
 }
 
-interface Info extends Result {
+interface Info extends AnalyzeResult {
     pics: number,
     msg: string,
 }
 
-interface ResolveWorkerObject {
-    pic: number
-}
-
 interface WorkerCallbackFn {
     (err: Error, result?: number): void
-}
-
-interface AxiosResp {
-
 }
 
 let mangaUrl: string;
@@ -106,11 +98,15 @@ async function getMangaInfo(): Promise<void> {
         mangaInfo.pics = $("img.load-src").length;
         `${chalk.whiteBright.bgBlue(' Info ')} Manga type: B(multi-page manga) | Pictures: ${mangaInfo.pics}\n`;
     }
-    const result: Result = await page.evaluate((): Result => {
+    const result: AnalyzeResult = await page.evaluate((): AnalyzeResult => {
         return {
+            // @ts-ignore
             cid: window.DM5_CID,
+            // @ts-ignore
             mid: window.DM5_MID,
+            // @ts-ignore
             sign: window.DM5_VIEWSIGN,
+            // @ts-ignore
             signdate: window.DM5_VIEWSIGN_DT,
         }
     });
@@ -118,9 +114,10 @@ async function getMangaInfo(): Promise<void> {
     console.log(mangaInfo.msg);
     console.log(mangaInfo);
     await browser.close();
+    resolveImages();
 }
 
-function resolveImages() {
+function resolveImages(): void {
     let status: number = 0;
     // 超时，结束进程
     const timer: Timeout = setTimeout(() => {
@@ -131,10 +128,10 @@ function resolveImages() {
     },30000);
     // 获取图片的进度条
     let resolvedImgs: number = 0;
-    const resolvePB: ProgressBar = new ProgressBar(null,mangaInfo.pics);
+    const resolvePB: ProgressBar = new ProgressBar(undefined,mangaInfo.pics);
     resolvePB.render(resolvedImgs,mangaInfo.pics);
     // 获取图片链接(并发控制)
-    const getPicUrl: async.QueueObject<object> = async.queue((obj: ResolveWorkerObject,callback: WorkerCallbackFn): void => {
+    const getPicUrl: async.QueueObject<object> = async.queue((obj: { pic: number },callback: WorkerCallbackFn): void => {
         let resolveParams = [
             `cid=${mangaInfo.cid}`,
             `page=${obj.pic}`,
@@ -153,7 +150,9 @@ function resolveImages() {
             timeout: 10000,
         })
             .then(({ data }) => {
-                console.log(data);
+                let statement = data.split("}");
+                statement[4] = statement[4].slice(0, statement[4].length - 1) + " + 'crawlList.push(d[0])'";
+                eval(statement.join("}"));
                 callback(null,1);
             })
             .catch(err => callback(err));
@@ -162,12 +161,13 @@ function resolveImages() {
     getPicUrl.drain((): void => {
         status = 1;
         clearTimeout(timer);
+        console.log(crawlList);
         console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Checking server node list....\n`);
     });
     // 推送任务至队列
-    for (let i = 0;i < mangaInfo.pics;i++) {
+    for (let i = 0;i < 1;i++) {
         // 错误时，结束进程
-        getPicUrl.push({ pic: i + 1 },(err: Error,num: number) => {
+        getPicUrl.push({ pic: i + 1 },(err: Error,num: number): void => {
             if (err) {
                 console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} ${err} \n`);
                 console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0202]`);

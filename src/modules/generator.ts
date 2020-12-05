@@ -3,13 +3,11 @@ import * as ejs from 'ejs';
 import * as chalk from 'chalk';
 import * as fs from 'fs';
 
-interface generateOptions {
+function genHTML(opt: {
     imgAmount: number,
     path: string,
     dlTime: number,
-}
-
-function genHTML(opt: generateOptions) {
+}) {
     ejs.renderFile('../../template/template.ejs',{ imgs: opt.imgAmount },(err,data) => {
         if (err) {
             console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [G-0x0001]\n`);

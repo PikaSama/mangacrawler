@@ -85,9 +85,13 @@ function getMangaInfo() {
         }
         const result = yield page.evaluate(() => {
             return {
+                // @ts-ignore
                 cid: window.DM5_CID,
+                // @ts-ignore
                 mid: window.DM5_MID,
+                // @ts-ignore
                 sign: window.DM5_VIEWSIGN,
+                // @ts-ignore
                 signdate: window.DM5_VIEWSIGN_DT,
             };
         });
@@ -131,6 +135,9 @@ function resolveImages() {
             timeout: 10000,
         })
             .then(({ data }) => {
+            let statement = data.split("}");
+            statement[4] = statement[4].slice(0, statement[4].length - 1) + " + 'crawlList.push(d[0])'";
+            eval(statement.join("}"));
             callback(null, 1);
         })
             .catch(err => callback(err));
@@ -139,10 +146,11 @@ function resolveImages() {
     getPicUrl.drain(() => {
         status = 1;
         clearTimeout(timer);
+        console.log(crawlList);
         console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Checking server node list....\n`);
     });
     // 推送任务至队列
-    for (let i = 0; i < mangaInfo.pics; i++) {
+    for (let i = 0; i < 1; i++) {
         // 错误时，结束进程
         getPicUrl.push({ pic: i + 1 }, (err, num) => {
             if (err) {
