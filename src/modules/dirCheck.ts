@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as chalk from 'chalk';
 
-import { CallbackFn } from "./cli";
+import { CallbackFn } from "./misc";
 
 function checkPath(savePath: string,callback: CallbackFn): void {
     fs.readdir(savePath,err => {

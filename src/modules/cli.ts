@@ -2,19 +2,10 @@ import * as inquirer from 'inquirer';
 import * as chalk from 'chalk';
 import { homedir } from "os";
 
+import { Results, CallbackFn } from "./misc";
+
 // 家目录
 const home: string = homedir();
-// 规定输入结果的接口
-interface Results {
-    url: string,
-    path: string,
-    limit: number,
-}
-
-// 规定回调函数的接口
-interface CallbackFn {
-    (result?: Results): void;
-}
 
 // 输入结果
 const cliResults: Results = {

@@ -24,13 +24,13 @@ function main(): void {
         switch (site) {
             case "www.dm5.com": {
                 import('./sites/dm5')
-                    .then(({ prepare }): void => prepare())
+                    .then(({ dongmanwu }): void => dongmanwu())
                     .catch((err): void => console.log(err));
                 break;
             }
             case "m.mhxin.com": {
                 import('./sites/mhxin')
-                    .then(({ prepare }): void => prepare())
+                    .then(({ manhuaxin }): void => manhuaxin())
                     .catch((err): void => console.log(err));
                 break;
             }

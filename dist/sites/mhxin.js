@@ -7,13 +7,13 @@
  * License: GPL-3.0
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prepare = void 0;
+exports.manhuaxin = void 0;
 const axios_1 = require("axios");
 const async = require("async");
 const cheerio = require("cheerio");
 const chalk = require("chalk");
-const cli_1 = require("../modules/cli");
-const dirCheck_1 = require("../modules/dirCheck");
+// 本地模块
+const misc_1 = require("../modules/misc");
 const progressBar_1 = require("../modules/progressBar");
 let mangaUrl;
 let savePath;
@@ -21,15 +21,13 @@ let crawlLimit;
 let crawlList = [];
 let mangaImages;
 let dlTime;
-function prepare() {
-    cli_1.cli("mhxin", (result) => {
+function manhuaxin() {
+    misc_1.prepare("mhxin", (result) => {
         ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
-        dirCheck_1.checkPath(savePath, () => {
-            getMangaInfo();
-        });
+        getMangaInfo();
     });
 }
-exports.prepare = prepare;
+exports.manhuaxin = manhuaxin;
 function getUrl({ url, extra }, callback) {
     extra = extra || '';
     axios_1.default.get(url, { timeout: 6000 })
@@ -43,14 +41,7 @@ function getUrl({ url, extra }, callback) {
         .catch((err) => callback(err));
 }
 function getMangaInfo() {
-    let status = 0;
-    // 超时，结束进程
-    const timer = setTimeout(() => {
-        if (!status) {
-            console.error(`\n\n${chalk.whiteBright.bgRed(' Erorr ')} Timed out for 10 secconds. [M-0x0002]`);
-            process.exit(1);
-        }
-    }, 10000);
+    const timer = new misc_1.OutTimer(10, '0x0002');
     dlTime = new Date().getTime();
     console.log(`${chalk.whiteBright.bgBlue(' Info ')} Fetching some information...\n`);
     getUrl({
@@ -59,25 +50,17 @@ function getMangaInfo() {
     }, (err, num) => {
         if (err) {
             console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} ${err} \n`);
-            console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0202]`);
+            console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0001]`);
             process.exit(1);
         }
         else {
-            status = 1;
-            clearTimeout(timer);
+            timer.clear();
             resolveImages();
         }
     });
 }
 function resolveImages() {
-    let status = 0;
-    // 超时，结束进程
-    const timer = setTimeout(() => {
-        if (!status) {
-            console.error(`\n\n${chalk.whiteBright.bgRed(' Erorr ')} Timed out for 30 secconds. [M-0x0102]`);
-            process.exit(1);
-        }
-    }, 30000);
+    const timer = new misc_1.OutTimer(30, '0x0102');
     // 获取图片的进度条
     let resolvedImgs = 1;
     const resolvePB = new progressBar_1.ProgressBar(undefined, mangaImages);
@@ -86,9 +69,8 @@ function resolveImages() {
     const resolveUrl = async.queue(getUrl, crawlLimit);
     // 全部成功后触发
     resolveUrl.drain(() => {
-        status = 1;
-        clearTimeout(timer);
-        console.log(crawlList);
+        timer.clear();
+        // downloadImages();
     });
     // 推送任务至队列
     for (let i = 2; i < mangaImages + 1; i++) {
@@ -105,4 +87,7 @@ function resolveImages() {
             }
         });
     }
+}
+function downloadImages() {
+    const timer = new misc_1.OutTimer(30, '0x0202');
 }

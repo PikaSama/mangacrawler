@@ -422,13 +422,18 @@
         "affectsGlobalScope": false
       },
       "../src/modules/cli.ts": {
-        "version": "13676db698dbb29c08eebc71b27ba1ae86ff59fbc4b3b4b72ba4379bb9e99875",
-        "signature": "e9923e2b124944b0da1027bbef46bd669806d2e80e283dfbf73d7afe66a779d9",
+        "version": "99b456f65eeb5892fdfc9cc2a092b48259a65151f499d649c30f1ff1b5360be1",
+        "signature": "589c7c11761de338afa01a120fa1763f9e80b5a96bdf9164701e93675bcdb9ba",
         "affectsGlobalScope": false
       },
       "../src/modules/dirCheck.ts": {
-        "version": "6a5261a842c267e9460257bbc90c13a8e7e19ac03d60602bccd48432160a7427",
-        "signature": "aa3999da8b3dc04de19d103959a33ae69a8d84bb2e685c9bc042c7164f468729",
+        "version": "25bcf3f24af9e12d3f18cf23e05620c7540478d67467dead5a6e3ad36a610b6f",
+        "signature": "f8e3380e01cd0de8709770a1644cc254c59aa9d03c508347374494e82013b899",
+        "affectsGlobalScope": false
+      },
+      "../src/modules/misc.ts": {
+        "version": "5324d8c7d7ad6a75166653d68da2ff256271fe1fe10c78a9b530e4b5375f8328",
+        "signature": "fed4e7ebe1756b9ff239c2564c4ca52cb3eecfee9ff67aba9a574dfb841a45b9",
         "affectsGlobalScope": false
       },
       "../node_modules/source-map/source-map.d.ts": {
@@ -477,17 +482,17 @@
         "affectsGlobalScope": false
       },
       "../src/sites/dm5.ts": {
-        "version": "1d5f49b47e13523e3c2a87af0844bbcbbc87e53cc3e050885af775a6e642c36e",
-        "signature": "68b4394bcacd70e8c40fdfadfff0f6b9aafc8745e9dc99d56ad995a2393b264f",
+        "version": "362901430c97d194aaddf2f7402ac982f91c83f1d91fce68d651533ac3d2387f",
+        "signature": "0bef002d41d970304bbc2f085a8920b40ae9050961a7c665bb85f06e426eb01e",
         "affectsGlobalScope": false
       },
       "../src/sites/mhxin.ts": {
-        "version": "1552cfa647006fb90f30444635b68d9d7c8953be330cd20d8dc65b7f2c6e83c8",
-        "signature": "77f08d42a2f3eb25cf517e53a69fa9f9782ed67ea762624b49281d2edfa2e7df",
+        "version": "0f74ffdd2ebbd1c26f9c2ff3581cee993793921df177e2a03831a9f1f9d49e84",
+        "signature": "39dab735e7f7edb80378caea5674f14a2b809646fe11d1d4fe309311adebe39d",
         "affectsGlobalScope": false
       },
       "../src/main.ts": {
-        "version": "13ee84993f9ab0b1323e7b85abea71df857f56c7ea1c6b842c479117c941a771",
+        "version": "534f25abfd3b6b02e190d7a58a75d5f561fd1f1c961a93d063200efe1c92a5af",
         "signature": "8064997dc7e40f3743e6fbe60cc00c5cb072a9b2346afd1e3f7172da9301bc01",
         "affectsGlobalScope": false
       },
@@ -713,18 +718,24 @@
       ],
       "../src/modules/cli.ts": [
         "../node_modules/@types/node/os.d.ts",
-        "../node_modules/chalk/index.d.ts"
+        "../node_modules/chalk/index.d.ts",
+        "../src/modules/misc.ts"
       ],
       "../src/modules/dirCheck.ts": [
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/chalk/index.d.ts",
-        "../src/modules/cli.ts"
+        "../src/modules/misc.ts"
       ],
       "../src/modules/generator.ts": [
         "../node_modules/@types/ejs/index.d.ts",
         "../node_modules/@types/html-minifier/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/chalk/index.d.ts"
+      ],
+      "../src/modules/misc.ts": [
+        "../node_modules/chalk/index.d.ts",
+        "../src/modules/cli.ts",
+        "../src/modules/dirCheck.ts"
       ],
       "../src/modules/progressBar.ts": [
         "../node_modules/@types/single-line-log/index.d.ts",
@@ -737,23 +748,19 @@
         "../node_modules/@types/puppeteer/index.d.ts",
         "../node_modules/axios/index.d.ts",
         "../node_modules/chalk/index.d.ts",
-        "../src/modules/cli.ts",
-        "../src/modules/dirCheck.ts",
         "../src/modules/generator.ts",
+        "../src/modules/misc.ts",
         "../src/modules/progressBar.ts"
       ],
       "../src/sites/mhxin.ts": [
         "../node_modules/@types/async/index.d.ts",
         "../node_modules/@types/cheerio/index.d.ts",
-        "../node_modules/@types/node/constants.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/axios/index.d.ts",
         "../node_modules/chalk/index.d.ts",
-        "../src/modules/cli.ts",
-        "../src/modules/dirCheck.ts",
         "../src/modules/generator.ts",
-        "../src/modules/progressBar.ts",
-        "../src/sites/dm5.ts"
+        "../src/modules/misc.ts",
+        "../src/modules/progressBar.ts"
       ]
     },
     "exportedModulesMap": {
@@ -949,8 +956,11 @@
         "../node_modules/@types/node/index.d.ts",
         "../node_modules/@types/node/stream.d.ts"
       ],
+      "../src/modules/cli.ts": [
+        "../src/modules/misc.ts"
+      ],
       "../src/modules/dirCheck.ts": [
-        "../src/modules/cli.ts"
+        "../src/modules/misc.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -1019,6 +1029,7 @@
       "../src/modules/cli.ts",
       "../src/modules/dirCheck.ts",
       "../src/modules/generator.ts",
+      "../src/modules/misc.ts",
       "../src/modules/progressBar.ts",
       "../src/sites/dm5.ts",
       "../src/sites/mhxin.ts",

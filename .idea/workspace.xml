@@ -5,15 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/sites/mhxin.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/misc.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/sites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/dm5.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/sites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/mhxin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/cli.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/cli.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/dirCheck.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/dirCheck.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sites/dm5.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/dm5.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/mhxinJS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sites/mhxin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/mhxin.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sites/mhxinJS.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +155,7 @@
       <workItem from="1607081575424" duration="1198000" />
       <workItem from="1607089746907" duration="12381000" />
       <workItem from="1607143467450" duration="4131000" />
-      <workItem from="1607156390128" duration="9244000" />
+      <workItem from="1607156390128" duration="14139000" />
     </task>
     <servers />
   </component>
@@ -280,10 +283,10 @@
       <screen x="0" y="26" width="1366" height="742" />
     </state>
     <state x="343" y="176" key="run.anything.popup/0.26.1366.742@0.26.1366.742" timestamp="1604136669084" />
-    <state x="346" y="93" width="672" height="673" key="search.everywhere.popup" timestamp="1606645312178">
+    <state x="346" y="93" width="672" height="673" key="search.everywhere.popup" timestamp="1607172589511">
       <screen x="0" y="32" width="1366" height="736" />
     </state>
     <state x="346" y="88" width="672" height="678" key="search.everywhere.popup/0.26.1366.742@0.26.1366.742" timestamp="1606485944966" />
-    <state x="346" y="93" width="672" height="673" key="search.everywhere.popup/0.32.1366.736@0.32.1366.736" timestamp="1606645312178" />
+    <state x="346" y="93" width="672" height="673" key="search.everywhere.popup/0.32.1366.736@0.32.1366.736" timestamp="1607172589511" />
   </component>
 </project>

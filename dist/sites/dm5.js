@@ -16,7 +16,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prepare = void 0;
+exports.dongmanwu = void 0;
 const axios_1 = require("axios");
 const async = require("async");
 const cheerio = require("cheerio");
@@ -25,8 +25,7 @@ const puppeteer = require("puppeteer");
 const chalk = require("chalk");
 const fs = require("fs");
 // 本地模块
-const cli_1 = require("../modules/cli");
-const dirCheck_1 = require("../modules/dirCheck");
+const misc_1 = require("../modules/misc");
 const progressBar_1 = require("../modules/progressBar");
 let mangaUrl;
 let savePath;
@@ -51,19 +50,17 @@ let nodeList = [
     "104-250-139-219.cdnmanhua.net",
     "104-250-150-12.cdnmanhua.net",
 ];
-function prepare() {
-    cli_1.cli("dm5", (result) => {
+function dongmanwu() {
+    misc_1.prepare("dm5", (result) => {
         ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
-        dirCheck_1.checkPath(savePath, () => {
-            getMangaInfo().catch((err) => {
-                //  发生错误，结束浏览器进程
-                console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [M-0x0101]\n`);
-                process.exit(1);
-            });
+        getMangaInfo().catch((err) => {
+            // 发生错误，结束浏览器进程
+            console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [M-0x0101]\n`);
+            process.exit(1);
         });
     });
 }
-exports.prepare = prepare;
+exports.dongmanwu = dongmanwu;
 function getMangaInfo() {
     return __awaiter(this, void 0, void 0, function* () {
         dlTime = new Date().getTime();
@@ -107,14 +104,7 @@ function getMangaInfo() {
     });
 }
 function resolveImages() {
-    let status = 0;
-    // 超时，结束进程
-    const timer = setTimeout(() => {
-        if (!status) {
-            console.error(`\n\n${chalk.whiteBright.bgRed(' Erorr ')} Timed out for 30 secconds. [M-0x0201]`);
-            process.exit(1);
-        }
-    }, 30000);
+    const timer = new misc_1.OutTimer(30, '0x0201');
     // 获取图片的进度条
     let resolvedImgs = 0;
     const resolvePB = new progressBar_1.ProgressBar(undefined, mangaInfo.pics);
@@ -148,8 +138,7 @@ function resolveImages() {
     }, crawlLimit);
     // 全部成功后触发
     getPicUrl.drain(() => {
-        status = 1;
-        clearTimeout(timer);
+        timer.clear();
         console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Checking server node list....\n`);
         checkNode(crawlList[0]);
     });
@@ -200,14 +189,7 @@ function checkNode(node) {
     ]).then(({ node }) => { downloadImages(node); });
 }
 function downloadImages(node) {
-    let status = 0;
-    // 超时，结束进程
-    const timer = setTimeout(() => {
-        if (!status) {
-            console.error(`\n\n${chalk.whiteBright.bgRed(' Erorr ')} Timed out for 30 secconds. [M-0x0301]`);
-            process.exit(1);
-        }
-    }, 30000);
+    const timer = new misc_1.OutTimer(30, '0x0301');
     // 替换节点
     for (let i in crawlList) {
         if (crawlList.hasOwnProperty(i)) {
@@ -240,8 +222,7 @@ function downloadImages(node) {
     }, crawlLimit);
     // 全部完成时触发
     download.drain(() => {
-        status = 1;
-        clearTimeout(timer);
+        timer.clear();
         console.log(`${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
     });
     // 下载进度条

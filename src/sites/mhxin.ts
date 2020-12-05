@@ -11,15 +11,11 @@ import * as async from 'async';
 import * as cheerio from 'cheerio';
 import * as chalk from "chalk";
 import * as fs from 'fs';
-import Timeout = NodeJS.Timeout;
 
 // 本地模块
-import { WorkerCallbackFn } from "./dm5";
-import { cli } from '../modules/cli';
-import { checkPath } from "../modules/dirCheck";
+import { WorkerCallbackFn, OutTimer, prepare } from "../modules/misc";
 import { genHTML as generateManga } from "../modules/generator";
 import { ProgressBar } from "../modules/progressBar";
-import exp = require("constants");
 
 let mangaUrl: string;
 let savePath: string;
@@ -28,12 +24,10 @@ let crawlList: string[] = [];
 let mangaImages: number;
 let dlTime: number;
 
-function prepare(): void {
-    cli("mhxin",(result): void => {
+function manhuaxin(): void {
+    prepare("mhxin",(result): void => {
         ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
-        checkPath(savePath,(): void => {
-            getMangaInfo();
-        });
+        getMangaInfo();
     });
 }
 
@@ -51,14 +45,7 @@ function getUrl({ url, extra }: { url: string, extra: string },callback: WorkerC
 }
 
 function getMangaInfo(): void {
-    let status: number = 0;
-    // 超时，结束进程
-    const timer: Timeout = setTimeout((): void => {
-        if (!status) {
-            console.error(`\n\n${chalk.whiteBright.bgRed(' Erorr ')} Timed out for 10 secconds. [M-0x0002]`);
-            process.exit(1);
-        }
-    },10000);
+    const timer: OutTimer = new OutTimer(10,'0x0002');
     dlTime = new Date().getTime();
     console.log(`${chalk.whiteBright.bgBlue(' Info ')} Fetching some information...\n`)
     getUrl({
@@ -67,26 +54,18 @@ function getMangaInfo(): void {
     },(err,num): void => {
         if (err) {
             console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} ${err} \n`);
-            console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0202]`);
+            console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0001]`);
             process.exit(1);
         }
         else {
-            status = 1;
-            clearTimeout(timer);
+            timer.clear();
             resolveImages();
         }
     })
 }
 
 function resolveImages(): void {
-    let status: number = 0;
-    // 超时，结束进程
-    const timer: Timeout = setTimeout((): void => {
-        if (!status) {
-            console.error(`\n\n${chalk.whiteBright.bgRed(' Erorr ')} Timed out for 30 secconds. [M-0x0102]`);
-            process.exit(1);
-        }
-    },30000);
+    const timer: OutTimer = new OutTimer(30,'0x0102');
     // 获取图片的进度条
     let resolvedImgs: number = 1;
     const resolvePB: ProgressBar = new ProgressBar(undefined,mangaImages);
@@ -95,9 +74,8 @@ function resolveImages(): void {
     const resolveUrl: async.QueueObject<object> = async.queue(getUrl,crawlLimit);
     // 全部成功后触发
     resolveUrl.drain((): void => {
-        status = 1;
-        clearTimeout(timer);
-        console.log(crawlList);
+        timer.clear();
+        // downloadImages();
     });
     // 推送任务至队列
     for (let i = 2;i < mangaImages + 1;i++) {
@@ -116,4 +94,8 @@ function resolveImages(): void {
     }
 }
 
-export { prepare };
+function downloadImages(): void {
+    const timer: OutTimer = new OutTimer(30,'0x0202')
+}
+
+export { manhuaxin };

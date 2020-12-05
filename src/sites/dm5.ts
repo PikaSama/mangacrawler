@@ -13,11 +13,9 @@ import * as inquirer from 'inquirer';
 import * as puppeteer from 'puppeteer'
 import * as chalk from "chalk";
 import * as fs from 'fs';
-import Timeout = NodeJS.Timeout;
 
 // 本地模块
-import { cli } from '../modules/cli';
-import { checkPath } from "../modules/dirCheck";
+import { WorkerCallbackFn, OutTimer, prepare } from "../modules/misc";
 import { genHTML as generateManga } from "../modules/generator";
 import { ProgressBar } from "../modules/progressBar";
 
@@ -31,10 +29,6 @@ interface AnalyzeResult {
 interface Info extends AnalyzeResult {
     pics: number,
     msg: string,
-}
-
-interface WorkerCallbackFn {
-    (err: Error, result?: number): void
 }
 
 let mangaUrl: string;
@@ -61,17 +55,15 @@ let nodeList: string[] = [
     "104-250-150-12.cdnmanhua.net",
 ];
 
-function prepare(): void {
-    cli("dm5",(result): void => {
+function dongmanwu(): void {
+    prepare("dm5",(result): void => {
         ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
-        checkPath(savePath,(): void => {
-            getMangaInfo().catch((err): void => {
-                //  发生错误，结束浏览器进程
-                console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [M-0x0101]\n`);
-                process.exit(1);
-            });
+        getMangaInfo().catch((err): void => {
+            // 发生错误，结束浏览器进程
+            console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [M-0x0101]\n`);
+            process.exit(1);
         });
-    });
+    })
 }
 
 async function getMangaInfo(): Promise<void> {
@@ -118,14 +110,7 @@ async function getMangaInfo(): Promise<void> {
 }
 
 function resolveImages(): void {
-    let status: number = 0;
-    // 超时，结束进程
-    const timer: Timeout = setTimeout((): void => {
-        if (!status) {
-            console.error(`\n\n${chalk.whiteBright.bgRed(' Erorr ')} Timed out for 30 secconds. [M-0x0201]`);
-            process.exit(1);
-        }
-    },30000);
+    const timer: OutTimer = new OutTimer(30,'0x0201');
     // 获取图片的进度条
     let resolvedImgs: number = 0;
     const resolvePB: ProgressBar = new ProgressBar(undefined,mangaInfo.pics);
@@ -159,8 +144,7 @@ function resolveImages(): void {
     },crawlLimit);
     // 全部成功后触发
     getPicUrl.drain((): void => {
-        status = 1;
-        clearTimeout(timer);
+        timer.clear();
         console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Checking server node list....\n`);
         checkNode(crawlList[0]);
     });
@@ -213,14 +197,7 @@ function checkNode(node: string | string[]): void {
 }
 
 function downloadImages(node: string): void {
-    let status: number = 0;
-    // 超时，结束进程
-    const timer: Timeout = setTimeout((): void => {
-        if (!status) {
-            console.error(`\n\n${chalk.whiteBright.bgRed(' Erorr ')} Timed out for 30 secconds. [M-0x0301]`);
-            process.exit(1);
-        }
-    },30000);
+    const timer: OutTimer = new OutTimer(30,'0x0301');
     // 替换节点
     for (let i in crawlList) {
         if (crawlList.hasOwnProperty(i)) {
@@ -253,8 +230,7 @@ function downloadImages(node: string): void {
     },crawlLimit);
     // 全部完成时触发
     download.drain((): void => {
-        status = 1;
-        clearTimeout(timer);
+        timer.clear();
         console.log(`${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
     });
     // 下载进度条
@@ -280,4 +256,4 @@ function downloadImages(node: string): void {
     }
 }
 
-export { prepare, WorkerCallbackFn };
+export { dongmanwu };
