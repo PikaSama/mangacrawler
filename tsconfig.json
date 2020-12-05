@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "tsBuildInfoFile": "./dist",
     "module": "CommonJS",
+    "tsBuildInfoFile": "./dist/buildFile.tsbuildinfo",
     "target": "ES6",
     "outDir": "./dist",
     "moduleResolution": "Node",
