@@ -1,7 +1,15 @@
 "use strict";
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: 杂项模块
+ * License: GPL-3.0
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.prepare = exports.OutTimer = void 0;
 const chalk = require("chalk");
+// 本地模块
 const cli_1 = require("./cli");
 const dirCheck_1 = require("./dirCheck");
 // 超时计时器 -- 漫画

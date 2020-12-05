@@ -1,6 +1,15 @@
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: 杂项模块
+ * License: GPL-3.0
+ */
+
 import Timeout = NodeJS.Timeout;
 import * as chalk from "chalk";
 
+// 本地模块
 import { cli } from "./cli";
 import { checkPath } from "./dirCheck";
 

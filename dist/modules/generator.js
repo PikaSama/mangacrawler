@@ -1,4 +1,11 @@
 "use strict";
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: html文件生成模块
+ * License: GPL-3.0
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.genHTML = void 0;
 const html_minifier_1 = require("html-minifier");

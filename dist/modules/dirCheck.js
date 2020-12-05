@@ -1,4 +1,11 @@
 "use strict";
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: 目录检查模块
+ * License: GPL-3.0
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkPath = void 0;
 const fs = require("fs");

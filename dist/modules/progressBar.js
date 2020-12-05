@@ -1,4 +1,11 @@
 "use strict";
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: 进度条模块，参考于：https://www.jianshu.com/p/00d8f71d367d
+ * License: GPL-3.0
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProgressBar = void 0;
 const single_line_log_1 = require("single-line-log");

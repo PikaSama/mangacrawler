@@ -1,3 +1,11 @@
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: html文件生成模块
+ * License: GPL-3.0
+ */
+
 import { minify } from 'html-minifier';
 import * as ejs from 'ejs';
 import * as chalk from 'chalk';

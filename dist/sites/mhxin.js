@@ -91,6 +91,7 @@ function resolveImages() {
     }
 }
 function downloadImages() {
+    console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Downloading manga...\n`);
     const timer = new misc_1.OutTimer(30, '0x0202');
     // 下载图片(并发控制)
     const download = async.queue(({ url }, callback) => {
@@ -100,7 +101,7 @@ function downloadImages() {
             timeout: 10000,
         })
             .then(({ data }) => {
-            fs.writeFile(`${savePath}/split/${pic}.jpg`, data, (err) => {
+            fs.writeFile(`${savePath}/split/${parseInt(pic) + 1}.jpg`, data, (err) => {
                 if (err) {
                     callback(err);
                 }
@@ -113,7 +114,7 @@ function downloadImages() {
     }, crawlLimit);
     download.drain(() => {
         timer.clear();
-        console.log(`${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
+        console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
         generator_1.genHTML({
             imgAmount: mangaImages,
             path: savePath,

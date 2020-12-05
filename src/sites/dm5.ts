@@ -109,12 +109,12 @@ async function getMangaInfo(): Promise<void> {
     });
     ({ cid: mangaInfo.cid, mid: mangaInfo.mid, sign: mangaInfo.sign, signdate: mangaInfo.signdate } = result);
     console.log(mangaInfo.msg);
-    console.log(mangaInfo);
     await browser.close();
     resolveImages();
 }
 
 function resolveImages(): void {
+    console.log(`${chalk.whiteBright.bgBlue(' Info ')} Resolving images...\n`);
     const timer: OutTimer = new OutTimer(30,'0x0201');
     // 获取图片的进度条
     let resolvedImgs: number = 0;
@@ -186,10 +186,10 @@ function checkNode(node: string): void {
         }
     }
     if (isKnownNode) {
-        console.log(`${chalk.whiteBright.bgBlue(' Info ')} The server you are connected to is inclued in the list.`);
+        console.log(`${chalk.whiteBright.bgBlue(' Info ')} The server you are connected to is inclued in the list.\n`);
     }
     else {
-        console.warn(`${chalk.whiteBright.bgRed(' Warn ')} You are connected to a unknown server. Report it later?`);
+        console.warn(`${chalk.whiteBright.bgRed(' Warn ')} You are connected to a unknown server. Report it later?\n`);
     }
     inquirer.prompt([
         {
@@ -202,6 +202,7 @@ function checkNode(node: string): void {
 }
 
 function downloadImages(node: string): void {
+    console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Downloading manga...\n`);
     const timer: OutTimer = new OutTimer(30,'0x0301');
     // 替换节点
     for (let i in crawlList) {

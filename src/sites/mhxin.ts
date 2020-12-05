@@ -100,6 +100,7 @@ function resolveImages(): void {
 }
 
 function downloadImages(): void {
+    console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Downloading manga...\n`);
     const timer: OutTimer = new OutTimer(30,'0x0202');
     // 下载图片(并发控制)
     const download: async.QueueObject<object> = async.queue(({ url }: WorkerDownloadParam,callback: WorkerCallbackFn): void => {

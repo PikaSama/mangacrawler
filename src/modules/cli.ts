@@ -1,3 +1,11 @@
+/**
+ * Author: Zorin
+ * Github: https://github.com/PikaSama
+ * Project: Spider-Manga
+ * Description: CLI界面模块
+ * License: GPL-3.0
+ */
+
 import * as inquirer from 'inquirer';
 import * as chalk from 'chalk';
 import { homedir } from "os";
