@@ -15,7 +15,12 @@ import * as chalk from "chalk";
 import * as fs from 'fs';
 
 // 本地模块
-import { WorkerCallbackFn, OutTimer, prepare } from "../modules/misc";
+import {
+    WorkerDownloadParam,
+    WorkerCallbackFn,
+    OutTimer,
+    prepare,
+} from "../modules/misc";
 import { genHTML as generateManga } from "../modules/generator";
 import { ProgressBar } from "../modules/progressBar";
 
@@ -165,11 +170,11 @@ function resolveImages(): void {
     }
 }
 
-function checkNode(node: string | string[]): void {
+function checkNode(node: string): void {
     // 获取当前下载节点
-    (node as string[]) = (node as string).split("/")[2].split("-");
-    (node as string[]).shift();
-    (node as string) = (node as string[]).join("-");
+    let nodeCopy = node.split("/")[2].split("-");
+    nodeCopy.shift();
+    node = nodeCopy.join("-");
     // 与节点列表比对
     let isKnownNode: number = 0;
     for (let i in nodeList) {
@@ -207,9 +212,9 @@ function downloadImages(node: string): void {
         }
     }
     // 下载图片(并发控制)
-    const download = async.queue((obj: { url: string },callback: WorkerCallbackFn): void => {
-        let picNum: string = obj.url.split("/")[6].split("_")[0];
-        axios.get(obj.url, {
+    const download = async.queue(({ url }: WorkerDownloadParam,callback: WorkerCallbackFn): void => {
+        let picNum: string = url.split("/")[6].split("_")[0];
+        axios.get(url, {
             headers: {
                 'Referer': mangaUrl,
             },
@@ -231,7 +236,12 @@ function downloadImages(node: string): void {
     // 全部完成时触发
     download.drain((): void => {
         timer.clear();
-        console.log(`${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
+        console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
+        generateManga({
+            imgAmount: mangaInfo.pics,
+            path: savePath,
+            dlTime: dlTime,
+        });
     });
     // 下载进度条
     let downloadedImgs: number = 0;

@@ -6,7 +6,7 @@ const ejs = require("ejs");
 const chalk = require("chalk");
 const fs = require("fs");
 function genHTML(opt) {
-    ejs.renderFile('../../template/template.ejs', { imgs: opt.imgAmount }, (err, data) => {
+    ejs.renderFile('./template/template.ejs', { imgs: opt.imgAmount }, (err, data) => {
         if (err) {
             console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [G-0x0001]\n`);
         }

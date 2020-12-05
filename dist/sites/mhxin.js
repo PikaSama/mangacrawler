@@ -12,8 +12,10 @@ const axios_1 = require("axios");
 const async = require("async");
 const cheerio = require("cheerio");
 const chalk = require("chalk");
+const fs = require("fs");
 // 本地模块
 const misc_1 = require("../modules/misc");
+const generator_1 = require("../modules/generator");
 const progressBar_1 = require("../modules/progressBar");
 let mangaUrl;
 let savePath;
@@ -70,7 +72,7 @@ function resolveImages() {
     // 全部成功后触发
     resolveUrl.drain(() => {
         timer.clear();
-        // downloadImages();
+        downloadImages();
     });
     // 推送任务至队列
     for (let i = 2; i < mangaImages + 1; i++) {
@@ -90,4 +92,53 @@ function resolveImages() {
 }
 function downloadImages() {
     const timer = new misc_1.OutTimer(30, '0x0202');
+    // 下载图片(并发控制)
+    const download = async.queue(({ url }, callback) => {
+        let pic = url.split("/")[url.split("/").length - 1];
+        axios_1.default.get(url, {
+            responseType: 'arraybuffer',
+            timeout: 10000,
+        })
+            .then(({ data }) => {
+            fs.writeFile(`${savePath}/split/${pic}.jpg`, data, (err) => {
+                if (err) {
+                    callback(err);
+                }
+                else {
+                    callback(null, 1);
+                }
+            });
+        })
+            .catch((err) => callback(err));
+    }, crawlLimit);
+    download.drain(() => {
+        timer.clear();
+        console.log(`${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
+        generator_1.genHTML({
+            imgAmount: mangaImages,
+            path: savePath,
+            dlTime: dlTime,
+        });
+    });
+    // 下载进度条
+    let downloadedImages = 0;
+    const downloadPB = new progressBar_1.ProgressBar(undefined, mangaImages);
+    downloadPB.render(downloadedImages, mangaImages);
+    // 推送任务至队列
+    for (let i in crawlList) {
+        if (crawlList.hasOwnProperty(i)) {
+            // 错误时，结束进程
+            download.push({ url: crawlList[i] }, (err, result) => {
+                if (err) {
+                    console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} ${err} \n`);
+                    console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0201]`);
+                    process.exit(1);
+                }
+                else {
+                    downloadedImages += result;
+                    downloadPB.render(downloadedImages, mangaImages);
+                }
+            });
+        }
+    }
 }

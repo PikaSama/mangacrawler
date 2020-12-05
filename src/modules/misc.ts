@@ -4,6 +4,11 @@ import * as chalk from "chalk";
 import { cli } from "./cli";
 import { checkPath } from "./dirCheck";
 
+// Worker下载参数 -- 漫画
+interface WorkerDownloadParam {
+    url: string
+}
+
 // Worker回调函数 -- 漫画
 interface WorkerCallbackFn {
     (err: Error, result?: number): void
@@ -18,10 +23,10 @@ interface Results {
 
 // 规定回调函数的接口 -- 模块
 interface CallbackFn {
-    (result?: Results): void;
+    (result?: Results): void
 }
 
-// 超时计时器 --- 漫画
+// 超时计时器 -- 漫画
 class OutTimer {
     timerID: Timeout;
     constructor(timeout: number,errorCode: string) {
@@ -37,7 +42,7 @@ class OutTimer {
     }
 }
 
-// CLI界面和目录检查 --- 漫画
+// CLI界面和目录检查 -- 漫画
 function prepare(site: string,callback: CallbackFn) {
     cli(site,(result): void => {
         checkPath(result.path,(): void => {
@@ -47,6 +52,7 @@ function prepare(site: string,callback: CallbackFn) {
 }
 
 export {
+    WorkerDownloadParam,
     WorkerCallbackFn,
     Results,
     CallbackFn,

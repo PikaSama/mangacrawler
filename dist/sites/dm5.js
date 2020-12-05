@@ -26,6 +26,7 @@ const chalk = require("chalk");
 const fs = require("fs");
 // 本地模块
 const misc_1 = require("../modules/misc");
+const generator_1 = require("../modules/generator");
 const progressBar_1 = require("../modules/progressBar");
 let mangaUrl;
 let savePath;
@@ -160,9 +161,9 @@ function resolveImages() {
 }
 function checkNode(node) {
     // 获取当前下载节点
-    node = node.split("/")[2].split("-");
-    node.shift();
-    node = node.join("-");
+    let nodeCopy = node.split("/")[2].split("-");
+    nodeCopy.shift();
+    node = nodeCopy.join("-");
     // 与节点列表比对
     let isKnownNode = 0;
     for (let i in nodeList) {
@@ -199,9 +200,9 @@ function downloadImages(node) {
         }
     }
     // 下载图片(并发控制)
-    const download = async.queue((obj, callback) => {
-        let picNum = obj.url.split("/")[6].split("_")[0];
-        axios_1.default.get(obj.url, {
+    const download = async.queue(({ url }, callback) => {
+        let picNum = url.split("/")[6].split("_")[0];
+        axios_1.default.get(url, {
             headers: {
                 'Referer': mangaUrl,
             },
@@ -224,6 +225,11 @@ function downloadImages(node) {
     download.drain(() => {
         timer.clear();
         console.log(`${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
+        generator_1.genHTML({
+            imgAmount: mangaInfo.pics,
+            path: savePath,
+            dlTime: dlTime,
+        });
     });
     // 下载进度条
     let downloadedImgs = 0;

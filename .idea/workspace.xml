@@ -5,18 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="72f32e3b-d923-4088-a96b-3bbefe49c142" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/modules/misc.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/generator.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/generator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/misc.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/misc.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/sites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/dm5.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/sites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/mhxin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/modules/cli.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/cli.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/modules/dirCheck.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/dirCheck.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/generator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/generator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/misc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/misc.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sites/dm5.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/dm5.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sites/mhxin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/mhxin.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sites/mhxinJS.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +49,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.19.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -59,12 +57,15 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/src/codes" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/template" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/modules" />
+      <recent name="$PROJECT_DIR$/src/modules" />
+      <recent name="$PROJECT_DIR$/dist/modules" />
+      <recent name="$PROJECT_DIR$/dist" />
+      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunManager" selected="Node.js.test.js">
@@ -155,7 +156,7 @@
       <workItem from="1607081575424" duration="1198000" />
       <workItem from="1607089746907" duration="12381000" />
       <workItem from="1607143467450" duration="4131000" />
-      <workItem from="1607156390128" duration="14139000" />
+      <workItem from="1607156390128" duration="18940000" />
     </task>
     <servers />
   </component>

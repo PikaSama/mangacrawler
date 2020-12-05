@@ -8,7 +8,7 @@ function genHTML(opt: {
     path: string,
     dlTime: number,
 }) {
-    ejs.renderFile('../../template/template.ejs',{ imgs: opt.imgAmount },(err,data) => {
+    ejs.renderFile('./template/template.ejs',{ imgs: opt.imgAmount },(err,data) => {
         if (err) {
             console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [G-0x0001]\n`);
         }

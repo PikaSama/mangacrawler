@@ -10,9 +10,13 @@
         img {
             display: block;
             margin: 0 auto;
+            max-width: 90%;
+            height: auto;
         }
         div.images {
             margin: 0 auto;
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -23,16 +27,5 @@
         <img src="./split/<%= j %>.jpg" alt="" />
     <% } %>
     </div>
-    <script>
-        window.onload = () => {
-            let div = document.querySelector("div");
-            let imglist = document.querySelectorAll("img");
-            let maxWidth = 0;
-            for (let i = 0;i < imglist.length;i++) {
-                maxWidth = Math.max(maxWidth,imglist[i].naturalWidth);
-            }
-            div.style.width = maxWidth+'px';
-        }
-    </script>
 </body>
 </html>

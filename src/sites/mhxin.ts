@@ -13,7 +13,12 @@ import * as chalk from "chalk";
 import * as fs from 'fs';
 
 // 本地模块
-import { WorkerCallbackFn, OutTimer, prepare } from "../modules/misc";
+import {
+    WorkerDownloadParam,
+    WorkerCallbackFn,
+    OutTimer,
+    prepare,
+} from "../modules/misc";
 import { genHTML as generateManga } from "../modules/generator";
 import { ProgressBar } from "../modules/progressBar";
 
@@ -75,7 +80,7 @@ function resolveImages(): void {
     // 全部成功后触发
     resolveUrl.drain((): void => {
         timer.clear();
-        // downloadImages();
+        downloadImages();
     });
     // 推送任务至队列
     for (let i = 2;i < mangaImages + 1;i++) {
@@ -95,7 +100,56 @@ function resolveImages(): void {
 }
 
 function downloadImages(): void {
-    const timer: OutTimer = new OutTimer(30,'0x0202')
+    const timer: OutTimer = new OutTimer(30,'0x0202');
+    // 下载图片(并发控制)
+    const download: async.QueueObject<object> = async.queue(({ url }: WorkerDownloadParam,callback: WorkerCallbackFn): void => {
+        let pic = url.split("/")[url.split("/").length - 1];
+        axios.get(url,{
+            responseType: 'arraybuffer',
+            timeout: 10000,
+        })
+            .then(({data}) => {
+                fs.writeFile(`${savePath}/split/${parseInt(pic) + 1}.jpg`,data,(err): void => {
+                    if (err) {
+                        callback(err);
+                    }
+                    else {
+                        callback(null,1);
+                    }
+                });
+            })
+            .catch((err): void => callback(err));
+    },crawlLimit);
+    download.drain((): void => {
+        timer.clear();
+        console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
+        generateManga({
+            imgAmount: mangaImages,
+            path: savePath,
+            dlTime: dlTime,
+        });
+    });
+    // 下载进度条
+    let downloadedImages: number = 0;
+    const downloadPB: ProgressBar = new ProgressBar(undefined,mangaImages);
+    downloadPB.render(downloadedImages,mangaImages);
+    // 推送任务至队列
+    for (let i in crawlList) {
+        if (crawlList.hasOwnProperty(i)) {
+            // 错误时，结束进程
+            download.push({ url: crawlList[i] },(err: Error,result: number): void => {
+                if (err) {
+                    console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} ${err} \n`);
+                    console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0201]`);
+                    process.exit(1);
+                }
+                else {
+                    downloadedImages += result;
+                    downloadPB.render(downloadedImages,mangaImages);
+                }
+            });
+        }
+    }
 }
 
 export { manhuaxin };
