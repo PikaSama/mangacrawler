@@ -16,11 +16,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.prepare = void 0;
 const axios_1 = require("axios");
 const async = require("async");
 const cheerio = require("cheerio");
+const inquirer = require("inquirer");
 const puppeteer = require("puppeteer");
 const chalk = require("chalk");
+const fs = require("fs");
 // 本地模块
 const cli_1 = require("../modules/cli");
 const dirCheck_1 = require("../modules/dirCheck");
@@ -49,10 +52,10 @@ let nodeList = [
     "104-250-150-12.cdnmanhua.net",
 ];
 function prepare() {
-    cli_1.cli("dm5", result => {
+    cli_1.cli("dm5", (result) => {
         ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
         dirCheck_1.checkPath(savePath, () => {
-            getMangaInfo().catch(err => {
+            getMangaInfo().catch((err) => {
                 //  发生错误，结束浏览器进程
                 console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [M-0x0101]\n`);
                 process.exit(1);
@@ -60,6 +63,7 @@ function prepare() {
         });
     });
 }
+exports.prepare = prepare;
 function getMangaInfo() {
     return __awaiter(this, void 0, void 0, function* () {
         dlTime = new Date().getTime();
@@ -113,7 +117,7 @@ function resolveImages() {
     }, 30000);
     // 获取图片的进度条
     let resolvedImgs = 0;
-    const resolvePB = new progressBar_1.ProgressBar(null, mangaInfo.pics);
+    const resolvePB = new progressBar_1.ProgressBar(undefined, mangaInfo.pics);
     resolvePB.render(resolvedImgs, mangaInfo.pics);
     // 获取图片链接(并发控制)
     const getPicUrl = async.queue((obj, callback) => {
@@ -130,7 +134,7 @@ function resolveImages() {
         ].join("&");
         axios_1.default.get(`${mangaUrl}/chapterfun.ashx?${resolveParams}`, {
             headers: {
-                'Referer': mangaUrl
+                'Referer': mangaUrl,
             },
             timeout: 10000,
         })
@@ -140,7 +144,7 @@ function resolveImages() {
             eval(statement.join("}"));
             callback(null, 1);
         })
-            .catch(err => callback(err));
+            .catch((err) => callback(err));
     }, crawlLimit);
     // 全部成功后触发
     getPicUrl.drain(() => {
@@ -150,7 +154,7 @@ function resolveImages() {
         console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Checking server node list....\n`);
     });
     // 推送任务至队列
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < mangaInfo.pics; i++) {
         // 错误时，结束进程
         getPicUrl.push({ pic: i + 1 }, (err, num) => {
             if (err) {
@@ -165,4 +169,100 @@ function resolveImages() {
         });
     }
 }
-prepare();
+function checkNode(node) {
+    // 获取当前下载节点
+    node = node.split("/")[2].split("-");
+    node.shift();
+    node = node.join("-");
+    // 与节点列表比对
+    let isKnownNode = 0;
+    for (let i in nodeList) {
+        if (nodeList.hasOwnProperty(i)) {
+            if (node === nodeList[i]) {
+                isKnownNode = 1;
+                break;
+            }
+        }
+    }
+    if (isKnownNode) {
+        console.log(`${chalk.whiteBright.bgBlue(' Info ')} The server you are connected to is inclued in the list.`);
+    }
+    else {
+        console.warn(`${chalk.whiteBright.bgRed(' Warn ')} You are connected to a unknown server. Report it later?`);
+    }
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'node',
+            message: 'Please select a server to download images.',
+            choices: nodeList,
+        },
+    ]).then(({ node }) => { downloadImages(node); });
+}
+function downloadImages(node) {
+    let status = 0;
+    // 超时，结束进程
+    const timer = setTimeout(() => {
+        if (!status) {
+            console.error(`\n\n${chalk.whiteBright.bgRed(' Erorr ')} Timed out for 30 secconds. [M-0x0301]`);
+            process.exit(1);
+        }
+    }, 30000);
+    // 替换节点
+    for (let i in crawlList) {
+        if (crawlList.hasOwnProperty(i)) {
+            let url = crawlList[i].split("/");
+            url[2] = url[2].split("-")[0] + "-" + node;
+            crawlList[i] = url.join("/");
+        }
+    }
+    // 下载图片(并发控制)
+    const download = async.queue((obj, callback) => {
+        let picNum = obj.url.split("/")[6].split("_")[0];
+        axios_1.default.get(obj.url, {
+            headers: {
+                'Referer': mangaUrl,
+            },
+            responseType: 'arraybuffer',
+            timeout: 10000,
+        })
+            .then(({ data }) => {
+            fs.writeFile(`${savePath}/split/${picNum}.jpg`, data, (err) => {
+                if (err) {
+                    callback(err);
+                }
+                else {
+                    callback(null, 1);
+                }
+            });
+        })
+            .catch((err) => callback(err));
+    }, crawlLimit);
+    // 全部完成时触发
+    download.drain(() => {
+        status = 1;
+        clearTimeout(timer);
+        console.log(`${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
+    });
+    // 下载进度条
+    let downloadedImgs = 0;
+    const downloadPB = new progressBar_1.ProgressBar(undefined, mangaInfo.pics);
+    downloadPB.render(downloadedImgs, mangaInfo.pics);
+    // 推送任务至队列
+    for (let i in crawlList) {
+        if (crawlList.hasOwnProperty(i)) {
+            // 错误时，结束进程
+            download.push({ url: crawlList[i] }, (err, result) => {
+                if (err) {
+                    console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} ${err} \n`);
+                    console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0302]`);
+                    process.exit(1);
+                }
+                else {
+                    downloadedImgs += result;
+                    downloadPB.render(downloadedImgs, mangaInfo.pics);
+                }
+            });
+        }
+    }
+}

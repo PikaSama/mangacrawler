@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
+    "incremental": true,
+    "tsBuildInfoFile": "./dist",
+    "module": "CommonJS",
+    "target": "ES6",
     "outDir": "./dist",
     "moduleResolution": "Node",
-    "allowJs": true,
-    "checkJs": true,
     "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": false
+    "esModuleInterop": false,
+    "listEmittedFiles": true
   },
   "include": [
     "./src/**/*.ts"

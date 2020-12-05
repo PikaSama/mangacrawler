@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Author: Zorin
  * Github: https://github.com/PikaSama
@@ -7,12 +5,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * Description: 主要模块（桥接模块），漫画站点选择菜单
  * License: GPL-3.0
  */
-const inquirer = require("inquirer");
-const dm5_1 = require("./sites/dm5");
+import * as inquirer from "inquirer";
+import { prepare as dm5 } from "./sites/dm5";
+
 const sites = [
     "www.dm5.com",
     "m.mhxin.com",
 ];
+
 inquirer.prompt([
     {
         type: 'list',
@@ -20,14 +20,14 @@ inquirer.prompt([
         message: "Which website do you want to download manga on ?",
         choices: sites,
     },
-]).then(({ site }) => {
+]).then(({ site }): void => {
     switch (site) {
         case "www.dm5.com": {
-            dm5_1.prepare();
+            dm5();
             break;
         }
         case "m.mhxin.com": {
-            console.log("Coming soon...");
+            console.log("Coming soon...")
             break;
         }
     }

@@ -2,8 +2,21 @@
   "name": "spider-manga",
   "version": "1.4.0-beta.1",
   "description": "Download manga by using axios and puppeteer.",
-  "main": "src/main.js",
+  "main": "src/mainJS.js",
   "dependencies": {
+    "async": "^3.2.0",
+    "axios": "^0.21.0",
+    "bufferutil": "^4.0.1",
+    "chalk": "^4.1.0",
+    "cheerio": "^1.0.0-rc.3",
+    "ejs": "^3.1.5",
+    "html-minifier": "^4.0.0",
+    "inquirer": "^7.3.3",
+    "puppeteer": "^5.5.0",
+    "single-line-log": "^1.1.2",
+    "utf-8-validate": "^5.0.2"
+  },
+  "devDependencies": {
     "@types/async": "^3.2.5",
     "@types/cheerio": "^0.22.22",
     "@types/ejs": "^3.0.5",
@@ -11,20 +24,7 @@
     "@types/node": "^14.14.10",
     "@types/puppeteer": "^5.4.1",
     "@types/single-line-log": "^1.1.0",
-    "async": "^3.2.0",
-    "axios": "^0.21.0",
-    "chalk": "^4.1.0",
-    "cheerio": "^1.0.0-rc.3",
-    "ejs": "^3.1.5",
-    "inquirer": "^7.3.3",
-    "single-line-log": "^1.1.2"
-  },
-  "devDependencies": {
-    "@types/inquirer": "^7.3.1",
-    "@types/node": "^14.14.10",
-    "canvas": "^2.6.1",
-    "images": "^3.2.3",
-    "sharp": "^0.26.3"
+    "terser": "^5.5.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -34,18 +34,13 @@
     "manga",
     "spider",
     "puppeteer",
-    "axios"
+    "axios",
+    "typescript"
   ],
   "author": "Zorin",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/pikasama/spider-manga/issues"
   },
-  "homepage": "https://github.com/pikasama/spider-manga#readme",
-  "optionalDependencies": {
-    "bufferutil": "^4.0.1",
-    "html-minifier": "^4.0.0",
-    "puppeteer": "^5.5.0",
-    "utf-8-validate": "^5.0.2"
-  }
+  "homepage": "https://github.com/pikasama/spider-manga#readme"
 }
