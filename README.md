@@ -48,11 +48,11 @@ html模版
 
 ![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/utf-8-validate?style=flat-square)
 
-puppeteer依赖
+ws的peerDependency
 
 ![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/bufferutil?style=flat-square)
 
-puppeteer依赖
+ws的peerDependency
 
 ![Node version](https://img.shields.io/static/v1?label=node&message=>=12&color=success&style=flat-square)
 
@@ -60,66 +60,35 @@ puppeteer依赖
    
 使用npm
 ```bash
-npm install
+npm install --production
 ```
 使用yarn
 ```bash
-yarn
+yarn --prod
 ```
 本项目仅在Linux平台运行并测试，因个人时间和精力有限，未在Windows平台进行测试，如果你尝试以Windows平台运行，可能会造成问题（如果真有问题还请发至Issues）
 
 注：安装puppeteer需要下载chromium（187MB），请耐心等待（以自带chrome/chromium运行的功能还在开发中）
 
 ## 使用
-目前仅支持[漫画屋](https://www.dm5.com)网站下的漫画
+目前支持以下网站的漫画
 
-漫画类型分为两类：
- - A：单页面多图片的漫画
- - B：多页面单图片的漫画
+- [漫画屋](http://www.dm5.com)
+- [漫画芯](https://m.mhxin.com)
 
-### 选项
- - 输入项1：Manga URL
-   - 打开网站中的漫画，选择你要下载的一话，复制粘贴这一话的链接
-   - 链接格式：http://www.dm5.com/m123456/
- - 输入项2：Save Dir
-   - 输入保存漫画的目录，可填家目录符号“～”，程序会自动补全路径
-   - 若路径不存在，程序会尝试创建
- - 输入项3：Download requests
-   - 并发下载请求数限制，范围在1～16
-   - 推荐范围：4～10
- - 选项：Servers
-   - 节点列表，选择其中一个进行图片下载
-   
-### 目录
-- split : 单张图片的存放位置
-- manga.html ：完整漫画文件
+使用下面的命令运行
+```bash
+node index.js
+```
 
-## FAQ
-Q1：为啥下载下来的文件是.html格式的？
-
-A1：我并不知道怎么在node中拼接图片（尝试过gm但无果），所以只能以html文档的方式拼接
-
-如果有更好的方法，欢迎提出
-
-Q2：为什么我有时候下载图片会卡在一个地方？
-
-A2：经测试，均未发现是async.mapLimit或async.queue的锅，推测是axios的问题
-
-解决方法：
-
-1. 重新下载，尝试补全图片文件
-
-2. 更换节点，降低请求数并重新下载
-
-本问题暂无最优解，欢迎提出更好的解决方案
+### 文件目录
+- 目录：split -- 单张图片的存放位置
+- 文件：manga.html -- 完整漫画文件
 
 ## bug
  1. 下载请求数提高后，有几率会卡在某一次请求中（暂无最优解）
  2. 通过html文档拼接的图片有概率会有白条间隔（已设置css样式尽量避免此问题）
  3. 暂未知晓
- 
-## 原理
-待写
 
 ## Todo
 - [x] 辨析漫画类型
@@ -127,14 +96,26 @@ A2：经测试，均未发现是async.mapLimit或async.queue的锅，推测是ax
 - [x] 并发请求下载
 - [x] 并发请求下载·优化
 - [x] 连接超时自动退出 
+- [x] 对网站 漫画芯 做支持
 - [ ] 上传未知节点信息至服务器
-- [ ] 对网站 漫画芯 做支持
 - [ ] 对网站 漫画堆 做支持
 - [ ] 使用本地chrome/chromium代替
 - [ ] 爬取漫画更多信息
 - [ ] 获取漫画更新
 
 ## 更新日志
+2020.12.5 23:24 v1.4.0-rc.1
+- 修改：项目使用typescript重写（本人仍是typescript小白，请多多指教）
+- 优化：代码模块化xN，优化目录结构
+- 新增：对网站 漫画芯 的支持
+- 修改：原先废弃代码的依赖在项目的devDependencies中，现已移除，改为开发时用到的typescript文件声明依赖
+
+2020.11.29 18:57 v1.4.0-alpha.2
+- 优化：代码模块化
+- 修改：在v1.4.0-alpha.2-1(非release版)对nodejs循环依赖问题的解决方式，现采用回调函数解决
+- 增加：错误代码，方便开发者维护
+- 
+
 2020.11.22 22:14 v1.4.0-alpha.1
 - 修改：模块的导出方式
 - 修改：代码进一步模块化
