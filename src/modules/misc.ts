@@ -6,7 +6,6 @@
  * License: GPL-3.0
  */
 
-import Timeout = NodeJS.Timeout;
 import * as chalk from "chalk";
 
 // 本地模块
@@ -37,7 +36,7 @@ interface CallbackFn {
 
 // 超时计时器 -- 漫画
 class OutTimer {
-    timerID: Timeout;
+    timerID: NodeJS.Timeout;
     constructor(timeout: number,errorCode: string) {
         // 超时，结束进程
         this.timerID = setTimeout((): void => {

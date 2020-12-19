@@ -19,6 +19,7 @@ import {
     OutTimer,
     prepare,
 } from "../modules/misc";
+
 import { genHTML as generateManga } from "../modules/generator";
 import { ProgressBar } from "../modules/progressBar";
 
@@ -36,8 +37,7 @@ function manhuaxin(): void {
     });
 }
 
-function getUrl({ url, extra }: { url: string, extra: string },callback: WorkerCallbackFn): void {
-    extra = extra || '';
+function getUrl({ url, extra = '' }: { url: string, extra?: string },callback: WorkerCallbackFn): void {
     axios.get(url,{ timeout: 6000 })
         .then(({ data }) => {
             const $: cheerio.Root = cheerio.load(data);
@@ -66,7 +66,7 @@ function getMangaInfo(): void {
             timer.clear();
             resolveImages();
         }
-    })
+    });
 }
 
 function resolveImages(): void {

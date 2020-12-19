@@ -21,17 +21,15 @@ import {
     OutTimer,
     prepare,
 } from "../modules/misc";
+
 import { genHTML as generateManga } from "../modules/generator";
 import { ProgressBar } from "../modules/progressBar";
 
-interface AnalyzeResult {
+interface Info {
     cid: string,
     mid: string,
     sign: string,
     signdate: string,
-}
-
-interface Info extends AnalyzeResult {
     pics: number,
     msg: string,
 }
@@ -93,9 +91,9 @@ async function getMangaInfo(): Promise<void> {
     }
     else {
         mangaInfo.pics = $("img.load-src").length;
-        `${chalk.whiteBright.bgBlue(' Info ')} Manga type: B(multi-page manga) | Pictures: ${mangaInfo.pics}\n`;
+        mangaInfo.msg =  `${chalk.whiteBright.bgBlue(' Info ')} Manga type: B(multi-page manga) | Pictures: ${mangaInfo.pics}\n`;
     }
-    const result: AnalyzeResult = await page.evaluate((): AnalyzeResult => {
+    mangaInfo = await page.evaluate((pics: number,msg: string): Info => {
         return {
             // @ts-ignore
             cid: window.DM5_CID,
@@ -105,9 +103,10 @@ async function getMangaInfo(): Promise<void> {
             sign: window.DM5_VIEWSIGN,
             // @ts-ignore
             signdate: window.DM5_VIEWSIGN_DT,
+            pics,
+            msg,
         }
-    });
-    ({ cid: mangaInfo.cid, mid: mangaInfo.mid, sign: mangaInfo.sign, signdate: mangaInfo.signdate } = result);
+    },mangaInfo.pics,mangaInfo.msg);
     console.log(mangaInfo.msg);
     await browser.close();
     resolveImages();

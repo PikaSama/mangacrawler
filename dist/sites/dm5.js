@@ -83,9 +83,9 @@ function getMangaInfo() {
         }
         else {
             mangaInfo.pics = $("img.load-src").length;
-            `${chalk.whiteBright.bgBlue(' Info ')} Manga type: B(multi-page manga) | Pictures: ${mangaInfo.pics}\n`;
+            mangaInfo.msg = `${chalk.whiteBright.bgBlue(' Info ')} Manga type: B(multi-page manga) | Pictures: ${mangaInfo.pics}\n`;
         }
-        const result = yield page.evaluate(() => {
+        mangaInfo = yield page.evaluate((pics, msg) => {
             return {
                 // @ts-ignore
                 cid: window.DM5_CID,
@@ -95,9 +95,10 @@ function getMangaInfo() {
                 sign: window.DM5_VIEWSIGN,
                 // @ts-ignore
                 signdate: window.DM5_VIEWSIGN_DT,
+                pics,
+                msg,
             };
-        });
-        ({ cid: mangaInfo.cid, mid: mangaInfo.mid, sign: mangaInfo.sign, signdate: mangaInfo.signdate } = result);
+        }, mangaInfo.pics, mangaInfo.msg);
         console.log(mangaInfo.msg);
         yield browser.close();
         resolveImages();

@@ -30,8 +30,7 @@ function manhuaxin() {
     });
 }
 exports.manhuaxin = manhuaxin;
-function getUrl({ url, extra }, callback) {
-    extra = extra || '';
+function getUrl({ url, extra = '' }, callback) {
     axios_1.default.get(url, { timeout: 6000 })
         .then(({ data }) => {
         const $ = cheerio.load(data);
