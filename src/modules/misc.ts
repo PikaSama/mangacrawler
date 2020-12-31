@@ -34,6 +34,20 @@ interface CallbackFn {
     (result?: Results): void
 }
 
+// 日志打印 -- 模块
+const Logger = {
+    errStr: (msg: string | NodeJS.ErrnoException): string => `${chalk.bgRed(' Error ')} ${msg}`,
+    err: (msg: string | NodeJS.ErrnoException): void => console.log(`${chalk.bgRed(' Error ')} ${msg}`),
+    warnStr: (msg: string): string => `${chalk.bgRed(' Warn ')} ${msg}`,
+    warn: (msg: string): void => console.log(`${chalk.bgRed(' Warn ')} ${msg}`),
+    infoStr: (msg: string): string => `${chalk.bgBlue(' Info ')} ${msg}`,
+    info: (msg: string): void => console.log(`${chalk.bgBlue(' Info ')} ${msg}`),
+    succStr: (msg: string): string => `${chalk.bgGreen(' Success ')} ${msg}`,
+    succ: (msg: string): void => console.log(`${chalk.bgGreen(' Success ')} ${msg}`),
+    updStr: (msg: string): string => `${chalk.bgYellow(' Update ')} ${msg}`,
+    upd: (msg: string): void => console.log(`${chalk.bgYellow(' Update ')} ${msg}`),
+}
+
 // 超时计时器 -- 漫画
 class OutTimer {
     timerID: NodeJS.Timeout;
@@ -64,6 +78,7 @@ export {
     WorkerCallbackFn,
     Results,
     CallbackFn,
+    Logger,
     OutTimer,
     prepare,
 };

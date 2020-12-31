@@ -7,11 +7,25 @@
  * License: GPL-3.0
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prepare = exports.OutTimer = void 0;
+exports.prepare = exports.OutTimer = exports.Logger = void 0;
 const chalk = require("chalk");
 // 本地模块
 const cli_1 = require("./cli");
 const dirCheck_1 = require("./dirCheck");
+// 日志打印 -- 模块
+const Logger = {
+    errStr: (msg) => `${chalk.bgRed(' Error ')} ${msg}`,
+    err: (msg) => console.log(`${chalk.bgRed(' Error ')} ${msg}`),
+    warnStr: (msg) => `${chalk.bgRed(' Warn ')} ${msg}`,
+    warn: (msg) => console.log(`${chalk.bgRed(' Warn ')} ${msg}`),
+    infoStr: (msg) => `${chalk.bgBlue(' Info ')} ${msg}`,
+    info: (msg) => console.log(`${chalk.bgBlue(' Info ')} ${msg}`),
+    succStr: (msg) => `${chalk.bgGreen(' Success ')} ${msg}`,
+    succ: (msg) => console.log(`${chalk.bgGreen(' Success ')} ${msg}`),
+    updStr: (msg) => `${chalk.bgYellow(' Update ')} ${msg}`,
+    upd: (msg) => console.log(`${chalk.bgYellow(' Update ')} ${msg}`),
+};
+exports.Logger = Logger;
 // 超时计时器 -- 漫画
 class OutTimer {
     constructor(timeout, errorCode) {

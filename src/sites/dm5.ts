@@ -20,6 +20,7 @@ import {
     WorkerCallbackFn,
     OutTimer,
     prepare,
+    Logger,
 } from "../modules/misc";
 
 import { genHTML as generateManga } from "../modules/generator";
@@ -30,22 +31,15 @@ interface Info {
     mid: string,
     sign: string,
     signdate: string,
-    pics: number,
     msg: string,
+    pics: number,
 }
 
 let mangaUrl: string;
 let savePath: string;
 let crawlLimit: number;
 let crawlList: string[] = [];
-let mangaInfo: Info = {
-    pics: 0,
-    msg: '',
-    cid: '',
-    mid: '',
-    sign: '',
-    signdate: '',
-}
+let mangaInfo: Info;
 let dlTime: number;
 // 节点列表
 let nodeList: string[] = [
@@ -121,7 +115,7 @@ function resolveImages(): void {
     resolvePB.render(resolvedImgs,mangaInfo.pics);
     // 获取图片链接(并发控制)
     const getPicUrl: async.QueueObject<object> = async.queue((obj: { pic: number },callback: WorkerCallbackFn): void => {
-        let resolveParams = [
+        let resolveParams: string = [
             `cid=${mangaInfo.cid}`,
             `page=${obj.pic}`,
             `key=`,
@@ -137,14 +131,12 @@ function resolveImages(): void {
                 'Referer': mangaUrl,
             },
             timeout: 10000,
-        })
-            .then(({ data }): void => {
+        }).then(({ data }): void => {
                 let statement = data.split("}");
                 statement[4] = statement[4].slice(0, statement[4].length - 1) + " + 'crawlList.push(d[0])'";
                 eval(statement.join("}"));
                 callback(null,1);
-            })
-            .catch((err): void => callback(err));
+        }).catch((err): void => callback(err));
     },crawlLimit);
     // 全部成功后触发
     getPicUrl.drain((): void => {
@@ -220,8 +212,7 @@ function downloadImages(node: string): void {
             },
             responseType: 'arraybuffer',
             timeout: 10000,
-        })
-            .then(({ data }): void => {
+        }).then(({ data }): void => {
                 fs.writeFile(`${savePath}/split/${picNum}.jpg`,data,(err): void => {
                     if (err) {
                         callback(err);
@@ -230,8 +221,7 @@ function downloadImages(node: string): void {
                         callback(null,1);
                     }
                 });
-            })
-            .catch((err): void => callback(err));
+        }).catch((err): void => callback(err));
     },crawlLimit);
     // 全部完成时触发
     download.drain((): void => {

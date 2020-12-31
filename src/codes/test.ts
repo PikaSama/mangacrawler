@@ -1,5 +1,10 @@
-function f({ a, b = 1 }: { a:string, b?:number }): void {
-    console.log(a);
-    console.log(b);
+const Logger = {
+    textCache: '',
+    info(message) {
+        return message;
+    },
+    get(val) {
+        console.log(val);
+    }
 }
-f({a:'Hey'});
+Logger.info('a').get();

@@ -32,14 +32,7 @@ let mangaUrl;
 let savePath;
 let crawlLimit;
 let crawlList = [];
-let mangaInfo = {
-    pics: 0,
-    msg: '',
-    cid: '',
-    mid: '',
-    sign: '',
-    signdate: '',
-};
+let mangaInfo;
 let dlTime;
 // 节点列表
 let nodeList = [
@@ -129,14 +122,12 @@ function resolveImages() {
                 'Referer': mangaUrl,
             },
             timeout: 10000,
-        })
-            .then(({ data }) => {
+        }).then(({ data }) => {
             let statement = data.split("}");
             statement[4] = statement[4].slice(0, statement[4].length - 1) + " + 'crawlList.push(d[0])'";
             eval(statement.join("}"));
             callback(null, 1);
-        })
-            .catch((err) => callback(err));
+        }).catch((err) => callback(err));
     }, crawlLimit);
     // 全部成功后触发
     getPicUrl.drain(() => {
@@ -210,8 +201,7 @@ function downloadImages(node) {
             },
             responseType: 'arraybuffer',
             timeout: 10000,
-        })
-            .then(({ data }) => {
+        }).then(({ data }) => {
             fs.writeFile(`${savePath}/split/${picNum}.jpg`, data, (err) => {
                 if (err) {
                     callback(err);
@@ -220,8 +210,7 @@ function downloadImages(node) {
                     callback(null, 1);
                 }
             });
-        })
-            .catch((err) => callback(err));
+        }).catch((err) => callback(err));
     }, crawlLimit);
     // 全部完成时触发
     download.drain(() => {
