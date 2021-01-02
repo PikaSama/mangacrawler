@@ -45,25 +45,31 @@ let nodeList = [
     "104-250-150-12.cdnmanhua.net",
 ];
 function dongmanwu() {
-    misc_1.prepare("dm5", (result) => {
-        ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
-        getMangaInfo().catch((err) => {
-            // 发生错误，结束浏览器进程
-            console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [M-0x0101]\n`);
+    misc_1.prepare("dm5", (err, result) => {
+        if (err) {
+            misc_1.Logger.err(err);
             process.exit(1);
-        });
+        }
+        else {
+            ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
+            getMangaInfo().catch((err) => {
+                // 发生错误，结束浏览器进程
+                misc_1.Logger.err(`${err} [M-0x0101]\n`);
+                process.exit(1);
+            });
+        }
     });
 }
 exports.dongmanwu = dongmanwu;
 function getMangaInfo() {
     return __awaiter(this, void 0, void 0, function* () {
         dlTime = new Date().getTime();
-        console.log(`${chalk.whiteBright.bgBlue(' Info ')} Starting browser...\n`);
+        misc_1.Logger.info('Starting browser...\n');
         const browser = yield puppeteer.launch();
-        console.log(`${chalk.whiteBright.bgBlue(' Info ')} Opening page...\n`);
+        misc_1.Logger.info('Opening page...\n');
         const page = yield browser.newPage();
         yield page.goto(mangaUrl, { waitUntil: 'networkidle2' });
-        console.log(`${chalk.whiteBright.bgBlue(' Info ')} Fetching some information...\n`);
+        misc_1.Logger.info('Fetching some information...\n');
         // 获取漫画信息，用户信息（请求参数）
         const $ = cheerio.load(yield page.content());
         if ($("div.chapterpager").length > 0) {
@@ -72,11 +78,11 @@ function getMangaInfo() {
                 .children("a")
                 .last()
                 .text());
-            mangaInfo.msg = `${chalk.whiteBright.bgBlue(' Info ')} Manga type: B(multi-page manga) | Pictures: ${mangaInfo.pics}\n`;
+            mangaInfo.msg = misc_1.Logger.infoStr(`Manga type: A | Pictures: ${mangaInfo.pics}\n`);
         }
         else {
             mangaInfo.pics = $("img.load-src").length;
-            mangaInfo.msg = `${chalk.whiteBright.bgBlue(' Info ')} Manga type: B(multi-page manga) | Pictures: ${mangaInfo.pics}\n`;
+            mangaInfo.msg = misc_1.Logger.infoStr(`Manga type: B | Pictures: ${mangaInfo.pics}\n`);
         }
         mangaInfo = yield page.evaluate((pics, msg) => {
             return {
@@ -98,7 +104,7 @@ function getMangaInfo() {
     });
 }
 function resolveImages() {
-    console.log(`${chalk.whiteBright.bgBlue(' Info ')} Resolving images...\n`);
+    misc_1.Logger.info('Resolving images...\n');
     const timer = new misc_1.OutTimer(30, '0x0201');
     // 获取图片的进度条
     let resolvedImgs = 0;
@@ -132,7 +138,7 @@ function resolveImages() {
     // 全部成功后触发
     getPicUrl.drain(() => {
         timer.clear();
-        console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Checking server node list....\n`);
+        misc_1.Logger.info('\n\nChecking server node list...\n');
         checkNode(crawlList[0]);
     });
     // 推送任务至队列

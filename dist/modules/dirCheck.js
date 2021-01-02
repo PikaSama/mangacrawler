@@ -9,49 +9,49 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkPath = void 0;
 const fs = require("fs");
-const chalk = require("chalk");
+const misc_1 = require("./misc");
 function checkPath(savePath, callback) {
-    fs.readdir(savePath, err => {
+    fs.readdir(savePath, (err) => {
         if (err) {
-            console.warn(`${chalk.whiteBright.bgRed(' Warn ')} "${savePath}" does not exist. Creating...`);
+            misc_1.Logger.warn(`"${savePath}" does not exist. Creating...`);
             mkdir();
         }
         else {
-            console.log(`${chalk.whiteBright.bgBlue(' Info ')} Found directory: "${savePath}".\n`);
+            misc_1.Logger.info(`Found directory: "${savePath}".\n`);
             readSplit();
         }
     });
     function readSplit() {
-        fs.readdir(savePath + '/split', err => {
+        fs.readdir(savePath + '/split', (err) => {
             if (err) {
-                console.warn(`${chalk.whiteBright.bgRed(' Warn ')} "${savePath}/split" does not exist. Creating...`);
+                misc_1.Logger.warn(`"${savePath}/split" does not exist. Creating...`);
                 mkSplit();
             }
             else {
-                console.log(`${chalk.whiteBright.bgBlue(' Info ')} Found directory: "${savePath}/split".\n`);
-                callback();
+                misc_1.Logger.info(`Found directory: "${savePath}/split".\n`);
+                callback(null);
             }
         });
     }
     function mkdir() {
-        fs.mkdir(savePath, err => {
+        fs.mkdir(savePath, (err) => {
             if (err) {
-                console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [C-0x0001]\n`);
+                callback(err + '[C-0x0001]\n');
             }
             else {
-                console.log(`${chalk.whiteBright.bgGreen(' Success ')} Created.\n`);
+                misc_1.Logger.succ('Created.\n');
                 readSplit();
             }
         });
     }
     function mkSplit() {
-        fs.mkdir(savePath + '/split', err => {
+        fs.mkdir(savePath + '/split', (err) => {
             if (err) {
-                console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [C-0x0101]\n`);
+                callback(err + '[C-0x0101]\n');
             }
             else {
-                console.log(`${chalk.whiteBright.bgGreen(' Success ')} Created.\n`);
-                callback();
+                misc_1.Logger.succ('Created.\n');
+                callback(null);
             }
         });
     }

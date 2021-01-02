@@ -26,6 +26,7 @@ import {
 import { genHTML as generateManga } from "../modules/generator";
 import { ProgressBar } from "../modules/progressBar";
 
+// 漫画信息的接口
 interface Info {
     cid: string,
     mid: string,
@@ -53,24 +54,30 @@ let nodeList: string[] = [
 ];
 
 function dongmanwu(): void {
-    prepare("dm5",(result): void => {
-        ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
-        getMangaInfo().catch((err): void => {
-            // 发生错误，结束浏览器进程
-            console.error(`${chalk.whiteBright.bgRed(' Error ')} ${err} [M-0x0101]\n`);
+    prepare("dm5",(err,result): void => {
+        if (err) {
+            Logger.err(err);
             process.exit(1);
-        });
-    })
+        }
+        else {
+            ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
+            getMangaInfo().catch((err): void => {
+                // 发生错误，结束浏览器进程
+                Logger.err(`${err} [M-0x0101]\n`);
+                process.exit(1);
+            });
+        }
+    });
 }
 
 async function getMangaInfo(): Promise<void> {
     dlTime = new Date().getTime();
-    console.log(`${chalk.whiteBright.bgBlue(' Info ')} Starting browser...\n`);
+    Logger.info('Starting browser...\n');
     const browser: puppeteer.Browser = await puppeteer.launch();
-    console.log(`${chalk.whiteBright.bgBlue(' Info ')} Opening page...\n`);
+    Logger.info('Opening page...\n');
     const page: puppeteer.Page = await browser.newPage();
     await page.goto(mangaUrl,{ waitUntil: 'networkidle2' });
-    console.log(`${chalk.whiteBright.bgBlue(' Info ')} Fetching some information...\n`)
+    Logger.info('Fetching some information...\n');
     // 获取漫画信息，用户信息（请求参数）
     const $: cheerio.Root = cheerio.load(await page.content());
     if ($("div.chapterpager").length > 0) {
@@ -81,11 +88,11 @@ async function getMangaInfo(): Promise<void> {
                 .last()
                 .text()
         );
-        mangaInfo.msg = `${chalk.whiteBright.bgBlue(' Info ')} Manga type: B(multi-page manga) | Pictures: ${mangaInfo.pics}\n`;
+        mangaInfo.msg = Logger.infoStr(`Manga type: A | Pictures: ${mangaInfo.pics}\n`);
     }
     else {
         mangaInfo.pics = $("img.load-src").length;
-        mangaInfo.msg =  `${chalk.whiteBright.bgBlue(' Info ')} Manga type: B(multi-page manga) | Pictures: ${mangaInfo.pics}\n`;
+        mangaInfo.msg = Logger.infoStr(`Manga type: B | Pictures: ${mangaInfo.pics}\n`);
     }
     mangaInfo = await page.evaluate((pics: number,msg: string): Info => {
         return {
@@ -107,7 +114,7 @@ async function getMangaInfo(): Promise<void> {
 }
 
 function resolveImages(): void {
-    console.log(`${chalk.whiteBright.bgBlue(' Info ')} Resolving images...\n`);
+    Logger.info('Resolving images...\n');
     const timer: OutTimer = new OutTimer(30,'0x0201');
     // 获取图片的进度条
     let resolvedImgs: number = 0;
@@ -126,6 +133,7 @@ function resolveImages(): void {
             `_dt=${encodeURIComponent(mangaInfo.signdate)}`,
             `_sign=${mangaInfo.sign}`,
         ].join("&");
+
         axios.get(`${mangaUrl}/chapterfun.ashx?${resolveParams}`, {
             headers: {
                 'Referer': mangaUrl,
@@ -138,16 +146,18 @@ function resolveImages(): void {
                 callback(null,1);
         }).catch((err): void => callback(err));
     },crawlLimit);
+
     // 全部成功后触发
     getPicUrl.drain((): void => {
         timer.clear();
-        console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Checking server node list....\n`);
+        Logger.info('\n\nChecking server node list...\n');
         checkNode(crawlList[0]);
     });
+
     // 推送任务至队列
     for (let i = 0;i < mangaInfo.pics;i++) {
         // 错误时，结束进程
-        getPicUrl.push({ pic: i + 1 },(err: Error,num: number): void => {
+        getPicUrl.push({ pic: i + 1 },(err: NodeJS.ErrnoException | string | null,num: number): void => {
             if (err) {
                 console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} ${err} \n`);
                 console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0202]`);

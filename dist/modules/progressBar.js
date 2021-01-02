@@ -9,9 +9,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProgressBar = void 0;
 const single_line_log_1 = require("single-line-log");
-const chalk = require("chalk");
+const misc_1 = require("./misc");
 class ProgressBar {
-    constructor(description = `${chalk.whiteBright.bgYellow(' Progress  ')}`, bar_length = 25) {
+    constructor(description = misc_1.Logger.prog(''), bar_length = 25) {
         this.description = description;
         this.length = bar_length;
     }

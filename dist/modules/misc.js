@@ -14,16 +14,17 @@ const cli_1 = require("./cli");
 const dirCheck_1 = require("./dirCheck");
 // 日志打印 -- 模块
 const Logger = {
-    errStr: (msg) => `${chalk.bgRed(' Error ')} ${msg}`,
     err: (msg) => console.log(`${chalk.bgRed(' Error ')} ${msg}`),
-    warnStr: (msg) => `${chalk.bgRed(' Warn ')} ${msg}`,
+    errStr: (msg) => `${chalk.bgRed(' Error ')} ${msg}`,
     warn: (msg) => console.log(`${chalk.bgRed(' Warn ')} ${msg}`),
-    infoStr: (msg) => `${chalk.bgBlue(' Info ')} ${msg}`,
+    warnStr: (msg) => `${chalk.bgRed(' Warn ')} ${msg}`,
     info: (msg) => console.log(`${chalk.bgBlue(' Info ')} ${msg}`),
-    succStr: (msg) => `${chalk.bgGreen(' Success ')} ${msg}`,
+    infoStr: (msg) => `${chalk.bgBlue(' Info ')} ${msg}`,
     succ: (msg) => console.log(`${chalk.bgGreen(' Success ')} ${msg}`),
-    updStr: (msg) => `${chalk.bgYellow(' Update ')} ${msg}`,
+    succStr: (msg) => `${chalk.bgGreen(' Success ')} ${msg}`,
     upd: (msg) => console.log(`${chalk.bgYellow(' Update ')} ${msg}`),
+    updStr: (msg) => `${chalk.bgYellow(' Update ')} ${msg}`,
+    prog: (msg) => `${chalk.bgYellow(' Progress  ')} ${msg}`,
 };
 exports.Logger = Logger;
 // 超时计时器 -- 漫画
@@ -31,7 +32,7 @@ class OutTimer {
     constructor(timeout, errorCode) {
         // 超时，结束进程
         this.timerID = setTimeout(() => {
-            console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} Timed out for ${timeout} secconds. [M-${errorCode}]`);
+            Logger.err(`\n\nTimed out for ${timeout} seconds. [M-${errorCode}]`);
             process.exit(1);
         }, timeout * 1000);
     }
@@ -43,10 +44,20 @@ class OutTimer {
 exports.OutTimer = OutTimer;
 // CLI界面和目录检查 -- 漫画
 function prepare(site, callback) {
-    cli_1.cli(site, (result) => {
-        dirCheck_1.checkPath(result.path, () => {
-            callback(result);
-        });
+    cli_1.cli(site, (err, result) => {
+        if (err) {
+            callback(err + '[I-0x0003]');
+        }
+        else {
+            dirCheck_1.checkPath(result.path, (err_1) => {
+                if (err_1) {
+                    callback(err_1);
+                }
+                else {
+                    callback(null, result);
+                }
+            });
+        }
     });
 }
 exports.prepare = prepare;

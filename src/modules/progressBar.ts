@@ -7,15 +7,18 @@
  */
 
 import { stdout as slog } from "single-line-log";
-import * as chalk from 'chalk';
+
+import { Logger } from "./misc";
 
 class ProgressBar {
     description: string;
     length: number;
-    constructor(description: string = `${chalk.whiteBright.bgYellow(' Progress  ')}`, bar_length: number = 25) {
+
+    constructor(description: string = Logger.prog(''), bar_length: number = 25) {
         this.description = description;
         this.length = bar_length;
     }
+
     render(completed: number,total: number): void {
         // 计算进度(子任务的 完成数 除以 总数)
         const percent: number = parseFloat((completed / total).toFixed(4));

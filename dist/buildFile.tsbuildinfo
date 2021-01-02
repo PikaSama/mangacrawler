@@ -422,18 +422,18 @@
         "affectsGlobalScope": false
       },
       "../src/modules/cli.ts": {
-        "version": "5ac76f07b377cbd8960a5ac2db3bbd4d65a30595eace0e31d8cf2db8f50ac0f1",
+        "version": "d9f247b596a955bc730c07228163b9606f0ffd1cefc81024c0190255b381a19c",
         "signature": "32910b8ba0bf3e4f1c321a69c38b17858cc30ab633297f9d7ea5a7991c66248f",
         "affectsGlobalScope": false
       },
       "../src/modules/dirCheck.ts": {
-        "version": "1fdc2c5fa448cacdd4c0b6dac8f1cb4bfeefb081fc8834597ae8dcb14b4f081f",
+        "version": "387e1ae0100d7a5cc55c0a41fff3a50f4b4b56c75692ca67751cb0dae6f2a490",
         "signature": "c061df71141af8cf089893f38ed0fc4978cc40636e826bdb176adb8bfbfd3158",
         "affectsGlobalScope": false
       },
       "../src/modules/misc.ts": {
-        "version": "96d4d2bbfdb9f85b5a4d29f12fec55c0fae1f984c434ae804b4186c6f58bc3be",
-        "signature": "9f12843b345316f631e4fa1dc11fdde009e2022fcc5717854a6a157f0765e4d4",
+        "version": "d3c458672a06c4fd049514b5eefe2190b40fc4067d2666322e2ea9895ce13c20",
+        "signature": "40ec85f873694eebef3d5acf644d166a8ea5a52d4cea475d625075d9ee7fd9db",
         "affectsGlobalScope": false
       },
       "../node_modules/source-map/source-map.d.ts": {
@@ -467,7 +467,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/generator.ts": {
-        "version": "5cfe9dd70874fd4c6cc630d35c2239c6989368a3708605e6093cb5e513968999",
+        "version": "4c14488ea93fc8f010c1c17e942ba166994ae0fd9daa38dc1478d1aa30cae3aa",
         "signature": "81305404c4b9103fa353b7a386ef6b5488c22c26d21adb5df72be8710cc23f02",
         "affectsGlobalScope": false
       },
@@ -477,12 +477,12 @@
         "affectsGlobalScope": false
       },
       "../src/modules/progressBar.ts": {
-        "version": "57e69a8d738fddfc8148461c6cff31ed03462502344dd2cbc08c4fa81fe320d7",
+        "version": "5ca558ab415ae52fb425df00ece3edfb8af96013de4bad68e9337bf135984e8a",
         "signature": "e61ed70e8bfd74592a0b8ab3384adf091623662c99560a399a484b8eb64b7ad7",
         "affectsGlobalScope": false
       },
       "../src/sites/dm5.ts": {
-        "version": "dd81c73b59106a240e80cc1dfa771b06dc104a5f684a32002414aca14aabbbb5",
+        "version": "9be9e983d6e94266a08e06e11affe40a98568bc80ce4a904d331e7b5e5c35569",
         "signature": "0bef002d41d970304bbc2f085a8920b40ae9050961a7c665bb85f06e426eb01e",
         "affectsGlobalScope": false
       },
@@ -492,7 +492,7 @@
         "affectsGlobalScope": false
       },
       "../src/main.ts": {
-        "version": "534f25abfd3b6b02e190d7a58a75d5f561fd1f1c961a93d063200efe1c92a5af",
+        "version": "e03c502cc258d175463d2ed282be48cc094df04941823555fe5cc2c95c454f17",
         "signature": "8064997dc7e40f3743e6fbe60cc00c5cb072a9b2346afd1e3f7172da9301bc01",
         "affectsGlobalScope": false
       },
@@ -719,19 +719,17 @@
       ],
       "../src/modules/cli.ts": [
         "../node_modules/@types/node/os.d.ts",
-        "../node_modules/chalk/index.d.ts",
         "../src/modules/misc.ts"
       ],
       "../src/modules/dirCheck.ts": [
         "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/chalk/index.d.ts",
         "../src/modules/misc.ts"
       ],
       "../src/modules/generator.ts": [
         "../node_modules/@types/ejs/index.d.ts",
         "../node_modules/@types/html-minifier/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
-        "../node_modules/chalk/index.d.ts"
+        "../src/modules/misc.ts"
       ],
       "../src/modules/misc.ts": [
         "../node_modules/chalk/index.d.ts",
@@ -740,7 +738,7 @@
       ],
       "../src/modules/progressBar.ts": [
         "../node_modules/@types/single-line-log/index.d.ts",
-        "../node_modules/chalk/index.d.ts"
+        "../src/modules/misc.ts"
       ],
       "../src/sites/dm5.ts": [
         "../node_modules/@types/async/index.d.ts",
@@ -1034,7 +1032,35 @@
       "../src/modules/misc.ts",
       "../src/modules/progressBar.ts",
       "../src/sites/dm5.ts",
-      "../src/sites/mhxin.ts",
+      [
+        "../src/sites/mhxin.ts",
+        [
+          {
+            "file": "../src/sites/mhxin.ts",
+            "start": 759,
+            "length": 3,
+            "messageText": "Property 'url' does not exist on type 'string | ErrnoException'.",
+            "category": 1,
+            "code": 2339
+          },
+          {
+            "file": "../src/sites/mhxin.ts",
+            "start": 774,
+            "length": 4,
+            "messageText": "Property 'path' does not exist on type 'string | ErrnoException'.",
+            "category": 1,
+            "code": 2339
+          },
+          {
+            "file": "../src/sites/mhxin.ts",
+            "start": 790,
+            "length": 5,
+            "messageText": "Property 'limit' does not exist on type 'string | ErrnoException'.",
+            "category": 1,
+            "code": 2339
+          }
+        ]
+      ],
       "../../../../../../usr/lib/node_modules/typescript/lib/lib.dom.d.ts",
       "../../../../../../usr/lib/node_modules/typescript/lib/lib.dom.iterable.d.ts",
       "../../../../../../usr/lib/node_modules/typescript/lib/lib.es2015.collection.d.ts",

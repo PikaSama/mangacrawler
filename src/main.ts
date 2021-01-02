@@ -23,15 +23,11 @@ function main(): void {
     ]).then(({ site }): void => {
         switch (site) {
             case "www.dm5.com": {
-                import('./sites/dm5')
-                    .then(({ dongmanwu }): void => dongmanwu())
-                    .catch((err): void => console.log(err));
+                import('./sites/dm5').then(({ dongmanwu }): void => dongmanwu()).catch((err): void => console.log(err));
                 break;
             }
             case "m.mhxin.com": {
-                import('./sites/mhxin')
-                    .then(({ manhuaxin }): void => manhuaxin())
-                    .catch((err): void => console.log(err));
+                import('./sites/mhxin').then(({ manhuaxin }): void => manhuaxin()).catch((err): void => console.log(err));
                 break;
             }
         }

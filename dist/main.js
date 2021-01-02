@@ -24,13 +24,11 @@ function main() {
     ]).then(({ site }) => {
         switch (site) {
             case "www.dm5.com": {
-                Promise.resolve().then(() => require('./sites/dm5')).then(({ dongmanwu }) => dongmanwu())
-                    .catch((err) => console.log(err));
+                Promise.resolve().then(() => require('./sites/dm5')).then(({ dongmanwu }) => dongmanwu()).catch((err) => console.log(err));
                 break;
             }
             case "m.mhxin.com": {
-                Promise.resolve().then(() => require('./sites/mhxin')).then(({ manhuaxin }) => manhuaxin())
-                    .catch((err) => console.log(err));
+                Promise.resolve().then(() => require('./sites/mhxin')).then(({ manhuaxin }) => manhuaxin()).catch((err) => console.log(err));
                 break;
             }
         }
