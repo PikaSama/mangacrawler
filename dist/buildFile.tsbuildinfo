@@ -422,7 +422,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/cli.ts": {
-        "version": "d9f247b596a955bc730c07228163b9606f0ffd1cefc81024c0190255b381a19c",
+        "version": "4319cba196580da5d4be2f0e1e72962ae4264c92da33c6d395172f26085dc8c4",
         "signature": "32910b8ba0bf3e4f1c321a69c38b17858cc30ab633297f9d7ea5a7991c66248f",
         "affectsGlobalScope": false
       },
@@ -432,8 +432,8 @@
         "affectsGlobalScope": false
       },
       "../src/modules/misc.ts": {
-        "version": "d3c458672a06c4fd049514b5eefe2190b40fc4067d2666322e2ea9895ce13c20",
-        "signature": "40ec85f873694eebef3d5acf644d166a8ea5a52d4cea475d625075d9ee7fd9db",
+        "version": "e9a4d02af0069374594e53cca4f18620e760038c8e58a170de608ddcb178eff1",
+        "signature": "342e3e6276703be96d357cbbb5238df3238325dabbcc6623c5f9dc27db985dbd",
         "affectsGlobalScope": false
       },
       "../node_modules/source-map/source-map.d.ts": {
@@ -477,12 +477,12 @@
         "affectsGlobalScope": false
       },
       "../src/modules/progressBar.ts": {
-        "version": "5ca558ab415ae52fb425df00ece3edfb8af96013de4bad68e9337bf135984e8a",
+        "version": "d46bd6f8fcf884bac009a094644378a850b64c7b92e8e798a614ce572b3ab16c",
         "signature": "e61ed70e8bfd74592a0b8ab3384adf091623662c99560a399a484b8eb64b7ad7",
         "affectsGlobalScope": false
       },
       "../src/sites/dm5.ts": {
-        "version": "9be9e983d6e94266a08e06e11affe40a98568bc80ce4a904d331e7b5e5c35569",
+        "version": "3c7c2b2de93af6e49420f3059e6dfa1d4acfe6292f332fad1cf123c03e6e1423",
         "signature": "0bef002d41d970304bbc2f085a8920b40ae9050961a7c665bb85f06e426eb01e",
         "affectsGlobalScope": false
       },
@@ -497,9 +497,9 @@
         "affectsGlobalScope": false
       },
       "../src/codes/test.ts": {
-        "version": "ef2fd5d6b4fe46ea8d0151f9c095c8ff983cb0706c488f4222b94c30de69a58f",
-        "signature": "7af0a22ffc2e4d255bd933940eaff7eeef64e58871bad65edc880622b4b8f903",
-        "affectsGlobalScope": true
+        "version": "6500bf803c6d5fb44d755fd22a92752678481522f1484dca9004d670d8cc22dd",
+        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
+        "affectsGlobalScope": false
       },
       "../node_modules/@types/yauzl/index.d.ts": {
         "version": "3845d3b64286c12c60d39fc90ac1cc5e47cbc951530658d2567d578b2faa1f26",
@@ -713,6 +713,9 @@
         "../node_modules/@types/node/index.d.ts",
         "../node_modules/@types/node/stream.d.ts"
       ],
+      "../src/codes/test.ts": [
+        "../node_modules/@types/cheerio/index.d.ts"
+      ],
       "../src/main.ts": [
         "../src/sites/dm5.ts",
         "../src/sites/mhxin.ts"
@@ -732,6 +735,8 @@
         "../src/modules/misc.ts"
       ],
       "../src/modules/misc.ts": [
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/axios/index.d.ts",
         "../node_modules/chalk/index.d.ts",
         "../src/modules/cli.ts",
         "../src/modules/dirCheck.ts"
@@ -743,10 +748,8 @@
       "../src/sites/dm5.ts": [
         "../node_modules/@types/async/index.d.ts",
         "../node_modules/@types/cheerio/index.d.ts",
-        "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/puppeteer/index.d.ts",
         "../node_modules/axios/index.d.ts",
-        "../node_modules/chalk/index.d.ts",
         "../src/modules/generator.ts",
         "../src/modules/misc.ts",
         "../src/modules/progressBar.ts"
@@ -961,6 +964,9 @@
       ],
       "../src/modules/dirCheck.ts": [
         "../src/modules/misc.ts"
+      ],
+      "../src/modules/misc.ts": [
+        "../node_modules/axios/index.d.ts"
       ]
     },
     "semanticDiagnosticsPerFile": [
@@ -1039,7 +1045,7 @@
             "file": "../src/sites/mhxin.ts",
             "start": 759,
             "length": 3,
-            "messageText": "Property 'url' does not exist on type 'string | ErrnoException'.",
+            "messageText": "Property 'url' does not exist on type 'ErrorSets'.",
             "category": 1,
             "code": 2339
           },
@@ -1047,7 +1053,7 @@
             "file": "../src/sites/mhxin.ts",
             "start": 774,
             "length": 4,
-            "messageText": "Property 'path' does not exist on type 'string | ErrnoException'.",
+            "messageText": "Property 'path' does not exist on type 'ErrorSets'.",
             "category": 1,
             "code": 2339
           },
@@ -1055,7 +1061,7 @@
             "file": "../src/sites/mhxin.ts",
             "start": 790,
             "length": 5,
-            "messageText": "Property 'limit' does not exist on type 'string | ErrnoException'.",
+            "messageText": "Property 'limit' does not exist on type 'ErrorSets'.",
             "category": 1,
             "code": 2339
           }

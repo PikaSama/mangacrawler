@@ -7,24 +7,25 @@
  * License: GPL-3.0
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prepare = exports.OutTimer = exports.Logger = void 0;
+exports.prepare = exports.downloadImg = exports.OutTimer = exports.Logger = void 0;
 const chalk = require("chalk");
+const axios_1 = require("axios");
 // 本地模块
 const cli_1 = require("./cli");
 const dirCheck_1 = require("./dirCheck");
+const fs = require("fs");
 // 日志打印 -- 模块
 const Logger = {
-    err: (msg) => console.log(`${chalk.bgRed(' Error ')} ${msg}`),
-    errStr: (msg) => `${chalk.bgRed(' Error ')} ${msg}`,
-    warn: (msg) => console.log(`${chalk.bgRed(' Warn ')} ${msg}`),
-    warnStr: (msg) => `${chalk.bgRed(' Warn ')} ${msg}`,
-    info: (msg) => console.log(`${chalk.bgBlue(' Info ')} ${msg}`),
-    infoStr: (msg) => `${chalk.bgBlue(' Info ')} ${msg}`,
-    succ: (msg) => console.log(`${chalk.bgGreen(' Success ')} ${msg}`),
-    succStr: (msg) => `${chalk.bgGreen(' Success ')} ${msg}`,
-    upd: (msg) => console.log(`${chalk.bgYellow(' Update ')} ${msg}`),
-    updStr: (msg) => `${chalk.bgYellow(' Update ')} ${msg}`,
-    prog: (msg) => `${chalk.bgYellow(' Progress  ')} ${msg}`,
+    err: (msg, returnStr) => returnStr ? `${chalk.bgRed(' Error ')} ${msg}` : console.log(`${chalk.bgRed(' Error ')} ${msg}`),
+    warn: (msg, returnStr) => returnStr ? `${chalk.bgRed(' Warn ')} ${msg}` : console.log(`${chalk.bgRed(' Warn ')} ${msg}`),
+    info: (msg, returnStr) => returnStr ? `${chalk.bgBlue(' Info ')} ${msg}` : console.log(`${chalk.bgBlue(' Info ')} ${msg}`),
+    succ: (msg, returnStr) => returnStr ? `${chalk.bgGreen(' Success ')} ${msg}` : console.log(`${chalk.bgGreen(' Success ')} ${msg}`),
+    prog: (msg, returnStr) => returnStr ? `${chalk.bgYellow(' Progress ')} ${msg}` : console.log(`${chalk.bgYellow(' Progress ')} ${msg}`),
+    newLine: (line) => {
+        for (let i = 0; i < line; i++) {
+            console.log('\n');
+        }
+    }
 };
 exports.Logger = Logger;
 // 超时计时器 -- 漫画
@@ -42,6 +43,15 @@ class OutTimer {
     }
 }
 exports.OutTimer = OutTimer;
+// 下载文件 -- 模块
+function downloadImg(url, path, config = {}, callback) {
+    config.responseType = 'stream';
+    const writer = fs.createWriteStream(path);
+    axios_1.default.get(url, config).then(({ data }) => data.pipe(writer)).catch((err) => callback(err));
+    writer.on("finish", () => callback(null));
+    writer.on("error", () => callback('error'));
+}
+exports.downloadImg = downloadImg;
 // CLI界面和目录检查 -- 漫画
 function prepare(site, callback) {
     cli_1.cli(site, (err, result) => {

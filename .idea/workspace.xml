@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f3bc14b-5165-4a02-931f-82cd8a5a2731" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/spider-manga.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/spider-manga.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/codes/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/codes/test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/modules/misc.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/misc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/sites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/dm5.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/codes/test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/codes/test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/modules/misc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/misc.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sites/dm5.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/dm5.ts" afterDir="false" />
-    </list>
+    <list default="true" id="9f3bc14b-5165-4a02-931f-82cd8a5a2731" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,6 +36,7 @@
       <workItem from="1608959874587" duration="492000" />
       <workItem from="1609431177254" duration="354000" />
       <workItem from="1609433303039" duration="3666000" />
+      <workItem from="1609604364810" duration="4446000" />
     </task>
     <servers />
   </component>

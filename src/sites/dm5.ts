@@ -11,16 +11,16 @@ import * as async from 'async';
 import * as cheerio from 'cheerio';
 import * as inquirer from 'inquirer';
 import * as puppeteer from 'puppeteer'
-import * as chalk from "chalk";
-import * as fs from 'fs';
 
 // 本地模块
 import {
     WorkerDownloadParam,
     WorkerCallbackFn,
+    ErrorSets,
     OutTimer,
     prepare,
     Logger,
+    downloadImg,
 } from "../modules/misc";
 
 import { genHTML as generateManga } from "../modules/generator";
@@ -40,7 +40,14 @@ let mangaUrl: string;
 let savePath: string;
 let crawlLimit: number;
 let crawlList: string[] = [];
-let mangaInfo: Info;
+let mangaInfo: Info = {
+    cid: '',
+    mid: '',
+    sign: '',
+    signdate: '',
+    msg: '',
+    pics: 0,
+};
 let dlTime: number;
 // 节点列表
 let nodeList: string[] = [
@@ -81,18 +88,12 @@ async function getMangaInfo(): Promise<void> {
     // 获取漫画信息，用户信息（请求参数）
     const $: cheerio.Root = cheerio.load(await page.content());
     if ($("div.chapterpager").length > 0) {
-        mangaInfo.pics = parseInt(
-            $("div.chapterpager")
-                .eq(0)
-                .children("a")
-                .last()
-                .text()
-        );
-        mangaInfo.msg = Logger.infoStr(`Manga type: A | Pictures: ${mangaInfo.pics}\n`);
+        mangaInfo.pics = parseInt($("div.chapterpager").eq(0).children("a").last().text());
+        mangaInfo.msg = Logger.info(`Manga type: A | Pictures: ${mangaInfo.pics}\n`,1) as string;
     }
     else {
         mangaInfo.pics = $("img.load-src").length;
-        mangaInfo.msg = Logger.infoStr(`Manga type: B | Pictures: ${mangaInfo.pics}\n`);
+        mangaInfo.msg = Logger.info(`Manga type: B | Pictures: ${mangaInfo.pics}\n`,1) as string;
     }
     mangaInfo = await page.evaluate((pics: number,msg: string): Info => {
         return {
@@ -121,10 +122,10 @@ function resolveImages(): void {
     const resolvePB: ProgressBar = new ProgressBar(undefined,mangaInfo.pics);
     resolvePB.render(resolvedImgs,mangaInfo.pics);
     // 获取图片链接(并发控制)
-    const getPicUrl: async.QueueObject<object> = async.queue((obj: { pic: number },callback: WorkerCallbackFn): void => {
+    const getPicUrl: async.QueueObject<object> = async.queue(({pic}: {pic: number},callback: WorkerCallbackFn): void => {
         let resolveParams: string = [
             `cid=${mangaInfo.cid}`,
-            `page=${obj.pic}`,
+            `page=${pic}`,
             `key=`,
             `language=1`,
             `gtk=6`,
@@ -150,17 +151,19 @@ function resolveImages(): void {
     // 全部成功后触发
     getPicUrl.drain((): void => {
         timer.clear();
-        Logger.info('\n\nChecking server node list...\n');
+        Logger.newLine(2);
+        Logger.info('Checking server node list...\n');
         checkNode(crawlList[0]);
     });
 
     // 推送任务至队列
     for (let i = 0;i < mangaInfo.pics;i++) {
         // 错误时，结束进程
-        getPicUrl.push({ pic: i + 1 },(err: NodeJS.ErrnoException | string | null,num: number): void => {
+        getPicUrl.push({ pic: i + 1 },(err: ErrorSets,num: number): void => {
             if (err) {
-                console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} ${err} \n`);
-                console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0202]`);
+                Logger.newLine(2);
+                Logger.err(`${err} \n`);
+                Logger.err('Oops! Something went wrong, try again? [M-0x0202]');
                 process.exit(1);
             }
             else {
@@ -173,24 +176,24 @@ function resolveImages(): void {
 
 function checkNode(node: string): void {
     // 获取当前下载节点
-    let nodeCopy = node.split("/")[2].split("-");
+    let nodeCopy: string[] = node.split("/")[2].split("-");
     nodeCopy.shift();
     node = nodeCopy.join("-");
     // 与节点列表比对
-    let isKnownNode: number = 0;
+    let isKnownNode: number;
     for (let i in nodeList) {
         if (nodeList.hasOwnProperty(i)) {
-            if ((node as string) === nodeList[i]) {
+            if (node === nodeList[i]) {
                 isKnownNode = 1;
                 break;
             }
         }
     }
     if (isKnownNode) {
-        console.log(`${chalk.whiteBright.bgBlue(' Info ')} The server you are connected to is inclued in the list.\n`);
+        Logger.info('The server you are connected to is inclued in the list.\n');
     }
     else {
-        console.warn(`${chalk.whiteBright.bgRed(' Warn ')} You are connected to a unknown server. Report it later?\n`);
+        Logger.warn('You are connected to an unknown server. Report it later?\n');
     }
     inquirer.prompt([
         {
@@ -199,11 +202,16 @@ function checkNode(node: string): void {
             message: 'Please select a server to download images.',
             choices: nodeList,
         },
-    ]).then(({ node }): void => { downloadImages(node) });
+    ]).then(({ node }): void => { downloadImages(node) }).catch((err): void => {
+        Logger.err(`${err} \n`);
+        Logger.err('Oops! Something went wrong, try again? [M-0x0203]');
+        process.exit(1);
+    });
 }
 
 function downloadImages(node: string): void {
-    console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Downloading manga...\n`);
+    Logger.newLine(2);
+    Logger.info('Downloading manga...\n');
     const timer: OutTimer = new OutTimer(30,'0x0301');
     // 替换节点
     for (let i in crawlList) {
@@ -215,28 +223,28 @@ function downloadImages(node: string): void {
     }
     // 下载图片(并发控制)
     const download = async.queue(({ url }: WorkerDownloadParam,callback: WorkerCallbackFn): void => {
-        let picNum: string = url.split("/")[6].split("_")[0];
-        axios.get(url, {
+        const picNum: string = url.split("/")[6].split("_")[0];
+        const fullPath: string = `${savePath}/split/${picNum}.jpg`;
+        downloadImg(url,fullPath,{
             headers: {
                 'Referer': mangaUrl,
             },
-            responseType: 'arraybuffer',
             timeout: 10000,
-        }).then(({ data }): void => {
-                fs.writeFile(`${savePath}/split/${picNum}.jpg`,data,(err): void => {
-                    if (err) {
-                        callback(err);
-                    }
-                    else {
-                        callback(null,1);
-                    }
-                });
-        }).catch((err): void => callback(err));
+        },(err): void => {
+            if (err) {
+                callback(err);
+            }
+            else {
+                callback(null,1);
+            }
+        });
     },crawlLimit);
+
     // 全部完成时触发
     download.drain((): void => {
         timer.clear();
-        console.log(`\n\n${chalk.whiteBright.bgBlue(' Info ')} Generating HTML format file...\n`);
+        Logger.newLine(2);
+        Logger.info('Generating HTML format file...\n');
         generateManga({
             imgAmount: mangaInfo.pics,
             path: savePath,
@@ -251,10 +259,11 @@ function downloadImages(node: string): void {
     for (let i in crawlList) {
         if (crawlList.hasOwnProperty(i)) {
             // 错误时，结束进程
-            download.push({ url: crawlList[i] },(err: Error,result: number): void => {
+            download.push({ url: crawlList[i] },(err: ErrorSets,result: number): void => {
                 if (err) {
-                    console.error(`\n\n${chalk.whiteBright.bgRed(' Error ')} ${err} \n`);
-                    console.error(`${chalk.whiteBright.bgRed(' Error ')} Oops! Something went wrong, try again? [M-0x0302]`);
+                    Logger.newLine(2);
+                    Logger.err(`${err} \n`);
+                    Logger.err('Oops! Something went wrong, try again? [M-0x0302]');
                     process.exit(1);
                 }
                 else {

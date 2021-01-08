@@ -14,7 +14,7 @@ class ProgressBar {
     description: string;
     length: number;
 
-    constructor(description: string = Logger.prog(''), bar_length: number = 25) {
+    constructor(description: string = Logger.prog('') as string, bar_length: number = 25) {
         this.description = description;
         this.length = bar_length;
     }

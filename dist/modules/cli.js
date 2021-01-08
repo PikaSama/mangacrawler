@@ -38,24 +38,24 @@ function cli(mgSite, callback) {
                     let blocks = val.split("/");
                     // 判断url包含的斜杠，仅需3个
                     if (blocks.length !== 4) {
-                        return misc_1.Logger.errStr('Invalid URL format. [I-0x0101]');
+                        return misc_1.Logger.err('Invalid URL format. [I-0x0101]', 1);
                     }
                     // 判断协议是否合法
                     else if (blocks[0].match("http:") || blocks[0].match("https:")) {
                         // 判断第二个块是否无值
                         if (!(blocks[1] === '')) {
-                            return misc_1.Logger.errStr('Invalid URL usage. [I-0x0103]');
+                            return misc_1.Logger.err('Invalid URL usage. [I-0x0103]', 1);
                         }
                         // 判断网站是否正确 && 是否以'm'开头 && 是否包含分页符号“-”
                         else if (blocks[2] === "www.dm5.com" && blocks[3].slice(0, 1) === "m" && !(blocks[3].match("-"))) {
                             return true;
                         }
                         else {
-                            return misc_1.Logger.errStr('Invalid domain or Manga ID. [I-0x0104]');
+                            return misc_1.Logger.err('Invalid domain or Manga ID. [I-0x0104]', 1);
                         }
                     }
                     else {
-                        return misc_1.Logger.errStr('Unsupported transport protocol. [I-0x0102]');
+                        return misc_1.Logger.err('Unsupported transport protocol. [I-0x0102]', 1);
                     }
                 },
             },
@@ -74,24 +74,24 @@ function cli(mgSite, callback) {
                     let blocks = val.split("/");
                     // 判断url包含的斜杠，仅需5个
                     if (blocks.length !== 6) {
-                        return misc_1.Logger.errStr('Invalid URL format. [I-0x0201]');
+                        return misc_1.Logger.err('Invalid URL format. [I-0x0201]', 1);
                     }
                     // 判断协议是否合法
                     else if (blocks[0].match("http:") || blocks[0].match("https:")) {
                         // 判断第二个块是否有值 || 第五个块是否无值
                         if (!(blocks[1] === '') || blocks[4] === '') {
-                            return misc_1.Logger.errStr('Invalid URL usage. [I-0x0203]');
+                            return misc_1.Logger.err('Invalid URL usage. [I-0x0203]', 1);
                         }
                         // 判断网站是否正确 && 目录是否指向“manhua” && 后缀是否为“.html”
                         else if (blocks[2] === "m.mhxin.com" && blocks[3] === "manhua" && blocks[5].slice(-5) === ".html") {
                             return true;
                         }
                         else {
-                            return misc_1.Logger.errStr('Invalid domain or resource directory or Manga ID. [I-0x0204]');
+                            return misc_1.Logger.err('Invalid domain or resource directory or Manga ID. [I-0x0204]', 1);
                         }
                     }
                     else {
-                        return misc_1.Logger.errStr('Unsupported transport protocol. [I-0x0202]');
+                        return misc_1.Logger.err('Unsupported transport protocol. [I-0x0202]');
                     }
                 },
             },
@@ -110,7 +110,7 @@ function cli(mgSite, callback) {
                 validate(val) {
                     // 判断末尾是否含斜杠
                     if (val.slice(-1) === "/" && val.length > 1) {
-                        return misc_1.Logger.errStr('You don\'t need to add "/" at the end of the path. [I-0x0001]');
+                        return misc_1.Logger.err('You don\'t need to add "/" at the end of the path. [I-0x0001]', 1);
                     }
                     else {
                         return true;
@@ -137,7 +137,7 @@ function cli(mgSite, callback) {
                         return true;
                     }
                     else {
-                        return misc_1.Logger.errStr('Invalid number. [I-0x0002]');
+                        return misc_1.Logger.err('Invalid number. [I-0x0002]');
                     }
                 },
                 filter(val) {
