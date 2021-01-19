@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9f3bc14b-5165-4a02-931f-82cd8a5a2731" name="Default Changelist" comment="" />
+    <list default="true" id="9f3bc14b-5165-4a02-931f-82cd8a5a2731" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/codes/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/codes/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/cli.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/cli.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/dirCheck.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/dirCheck.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/generator.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/generator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/misc.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/misc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/sites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/dm5.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/sites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/mhxin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,6 +35,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$APPLICATION_PLUGINS_DIR$/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -37,6 +51,8 @@
       <workItem from="1609431177254" duration="354000" />
       <workItem from="1609433303039" duration="3666000" />
       <workItem from="1609604364810" duration="4446000" />
+      <workItem from="1610123040535" duration="7248000" />
+      <workItem from="1611072952507" duration="1624000" />
     </task>
     <servers />
   </component>

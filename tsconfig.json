@@ -7,7 +7,7 @@
     "outDir": "./dist",
     "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "listEmittedFiles": true
   },
   "include": [
