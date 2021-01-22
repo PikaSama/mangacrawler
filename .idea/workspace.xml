@@ -2,23 +2,44 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9f3bc14b-5165-4a02-931f-82cd8a5a2731" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.eslintignore" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/codes/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/codes/test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/modules/cli.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/cli.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/modules/dirCheck.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/dirCheck.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/modules/generator.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/generator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/modules/misc.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/modules/misc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/sites/dm5.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/dm5.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/sites/mhxin.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/sites/mhxin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/buildFile.tsbuildinfo" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/codes/test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/cli.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/dirCheck.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/generator.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/misc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/modules/progressBar.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/sites/dm5.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dist/sites/mhxin.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/codes/experimentalCodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/codes/experimentalCodes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/codes/test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/codes/test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/codes/wasteCodes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/codes/wasteCodes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/cli.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/cli.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/dirCheck.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/dirCheck.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/generator.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/generator.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/misc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/misc.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/progressBar.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/progressBar.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sites/dm5.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/dm5.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sites/mhxin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/sites/mhxin.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -33,11 +54,24 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="js.linters.configure.manually.selectedeslint" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/node_modules/eslint" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="yarn" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-    <property name="ts.external.directory.path" value="$APPLICATION_PLUGINS_DIR$/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/dist" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -52,11 +86,25 @@
       <workItem from="1609433303039" duration="3666000" />
       <workItem from="1609604364810" duration="4446000" />
       <workItem from="1610123040535" duration="7248000" />
-      <workItem from="1611072952507" duration="1624000" />
+      <workItem from="1611072952507" duration="1700000" />
+      <workItem from="1611233566330" duration="3477000" />
+      <workItem from="1611329803858" duration="411000" />
+      <workItem from="1611331125005" duration="4385000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/modules/cli.js" />
+        <option value="$PROJECT_DIR$/src/modules/misc.js" />
+        <option value="$PROJECT_DIR$/src/modules/dirCheck.js" />
+      </list>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

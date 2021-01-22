@@ -1,3 +1,9 @@
+## IDE
+.idea
+
+## Local modules
 node_modules
+
+## Package Manager
 yarn.lock
 package-lock.json

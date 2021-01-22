@@ -8,27 +8,25 @@
 
 import * as fs from 'fs';
 
-import { CallbackFn, Logger } from "./misc";
+import { CallbackFn, Logger } from './misc';
 
-function checkPath(savePath: string,callback: CallbackFn): void {
-    fs.readdir(savePath,(err): void => {
+function checkPath(savePath: string, callback: CallbackFn): void {
+    fs.readdir(savePath, (err): void => {
         if (err) {
             Logger.warn(`"${savePath}" does not exist. Creating...`);
             mkdir();
-        }
-        else {
+        } else {
             Logger.info(`Found directory: "${savePath}".\n`);
             readSplit();
         }
     });
 
     function readSplit() {
-        fs.readdir(savePath+'/split',(err): void => {
+        fs.readdir(savePath + '/split', (err): void => {
             if (err) {
                 Logger.warn(`"${savePath}/split" does not exist. Creating...`);
                 mkSplit();
-            }
-            else {
+            } else {
                 Logger.info(`Found directory: "${savePath}/split".\n`);
                 callback(null);
             }
@@ -36,11 +34,10 @@ function checkPath(savePath: string,callback: CallbackFn): void {
     }
 
     function mkdir() {
-        fs.mkdir(savePath,(err): void => {
+        fs.mkdir(savePath, (err): void => {
             if (err) {
                 callback(err + '[C-0x0001]\n');
-            }
-            else {
+            } else {
                 Logger.succ('Created.\n');
                 readSplit();
             }
@@ -48,11 +45,10 @@ function checkPath(savePath: string,callback: CallbackFn): void {
     }
 
     function mkSplit() {
-        fs.mkdir(savePath+'/split',(err): void => {
+        fs.mkdir(savePath + '/split', (err): void => {
             if (err) {
                 callback(err + '[C-0x0101]\n');
-            }
-            else {
+            } else {
                 Logger.succ('Created.\n');
                 callback(null);
             }
