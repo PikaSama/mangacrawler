@@ -1,8 +1,5 @@
-## Local modules
-node_modules
+# Node
+node_modules/
 
-## Build files
-dist
-
-## Project files
-template
+# Build
+dist/
