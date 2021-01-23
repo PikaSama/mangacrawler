@@ -6,6 +6,7 @@
  * License: GPL-3.0
  */
 
+// import { default as axios } form 'axios';
 import axios from 'axios';
 import * as async from 'async';
 import * as cheerio from 'cheerio';
@@ -36,9 +37,9 @@ interface Info {
     pics: number;
 }
 
-let mangaUrl: string;
-let savePath: string;
-let crawlLimit: number;
+let mangaUrl = '';
+let savePath = '';
+let crawlLimit = 0;
 let crawlList: string[] = [];
 let mangaInfo: Info = {
     cid: '',
@@ -48,7 +49,7 @@ let mangaInfo: Info = {
     msg: '',
     pics: 0,
 };
-let dlTime: number;
+let dlTime = 0;
 // 节点列表
 let nodeList: string[] = [
     '112-53-225-216.cdndm5.com',
@@ -79,20 +80,21 @@ function dongmanwu(): void {
 async function getMangaInfo(): Promise<void> {
     dlTime = new Date().getTime();
     Logger.info('Starting browser...\n');
-    const browser: puppeteer.Browser = await puppeteer.launch();
+    const browser = await puppeteer.launch();
     Logger.info('Opening page...\n');
-    const page: puppeteer.Page = await browser.newPage();
+    const page = await browser.newPage();
     await page.goto(mangaUrl, { waitUntil: 'networkidle2' });
     Logger.info('Fetching some information...\n');
     // 获取漫画信息，用户信息（请求参数）
-    const $: cheerio.Root = cheerio.load(await page.content());
+    const $ = cheerio.load(await page.content());
     if ($('div.chapterpager').length > 0) {
-        mangaInfo.pics = parseInt($('div.chapterpager').eq(0).children('a').last().text());
-        mangaInfo.msg = Logger.info(`Manga type: A | Pictures: ${mangaInfo.pics}\n`, 1) as string;
+        mangaInfo.pics = parseInt($('div.chapterpager').eq(0).children('a').last().text(),10);
+        mangaInfo.msg = Logger.str.info(`Manga type: A | Pictures: ${mangaInfo.pics}\n`);
     } else {
         mangaInfo.pics = $('img.load-src').length;
-        mangaInfo.msg = Logger.info(`Manga type: B | Pictures: ${mangaInfo.pics}\n`, 1) as string;
+        mangaInfo.msg = Logger.str.info(`Manga type: B | Pictures: ${mangaInfo.pics}\n`);
     }
+
     mangaInfo = await page.evaluate(
         (pics: number, msg: string): Info => {
             return {
@@ -118,13 +120,13 @@ async function getMangaInfo(): Promise<void> {
 
 function resolveImages(): void {
     Logger.info('Resolving images...\n');
-    const timer: OutTimer = new OutTimer(30, '0x0201');
+    const timer = new OutTimer(30, '0x0201');
     // 获取图片的进度条
-    let resolvedImgs: number = 0;
-    const resolvePB: ProgressBar = new ProgressBar(undefined, mangaInfo.pics);
+    let resolvedImgs = 0;
+    const resolvePB = new ProgressBar(undefined, mangaInfo.pics);
     resolvePB.render(resolvedImgs, mangaInfo.pics);
     // 获取图片链接(并发控制)
-    const getPicUrl: async.QueueObject<object> = async.queue(
+    const getPicUrl = async.queue(
         ({ pic }: { pic: number }, callback: WorkerCallbackFn): void => {
             let resolveParams: string = [
                 `cid=${mangaInfo.cid}`,

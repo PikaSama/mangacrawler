@@ -1,10 +1,12 @@
 module.exports = {
     extends: ['alloy', 'alloy/typescript'],
     env: {
-        browser: true,
         node: true,
+        browser: true,
         commonjs: true,
     },
-    globals: {},
+    globals: {
+        NodeJS: true,
+    },
     rules: {},
 };

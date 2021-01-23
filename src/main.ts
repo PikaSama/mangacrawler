@@ -6,7 +6,7 @@
  * License: GPL-3.0
  */
 
-import inquirer from 'inquirer';
+import * as inquirer from 'inquirer';
 
 // 支持的漫画站点
 const sites: string[] = ['www.dm5.com', 'm.mhxin.com'];

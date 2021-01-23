@@ -6,7 +6,7 @@
  * License: GPL-3.0
  */
 
-import fs from 'fs';
+import * as fs from 'fs';
 
 import { CallbackFn, Logger } from './misc';
 
@@ -38,7 +38,7 @@ function checkPath(savePath: string, callback: CallbackFn): void {
             if (err) {
                 callback(err + '[C-0x0001]\n');
             } else {
-                Logger.succ('Created.\n');
+                Logger.done('Created.\n');
                 readSplit();
             }
         });
@@ -49,10 +49,11 @@ function checkPath(savePath: string, callback: CallbackFn): void {
             if (err) {
                 callback(err + '[C-0x0101]\n');
             } else {
-                Logger.succ('Created.\n');
+                Logger.done('Created.\n');
                 callback(null);
             }
         });
     }
 }
+
 export { checkPath };

@@ -6,25 +6,6 @@
  * Description: 漫画站点“动漫屋”的漫画下载模块
  * License: GPL-3.0
  */
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,23 +15,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dongmanwu = void 0;
-const axios_1 = __importDefault(require("axios"));
-const async = __importStar(require("async"));
-const cheerio = __importStar(require("cheerio"));
-const inquirer = __importStar(require("inquirer"));
-const puppeteer = __importStar(require("puppeteer"));
+// import { default as axios } form 'axios';
+const axios_1 = require("axios");
+const async = require("async");
+const cheerio = require("cheerio");
+const inquirer = require("inquirer");
+const puppeteer = require("puppeteer");
 // 本地模块
 const misc_1 = require("../modules/misc");
 const generator_1 = require("../modules/generator");
 const progressBar_1 = require("../modules/progressBar");
-let mangaUrl;
-let savePath;
-let crawlLimit;
+let mangaUrl = '';
+let savePath = '';
+let crawlLimit = 0;
 let crawlList = [];
 let mangaInfo = {
     cid: '',
@@ -60,7 +39,7 @@ let mangaInfo = {
     msg: '',
     pics: 0,
 };
-let dlTime;
+let dlTime = 0;
 // 节点列表
 let nodeList = [
     '112-53-225-216.cdndm5.com',
@@ -100,12 +79,12 @@ function getMangaInfo() {
         // 获取漫画信息，用户信息（请求参数）
         const $ = cheerio.load(yield page.content());
         if ($('div.chapterpager').length > 0) {
-            mangaInfo.pics = parseInt($('div.chapterpager').eq(0).children('a').last().text());
-            mangaInfo.msg = misc_1.Logger.info(`Manga type: A | Pictures: ${mangaInfo.pics}\n`, 1);
+            mangaInfo.pics = parseInt($('div.chapterpager').eq(0).children('a').last().text(), 10);
+            mangaInfo.msg = misc_1.Logger.str.info(`Manga type: A | Pictures: ${mangaInfo.pics}\n`);
         }
         else {
             mangaInfo.pics = $('img.load-src').length;
-            mangaInfo.msg = misc_1.Logger.info(`Manga type: B | Pictures: ${mangaInfo.pics}\n`, 1);
+            mangaInfo.msg = misc_1.Logger.str.info(`Manga type: B | Pictures: ${mangaInfo.pics}\n`);
         }
         mangaInfo = yield page.evaluate((pics, msg) => {
             return {

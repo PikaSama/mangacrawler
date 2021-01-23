@@ -6,7 +6,7 @@
  * License: GPL-3.0
  */
 
-import inquirer from 'inquirer';
+import * as inquirer from 'inquirer';
 import { homedir } from 'os';
 
 import { Results, CallbackFn, Logger } from './misc';
@@ -177,4 +177,4 @@ function cli(mgSite: string, callback: CallbackFn): void {
     }
 }
 
-export default cli;
+export { cli };

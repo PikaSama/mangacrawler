@@ -7,7 +7,7 @@
         "outDir": "./dist",
         "moduleResolution": "Node",
         "noFallthroughCasesInSwitch": true,
-        "esModuleInterop": true,
+        "esModuleInterop": false,
         "listEmittedFiles": true
     },
     "include": ["./src/**/*.ts"],

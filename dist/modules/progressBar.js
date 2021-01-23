@@ -11,8 +11,9 @@ exports.ProgressBar = void 0;
 const single_line_log_1 = require("single-line-log");
 const misc_1 = require("./misc");
 class ProgressBar {
-    constructor(description = misc_1.Logger.prog(''), bar_length = 25) {
-        this.description = description;
+    // eslint-disable-next-line no-undef
+    constructor(bar_description = misc_1.Logger.str.prog(''), bar_length = 25) {
+        this.description = bar_description;
         this.length = bar_length;
     }
     render(completed, total) {

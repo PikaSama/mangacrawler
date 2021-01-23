@@ -33,7 +33,7 @@ function genHTML(opt: { imgAmount: number; path: string; dlTime: number }) {
                 Logger.err(`${err} [G-0x0101]\n`);
             } else {
                 opt.dlTime = Math.round((new Date().getTime() - opt.dlTime) / 100) / 10;
-                Logger.succ(`Manga has been downloaded in ${opt.dlTime}s`);
+                Logger.done(`Manga has been downloaded in ${opt.dlTime}s`);
             }
         });
     }

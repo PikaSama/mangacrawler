@@ -6,11 +6,9 @@
  * Description: CLI界面模块
  * License: GPL-3.0
  */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const inquirer_1 = __importDefault(require("inquirer"));
+exports.cli = void 0;
+const inquirer = require("inquirer");
 const os_1 = require("os");
 const misc_1 = require("./misc");
 // 家目录
@@ -33,7 +31,7 @@ function cli(mgSite, callback) {
             process.exit(1);
     }
     function dm5() {
-        inquirer_1.default
+        inquirer
             .prompt([
             {
                 type: 'input',
@@ -74,7 +72,7 @@ function cli(mgSite, callback) {
             .catch((err) => callback(err));
     }
     function mhxin() {
-        inquirer_1.default
+        inquirer
             .prompt([
             {
                 type: 'input',
@@ -115,7 +113,7 @@ function cli(mgSite, callback) {
             .catch((err) => callback(err));
     }
     function defaultPrompts() {
-        inquirer_1.default
+        inquirer
             .prompt([
             // 保存路径
             {
@@ -174,4 +172,4 @@ function cli(mgSite, callback) {
             .catch((err) => callback(err));
     }
 }
-exports.default = cli;
+exports.cli = cli;

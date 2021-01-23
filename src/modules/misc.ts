@@ -7,10 +7,11 @@
  */
 
 import * as chalk from 'chalk';
+// import { default as axios, AxiosRequestConfig } from 'axios';
 import axios, { AxiosRequestConfig } from 'axios';
 
 // 本地模块
-import cli from './cli';
+import { cli } from './cli';
 import { checkPath } from './dirCheck';
 import * as fs from 'fs';
 
@@ -48,14 +49,15 @@ const Logger = {
         info: (msg: string): string => `${chalk.bgBlue(' Info ')} ${msg}`,
         done: (msg: string): string => `${chalk.bgGreen(' Done ')} ${msg}`,
         upd: (msg: string): string => `${chalk.bgYellow(' Update ')} ${msg}`,
+        prog: (msg: string): string => `${chalk.bgYellow(' Progress ')} ${msg}`,
     },
 };
 
 // 超时计时器 -- 漫画
 class OutTimer {
-    timerID: NodeJS.Timeout;
+    private readonly timerID: NodeJS.Timeout;
 
-    constructor(timeout: number, errorCode: string) {
+    public constructor(timeout: number, errorCode: string) {
         // 超时，结束进程
         this.timerID = setTimeout((): void => {
             Logger.err(`\n\nTimed out for ${timeout} seconds. [M-${errorCode}]`);
@@ -64,20 +66,34 @@ class OutTimer {
     }
 
     // 成功，清除计时器
-    clear(): void {
+    public clear(): void {
         clearTimeout(this.timerID);
     }
 }
 
+// 文件下载参数
+interface DownloadParams {
+    path: string;
+    url: string;
+}
+
 // 下载文件 -- 模块
-function downloadImg(url: string, path: string, config: AxiosRequestConfig = {}, callback: CallbackFn): void {
+function downloadImg({ path, url }: DownloadParams, callback: CallbackFn, config: AxiosRequestConfig = {}): void {
     config.responseType = 'stream';
     const writer: fs.WriteStream = fs.createWriteStream(path);
     axios
         .get(url, config)
         .then(({ data }): void => data.pipe(writer))
         .catch((err): void => callback(err));
-    writer.on('finish', (): void => callback(null));
+    writer.on('finish', (): void => {
+        fs.readFile(path, 'utf8', (err, data): void => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, { fileContent: data });
+            }
+        });
+    });
     writer.on('error', (): void => callback('error'));
 }
 

@@ -32,7 +32,7 @@
     },
     "scripts": {
         "app": "node ./dist/main.js",
-        "format": "prettier --write src/*.ts src/*/*.ts",
+        "format": "prettier --write ./src/*.ts ./src/*/*.ts ./*.js ./*.json",
         "clean": "rm -rf ./dist/* && rm ./src/*.js ./src/*/*.js"
     },
     "repository": "git+https://github.com/pikasama/spider-manga.git",
