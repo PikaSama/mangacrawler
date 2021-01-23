@@ -10,7 +10,7 @@ import * as chalk from 'chalk';
 import axios, { AxiosRequestConfig } from 'axios';
 
 // 本地模块
-import { cli } from './cli';
+import cli from './cli';
 import { checkPath } from './dirCheck';
 import * as fs from 'fs';
 

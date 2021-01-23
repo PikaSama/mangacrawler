@@ -1,9 +1,7 @@
-## IDE
-.idea
+# IDE
+.idea/
 
-## Local modules
-node_modules
-
-## Package Manager
-yarn.lock
+# Node
+node_modules/
 package-lock.json
+yarn.lock

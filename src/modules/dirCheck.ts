@@ -6,7 +6,7 @@
  * License: GPL-3.0
  */
 
-import * as fs from 'fs';
+import fs from 'fs';
 
 import { CallbackFn, Logger } from './misc';
 
