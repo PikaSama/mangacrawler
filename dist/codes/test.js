@@ -21,7 +21,7 @@ inquirer.prompt([
         },
     },
 ]);
-cli_1.default('dm5', (err, result) => {
+cli_1.cli('dm5', (err, result) => {
     if (err) {
         console.error(err);
     }

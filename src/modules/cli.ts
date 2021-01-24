@@ -170,7 +170,7 @@ function cli(mgSite: string, callback: CallbackFn): void {
             ])
             .then(({ path, request }) => {
                 cliResults.path = path;
-                cliResults.limit = request;
+                cliResults.limit = parseInt(request, 10);
                 callback(null, cliResults);
             })
             .catch((err): void => callback(err));

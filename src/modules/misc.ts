@@ -30,10 +30,7 @@ interface WorkerDownloadParam {
     url: string;
 }
 
-// Worker回调函数 -- 漫画
-type WorkerCallbackFn = (err: ErrorSets, result?: number) => void;
-
-// 规定回调函数的接口 -- 模块
+// 回调函数 -- 模块
 type CallbackFn = (err: ErrorSets, result?: Results) => void;
 
 // 日志打印 -- 模块
@@ -43,6 +40,7 @@ const Logger = {
     info: (msg: string): void => console.log(`${chalk.bgBlue(' Info ')} ${msg}`),
     done: (msg: string): void => console.log(`${chalk.bgGreen(' Done ')} ${msg}`),
     upd: (msg: string): void => console.log(`${chalk.bgYellow(' Update ')} ${msg}`),
+    newLine: (lines: number): void => console.log('\n'.repeat(lines)),
     str: {
         err: (msg: ErrorSets): string => `${chalk.bgRed(' Error ')} ${msg}`,
         warn: (msg: ErrorSets): string => `${chalk.bgRed(' Warn ')} ${msg}`,
@@ -71,29 +69,28 @@ class OutTimer {
     }
 }
 
+// Axios响应数据
+interface ResponseData {
+    data: string;
+}
+
 // 文件下载参数
 interface DownloadParams {
-    path: string;
     url: string;
+    path: string;
 }
 
 // 下载文件 -- 模块
-function downloadImg({ path, url }: DownloadParams, callback: CallbackFn, config: AxiosRequestConfig = {}): void {
+function downloadImg(params: DownloadParams, callback: CallbackFn, config: AxiosRequestConfig = {}): void {
+    const { url, path } = params;
     config.responseType = 'stream';
-    const writer: fs.WriteStream = fs.createWriteStream(path);
+    const writer = fs.createWriteStream(path);
     axios
         .get(url, config)
         .then(({ data }): void => data.pipe(writer))
         .catch((err): void => callback(err));
-    writer.on('finish', (): void => {
-        fs.readFile(path, 'utf8', (err, data): void => {
-            if (err) {
-                callback(err);
-            } else {
-                callback(null, { fileContent: data });
-            }
-        });
-    });
+
+    writer.on('finish', (): void => callback(null));
     writer.on('error', (): void => callback('error'));
 }
 
@@ -114,14 +111,4 @@ function prepare(site: string, callback: CallbackFn): void {
     });
 }
 
-export {
-    WorkerDownloadParam,
-    WorkerCallbackFn,
-    Results,
-    CallbackFn,
-    ErrorSets,
-    Logger,
-    OutTimer,
-    downloadImg,
-    prepare,
-};
+export { WorkerDownloadParam, ResponseData, Results, CallbackFn, Logger, OutTimer, downloadImg, prepare };

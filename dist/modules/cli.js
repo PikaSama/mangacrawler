@@ -166,7 +166,7 @@ function cli(mgSite, callback) {
         ])
             .then(({ path, request }) => {
             cliResults.path = path;
-            cliResults.limit = request;
+            cliResults.limit = parseInt(request, 10);
             callback(null, cliResults);
         })
             .catch((err) => callback(err));

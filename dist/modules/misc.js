@@ -22,6 +22,7 @@ const Logger = {
     info: (msg) => console.log(`${chalk.bgBlue(' Info ')} ${msg}`),
     done: (msg) => console.log(`${chalk.bgGreen(' Done ')} ${msg}`),
     upd: (msg) => console.log(`${chalk.bgYellow(' Update ')} ${msg}`),
+    newLine: (lines) => console.log('\n'.repeat(lines)),
     str: {
         err: (msg) => `${chalk.bgRed(' Error ')} ${msg}`,
         warn: (msg) => `${chalk.bgRed(' Warn ')} ${msg}`,
@@ -48,23 +49,15 @@ class OutTimer {
 }
 exports.OutTimer = OutTimer;
 // 下载文件 -- 模块
-function downloadImg({ path, url }, callback, config = {}) {
+function downloadImg(params, callback, config = {}) {
+    const { url, path } = params;
     config.responseType = 'stream';
     const writer = fs.createWriteStream(path);
     axios_1.default
         .get(url, config)
         .then(({ data }) => data.pipe(writer))
         .catch((err) => callback(err));
-    writer.on('finish', () => {
-        fs.readFile(path, 'utf8', (err, data) => {
-            if (err) {
-                callback(err);
-            }
-            else {
-                callback(null, { fileContent: data });
-            }
-        });
-    });
+    writer.on('finish', () => callback(null));
     writer.on('error', () => callback('error'));
 }
 exports.downloadImg = downloadImg;

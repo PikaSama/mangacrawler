@@ -8,7 +8,7 @@
 
 import * as inquirer from 'inquirer';
 
-import cli from '../modules/cli';
+import { cli } from '../modules/cli';
 
 inquirer.prompt([
     {

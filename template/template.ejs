@@ -22,9 +22,8 @@
 </head>
 <body>
     <div class="images">
-    <% for(let i = 0;i < imgs;i++) { %>
-        <% let j = i + 1;%>
-        <img src="./split/<%= j %>.jpg" alt="" />
+    <% for(let i = 0;i < imgs;i += 1) { %>
+        <img src="./split/<%= i + 1 %>.jpg" alt="" />
     <% } %>
     </div>
 </body>

@@ -113,7 +113,7 @@ function resolveImages() {
     const resolvePB = new progressBar_1.ProgressBar(undefined, mangaInfo.pics);
     resolvePB.render(resolvedImgs, mangaInfo.pics);
     // 获取图片链接(并发控制)
-    const getPicUrl = async.queue(({ pic }, callback) => {
+    const getPicUrl = async.queue((pic, callback) => {
         let resolveParams = [
             `cid=${mangaInfo.cid}`,
             `page=${pic}`,
@@ -135,24 +135,25 @@ function resolveImages() {
             .then(({ data }) => {
             let statement = data.split('}');
             statement[4] = statement[4].slice(0, statement[4].length - 1) + " + 'crawlList.push(d[0])'";
+            // eslint-disable-next-line no-eval
             eval(statement.join('}'));
-            callback(null, 1);
+            callback(null);
         })
             .catch((err) => callback(err));
     }, crawlLimit);
     // 全部成功后触发
     getPicUrl.drain(() => {
         timer.clear();
-        misc_1.Logger.newLine(2);
+        misc_1.Logger.newLine(1);
         misc_1.Logger.info('Checking server node list...\n');
         checkNode(crawlList[0]);
     });
     // 推送任务至队列
-    for (let i = 0; i < mangaInfo.pics; i++) {
+    for (let i = 0; i < mangaInfo.pics; i += 1) {
         // 错误时，结束进程
-        getPicUrl.push({ pic: i + 1 }, (err, num) => {
+        getPicUrl.push(i + 1, (err, num) => {
             if (err) {
-                misc_1.Logger.newLine(2);
+                misc_1.Logger.newLine(1);
                 misc_1.Logger.err(`${err} \n`);
                 misc_1.Logger.err('Oops! Something went wrong, try again? [M-0x0202]');
                 process.exit(1);
@@ -168,17 +169,15 @@ function checkNode(node) {
     // 获取当前下载节点
     let nodeCopy = node.split('/')[2].split('-');
     nodeCopy.shift();
-    node = nodeCopy.join('-');
+    const composedNode = nodeCopy.join('-');
     // 与节点列表比对
-    let isKnownNode;
-    for (let i in nodeList) {
-        if (nodeList.hasOwnProperty(i)) {
-            if (node === nodeList[i]) {
-                isKnownNode = 1;
-                break;
-            }
+    let isKnownNode = 0;
+    nodeList.map((val) => {
+        if (composedNode === val) {
+            isKnownNode = 1;
         }
-    }
+        return '';
+    });
     if (isKnownNode) {
         misc_1.Logger.info('The server you are connected to is inclued in the list.\n');
     }
@@ -204,39 +203,38 @@ function checkNode(node) {
     });
 }
 function downloadImages(node) {
-    misc_1.Logger.newLine(2);
+    misc_1.Logger.newLine(1);
     misc_1.Logger.info('Downloading manga...\n');
     const timer = new misc_1.OutTimer(30, '0x0301');
     // 替换节点
-    for (let i in crawlList) {
-        if (crawlList.hasOwnProperty(i)) {
-            let url = crawlList[i].split('/');
-            url[2] = url[2].split('-')[0] + '-' + node;
-            crawlList[i] = url.join('/');
-        }
-    }
+    crawlList.map((val, index) => {
+        let url = crawlList[index].split('/');
+        url[2] = url[2].split('-')[0] + '-' + node;
+        crawlList[index] = url.join('/');
+        return '';
+    });
     // 下载图片(并发控制)
     const download = async.queue(({ url }, callback) => {
         const picNum = url.split('/')[6].split('_')[0];
         const fullPath = `${savePath}/split/${picNum}.jpg`;
-        misc_1.downloadImg(url, fullPath, {
-            headers: {
-                Referer: mangaUrl,
-            },
-            timeout: 10000,
-        }, (err) => {
+        misc_1.downloadImg({ url, path: fullPath }, (err) => {
             if (err) {
                 callback(err);
             }
             else {
-                callback(null, 1);
+                callback(null);
             }
+        }, {
+            headers: {
+                Referer: mangaUrl,
+            },
+            timeout: 10000,
         });
     }, crawlLimit);
     // 全部完成时触发
     download.drain(() => {
         timer.clear();
-        misc_1.Logger.newLine(2);
+        misc_1.Logger.newLine(1);
         misc_1.Logger.info('Generating HTML format file...\n');
         generator_1.genHTML({
             imgAmount: mangaInfo.pics,
@@ -254,7 +252,7 @@ function downloadImages(node) {
             // 错误时，结束进程
             download.push({ url: crawlList[i] }, (err, result) => {
                 if (err) {
-                    misc_1.Logger.newLine(2);
+                    misc_1.Logger.newLine(1);
                     misc_1.Logger.err(`${err} \n`);
                     misc_1.Logger.err('Oops! Something went wrong, try again? [M-0x0302]');
                     process.exit(1);
