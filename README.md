@@ -1,94 +1,58 @@
-# Spider-Manga
-![Author](https://img.shields.io/static/v1?label=Author&message=Zorin&color=9cf&style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/PikaSama/spider-manga?color=success&style=for-the-badge)
-![Platform](https://img.shields.io/static/v1?label=Platform&message=Linux&color=orange&style=for-the-badge)
+# MangaCrawler
+![Author](https://img.shields.io/static/v1?label=Author&message=Zorin&color=royalblue&style=for-the-badge)
+![Platform](https://img.shields.io/static/v1?label=Platform&message=Linux&color=cornflowerblue&style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/PikaSama/spider-manga?color=limegreen&style=for-the-badge)
+![Node version](https://img.shields.io/static/v1?label=node&message=>=12&color=success&style=for-the-badge)
 
-![GitHub top language](https://img.shields.io/github/languages/top/pikasama/spider-manga?style=for-the-badge)
 ![GitHub repo size](https://img.shields.io/github/repo-size/PikaSama/spider-manga?color=ff69b4&style=for-the-badge)
+![GitHub top language](https://img.shields.io/github/languages/top/pikasama/spider-manga?style=for-the-badge&color=00648C)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/PikaSama/spider-manga?color=%23007ec6&include_prereleases&style=for-the-badge)
 
+## 介绍
 一个自己写的nodejs爬虫小练习（2），用于下载漫画
 
 本人代码不精，如有更好的实现方法，欢迎交流（PR/Issues/...）
 
-## 安装
-项目依赖于：
-
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/async?style=flat-square)
-   
-并发请求下载（async.queue）
-
- ![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/axios?style=flat-square)
-   
-爬取漫画信息
-
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/cheerio?style=flat-square)
-
-解析漫画信息
-
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/ejs?style=flat-square)
- 
-html模版
-
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/html-minifier?style=flat-square)
-
-用于压缩html
-
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/inquirer?style=flat-square)
-
-输入菜单
-
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/puppeteer?style=flat-square)
-
-用于爬取和下载漫画
-
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/single-line-log?style=flat-square)
-
-下载进度条
-
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/utf-8-validate?style=flat-square)
-
-ws的peerDependency
-
-![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/PikaSama/spider-manga/bufferutil?style=flat-square)
-
-ws的peerDependency
-
-![Node version](https://img.shields.io/static/v1?label=node&message=>=12&color=success&style=flat-square)
-
-项目基于Nodejs v12.19.0开发
-   
+## 快速开始
+### 安装
+使用yarn(推荐)
+```bash
+yarn --prod
+```   
 使用npm
 ```bash
 npm install --production
 ```
-使用yarn
-```bash
-yarn --prod
-```
-本项目仅在Linux平台运行并测试，因个人时间和精力有限，未在Windows平台进行测试，如果你尝试以Windows平台运行，可能会造成问题（如果真有问题还请发至Issues）
 
-注：安装puppeteer需要下载chromium（187MB），请耐心等待（以自带chrome/chromium运行的功能还在开发中）
+本项目仅在Linux平台测试并运行，因个人时间和精力有限，未在Windows平台进行测试，无法确定是否会造成问题
 
-## 使用
+如果你在Windows平台运行此项目出现问题，请提交到Issues
+
+### 运行
 目前支持以下网站的漫画
 
 - [漫画屋](http://www.dm5.com)
 - [漫画芯](https://m.mhxin.com)
 
 使用下面的命令运行
+
+使用yarn(推荐)
 ```bash
-node index.js
+yarn app
+```   
+使用npm
+```bash
+npm run app
 ```
 
-### 文件目录
+### 目录结构
+存放漫画的文件夹中含有目录和文件各一个
 - 目录：split -- 单张图片的存放位置
 - 文件：manga.html -- 完整漫画文件
 
 ## bug
- 1. 下载请求数提高后，有几率会卡在某一次请求中（暂无最优解）
- 2. 通过html文档拼接的图片有概率会有白条间隔（已设置css样式尽量避免此问题）
- 3. 暂未知晓
+ 1. 下载请求数提高后，有几率会卡在某一次请求中（若网站支持切换下载节点可通过切换下载节点解决）
+ 2. 暂未知晓
 
 ## Todo
 - [x] 辨析漫画类型
@@ -97,13 +61,21 @@ node index.js
 - [x] 并发请求下载·优化
 - [x] 连接超时自动退出 
 - [x] 对网站 漫画芯 做支持
+- [x] 爬取漫画更多信息
 - [ ] 上传未知节点信息至服务器
 - [ ] 对网站 漫画堆 做支持
-- [ ] 使用本地chrome/chromium代替
-- [ ] 爬取漫画更多信息
 - [ ] 获取漫画更新
 
 ## 更新日志
+2021.1.25 21:06 v1.4.0-rc.3
+- 修改：项目使用ESLint + Prettier规范代码，使用dpdm检查模块的循环依赖性
+- 修复：漫画芯的图片链接解析
+- 优化：提升漫画堆获取漫画信息的速度
+- 修改：将puppeteer移入devDependencies
+
+2020.12.19 17:58 v1.4.0-rc.2
+- 优化：代码逻辑
+
 2020.12.5 23:24 v1.4.0-rc.1
 - 修改：项目使用typescript重写（本人仍是typescript小白，请多多指教）
 - 优化：代码模块化xN，优化目录结构
