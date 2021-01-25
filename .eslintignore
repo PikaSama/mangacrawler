@@ -3,3 +3,7 @@ node_modules/
 
 # Build
 dist/
+
+# Codes
+src/codes/deprecatedCodes.ts
+src/codes/experimentalCodes.ts

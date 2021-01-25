@@ -2,7 +2,7 @@
  * Author: Zorin
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
- * Description: 杂项模块
+ * Description: 工具模块
  * License: GPL-3.0
  */
 
@@ -11,8 +11,6 @@ import * as chalk from 'chalk';
 import axios, { AxiosRequestConfig } from 'axios';
 
 // 本地模块
-import { cli } from './cli';
-import { checkPath } from './dirCheck';
 import * as fs from 'fs';
 
 // 错误内容
@@ -35,19 +33,19 @@ type CallbackFn = (err: ErrorSets, result?: Results) => void;
 
 // 日志打印 -- 模块
 const Logger = {
-    err: (msg: ErrorSets): void => console.log(`${chalk.bgRed(' Error ')} ${msg}`),
-    warn: (msg: ErrorSets): void => console.log(`${chalk.bgRed(' Warn ')} ${msg}`),
-    info: (msg: string): void => console.log(`${chalk.bgBlue(' Info ')} ${msg}`),
-    done: (msg: string): void => console.log(`${chalk.bgGreen(' Done ')} ${msg}`),
-    upd: (msg: string): void => console.log(`${chalk.bgYellow(' Update ')} ${msg}`),
+    err: (msg: ErrorSets): void => console.log(`${chalk.bgRed(' ERROR ')} ${msg}`),
+    warn: (msg: ErrorSets): void => console.log(`${chalk.bgRed(' WARN ')} ${msg}`),
+    info: (msg: string): void => console.log(`${chalk.bgBlue(' INFO ')} ${msg}`),
+    done: (msg: string): void => console.log(`${chalk.bgGreen(' DONE ')} ${msg}`),
+    upd: (msg: string): void => console.log(`${chalk.bgYellow(' UPDATE ')} ${msg}`),
+    debug: (msg: any): void => console.log(`${chalk.bgGray('DEBUG')}`, msg),
     newLine: (lines: number): void => console.log('\n'.repeat(lines)),
     str: {
-        err: (msg: ErrorSets): string => `${chalk.bgRed(' Error ')} ${msg}`,
-        warn: (msg: ErrorSets): string => `${chalk.bgRed(' Warn ')} ${msg}`,
-        info: (msg: string): string => `${chalk.bgBlue(' Info ')} ${msg}`,
-        done: (msg: string): string => `${chalk.bgGreen(' Done ')} ${msg}`,
-        upd: (msg: string): string => `${chalk.bgYellow(' Update ')} ${msg}`,
-        prog: (msg: string): string => `${chalk.bgYellow(' Progress ')} ${msg}`,
+        err: (msg: ErrorSets): string => `${chalk.bgRed(' ERROR ')} ${msg}`,
+        warn: (msg: ErrorSets): string => `${chalk.bgRed(' WARN ')} ${msg}`,
+        info: (msg: string): string => `${chalk.bgBlue(' INFO ')} ${msg}`,
+        done: (msg: string): string => `${chalk.bgGreen(' DONE ')} ${msg}`,
+        upd: (msg: string): string => `${chalk.bgYellow(' UPDATE ')} ${msg}`,
     },
 };
 
@@ -94,21 +92,4 @@ function downloadImg(params: DownloadParams, callback: CallbackFn, config: Axios
     writer.on('error', (): void => callback('error'));
 }
 
-// CLI界面和目录检查 -- 漫画
-function prepare(site: string, callback: CallbackFn): void {
-    cli(site, (err, result): void => {
-        if (err) {
-            callback(err + '[I-0x0003]');
-        } else {
-            checkPath(result.path, (err_1): void => {
-                if (err_1) {
-                    callback(err_1);
-                } else {
-                    callback(null, result);
-                }
-            });
-        }
-    });
-}
-
-export { WorkerDownloadParam, ResponseData, Results, CallbackFn, Logger, OutTimer, downloadImg, prepare };
+export { WorkerDownloadParam, ResponseData, Results, CallbackFn, Logger, OutTimer, downloadImg };

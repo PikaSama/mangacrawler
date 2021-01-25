@@ -10,7 +10,7 @@ import { minify } from 'html-minifier';
 import * as ejs from 'ejs';
 import * as fs from 'fs';
 
-import { Logger } from './misc';
+import { Logger } from './utils';
 
 function genHTML(opt: { imgAmount: number; path: string; dlTime: number }) {
     ejs.renderFile('./template/template.ejs', { imgs: opt.imgAmount }, (err, data) => {

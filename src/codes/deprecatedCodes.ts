@@ -3,7 +3,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: 废弃但仍有参考价值的代码
- * License: GPL-3.0
+ * License: MIT
  */
 // Description: 使用sharp进行图片拼接，因运行时间过慢，拼接后的效果无法达到预期废弃
 const fs = require('fs');

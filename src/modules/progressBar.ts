@@ -7,15 +7,14 @@
  */
 
 import { stdout as slog } from 'single-line-log';
-
-import { Logger } from './misc';
+import { bgWhiteBright as chalk } from 'chalk';
 
 class ProgressBar {
     private readonly description: string;
     private readonly length: number;
 
     // eslint-disable-next-line no-undef
-    public constructor(bar_description = Logger.str.prog(''), bar_length = 25) {
+    public constructor(bar_length = 25, bar_description = chalk.bgYellow(' PROGRESS ')) {
         this.description = bar_description;
         this.length = bar_length;
     }
@@ -39,6 +38,9 @@ class ProgressBar {
         const cmdText = `${this.description} ${(100 * percent).toFixed(2)}% ${cell}${empty} ${completed}/${total}`;
         // 在单行输出文本
         slog(cmdText);
+    }
+    public clear() {
+        slog.clear();
     }
 }
 

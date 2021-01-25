@@ -25,6 +25,7 @@
         "@types/single-line-log": "^1.1.0",
         "@typescript-eslint/eslint-plugin": "^4.14.0",
         "@typescript-eslint/parser": "^4.14.0",
+        "dpdm": "^3.6.0",
         "eslint": "^7.18.0",
         "eslint-config-alloy": "^3.10.0",
         "prettier": "^2.2.1",
@@ -32,8 +33,10 @@
     },
     "scripts": {
         "app": "node ./dist/main.js",
-        "format": "prettier --write ./src/*.ts ./src/*/*.ts ./*.js ./*.json",
-        "clean": "rm -rf ./dist/* && rm ./src/*.js ./src/*/*.js"
+        "test": "node ./dist/codes/test.js",
+        "depend": "dpdm ./src/**/*.ts --warning false",
+        "format": "prettier --write ./src/**/*.ts ./*.js ./*.json",
+        "clean": "rm -rf ./dist/**"
     },
     "repository": "git+https://github.com/pikasama/spider-manga.git",
     "keywords": [

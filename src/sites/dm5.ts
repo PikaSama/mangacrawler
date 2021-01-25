@@ -14,7 +14,7 @@ import * as inquirer from 'inquirer';
 import * as puppeteer from 'puppeteer';
 
 // 本地模块
-import { WorkerDownloadParam, CallbackFn, ResponseData, Logger, OutTimer, prepare, downloadImg } from '../modules/misc';
+import { WorkerDownloadParam, CallbackFn, ResponseData, Logger, OutTimer, prepare, downloadImg } from '../modules/utils';
 
 import { genHTML as generateManga } from '../modules/generator';
 import { ProgressBar } from '../modules/progressBar';
@@ -69,6 +69,24 @@ function dongmanwu(): void {
     });
 }
 
+function getInfo(): void {
+    dlTime = new Date().getTime();
+    Logger.info("Fetching manga's information...\n");
+    axios.get(mangaUrl).then(({ data }: ResponseData): void => {
+        const $ = cheerio.load(data);
+        const mangaTypeElement = $('div#chapterpager');
+        const infoList = $('head').children('script').last().html().split(';');
+
+
+        Logger.debug(infoList);
+        if (mangaTypeElement.length > 0) {
+            Logger.info(`Manga type: A | Pictures: ${}`);
+        } else {
+            Logger.info(`Manga type: B | Pictures: ${}`);
+        }
+    });
+}
+
 async function getMangaInfo(): Promise<void> {
     dlTime = new Date().getTime();
     Logger.info('Starting browser...\n');
@@ -79,8 +97,9 @@ async function getMangaInfo(): Promise<void> {
     Logger.info('Fetching some information...\n');
     // 获取漫画信息，用户信息（请求参数）
     const $ = cheerio.load(await page.content());
-    if ($('div.chapterpager').length > 0) {
-        mangaInfo.pics = parseInt($('div.chapterpager').eq(0).children('a').last().text(), 10);
+    const element = $('div.chapterpager');
+    if (element.length > 0) {
+        mangaInfo.pics = parseInt(element.eq(0).children('a').last().text(), 10);
         mangaInfo.msg = Logger.str.info(`Manga type: A | Pictures: ${mangaInfo.pics}\n`);
     } else {
         mangaInfo.pics = $('img.load-src').length;
@@ -115,7 +134,7 @@ function resolveImages(): void {
     const timer = new OutTimer(30, '0x0201');
     // 获取图片的进度条
     let resolvedImgs = 0;
-    const resolvePB = new ProgressBar(undefined, mangaInfo.pics);
+    const resolvePB = new ProgressBar(mangaInfo.pics);
     resolvePB.render(resolvedImgs, mangaInfo.pics);
     // 获取图片链接(并发控制)
     const getPicUrl = async.queue((pic: number, callback: CallbackFn): void => {
@@ -159,14 +178,14 @@ function resolveImages(): void {
     // 推送任务至队列
     for (let i = 0; i < mangaInfo.pics; i += 1) {
         // 错误时，结束进程
-        getPicUrl.push(i + 1, (err, num: number): void => {
+        getPicUrl.push(i + 1, (err): void => {
             if (err) {
                 Logger.newLine(1);
                 Logger.err(`${err} \n`);
                 Logger.err('Oops! Something went wrong, try again? [M-0x0202]');
                 process.exit(1);
             } else {
-                resolvedImgs += num;
+                resolvedImgs += 1;
                 resolvePB.render(resolvedImgs, mangaInfo.pics);
             }
         });
@@ -213,20 +232,21 @@ function checkNode(node: string): void {
 function downloadImages(node: string): void {
     Logger.newLine(1);
     Logger.info('Downloading manga...\n');
-    const timer: OutTimer = new OutTimer(30, '0x0301');
+    const timer = new OutTimer(30, '0x0301');
     // 替换节点
-    crawlList.map((val, index): string => {
+    crawlList.map((_val, index): string => {
         let url = crawlList[index].split('/');
         url[2] = url[2].split('-')[0] + '-' + node;
         crawlList[index] = url.join('/');
         return '';
     });
     // 下载图片(并发控制)
-    const download = async.queue(({ url }: WorkerDownloadParam, callback: CallbackFn): void => {
+    const download = async.queue((param: WorkerDownloadParam, callback: CallbackFn): void => {
+        const { url } = param;
         const picNum = url.split('/')[6].split('_')[0];
-        const fullPath = `${savePath}/split/${picNum}.jpg`;
+        const path = `${savePath}/split/${picNum}.jpg`;
         downloadImg(
-            { url, path: fullPath },
+            { url, path },
             (err): void => {
                 if (err) {
                     callback(err);
@@ -256,25 +276,23 @@ function downloadImages(node: string): void {
     });
     // 下载进度条
     let downloadedImgs = 0;
-    const downloadPB: ProgressBar = new ProgressBar(undefined, mangaInfo.pics);
+    const downloadPB = new ProgressBar(mangaInfo.pics);
     downloadPB.render(downloadedImgs, mangaInfo.pics);
     // 推送任务至队列
-    for (let i in crawlList) {
-        if (crawlList.hasOwnProperty(i)) {
-            // 错误时，结束进程
-            download.push({ url: crawlList[i] }, (err, result: number): void => {
-                if (err) {
-                    Logger.newLine(1);
-                    Logger.err(`${err} \n`);
-                    Logger.err('Oops! Something went wrong, try again? [M-0x0302]');
-                    process.exit(1);
-                } else {
-                    downloadedImgs += result;
-                    downloadPB.render(downloadedImgs, mangaInfo.pics);
-                }
-            });
-        }
-    }
+    crawlList.map((_val, index): string => {
+        download.push({ url: crawlList[index] }, (err): void => {
+            if (err) {
+                Logger.newLine(1);
+                Logger.err(`${err} \n`);
+                Logger.err('Oops! Something went wrong, try again? [M-0x0302]');
+                process.exit(1);
+            } else {
+                downloadedImgs += 1;
+                downloadPB.render(downloadedImgs, mangaInfo.pics);
+            }
+        });
+        return '';
+    });
 }
 
 export { dongmanwu };

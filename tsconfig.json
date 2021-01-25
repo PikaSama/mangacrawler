@@ -11,5 +11,5 @@
         "listEmittedFiles": true
     },
     "include": ["./src/**/*.ts"],
-    "exclude": ["./node_modules", "./src/codes/experimentalCodes.ts", "./src/codes/wasteCodes.ts"]
+    "exclude": ["./node_modules", "./src/codes/experimentalCodes.ts", "./src/codes/deprecatedCodes.ts"]
 }

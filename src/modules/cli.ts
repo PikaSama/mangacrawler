@@ -9,7 +9,7 @@
 import * as inquirer from 'inquirer';
 import { homedir } from 'os';
 
-import { Results, CallbackFn, Logger } from './misc';
+import { Results, CallbackFn, Logger } from './utils';
 
 // inquirer validate验证函数的返回值
 type ValidationSets = string | boolean;
@@ -66,7 +66,7 @@ function cli(mgSite: string, callback: CallbackFn): void {
                                 return Logger.str.err('Invalid domain or Manga ID. [I-0x0104]');
                             }
                         } else {
-                            return Logger.str.err('Unsupported transport protocol. [I-0x0102]');
+                            return Logger.str.err('Unsupported transmission protocol. [I-0x0102]');
                         }
                     },
                 },
@@ -108,7 +108,7 @@ function cli(mgSite: string, callback: CallbackFn): void {
                                 return Logger.str.err('Invalid domain or resource directory or Manga ID. [I-0x0204]');
                             }
                         } else {
-                            return Logger.str.err('Unsupported transport protocol. [I-0x0202]');
+                            return Logger.str.err('Unsupported transmission protocol. [I-0x0202]');
                         }
                     },
                 },

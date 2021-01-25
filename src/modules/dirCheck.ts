@@ -8,7 +8,7 @@
 
 import * as fs from 'fs';
 
-import { CallbackFn, Logger } from './misc';
+import { CallbackFn, Logger } from './utils';
 
 function checkPath(savePath: string, callback: CallbackFn): void {
     fs.readdir(savePath, (err): void => {

@@ -2,8 +2,8 @@
  * Author: Zorin
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
- * Description: 实验性代码
- * License: GPL-3.0
+ * Description: 实验性代码(废弃)
+ * License: MIT
  */
 const assert = require('assert');
 assert.deepStrictEqual(1, 1, 'ok');
