@@ -123,4 +123,4 @@ npm run app
 - 发布初始版本
 
 ## 协议
-[GPL-v3](http://www.gnu.org/licenses/gpl-3.0.en.html)
+[MIT](https://mit-license.org/)
