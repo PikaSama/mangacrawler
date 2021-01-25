@@ -11,22 +11,22 @@ import axios from 'axios';
 import * as async from 'async';
 import * as cheerio from 'cheerio';
 import * as inquirer from 'inquirer';
-import * as puppeteer from 'puppeteer';
 
 // 本地模块
-import { WorkerDownloadParam, CallbackFn, ResponseData, Logger, OutTimer, prepare, downloadImg } from '../modules/utils';
+import { WorkerDownloadParam, CallbackFn, ResponseData, Logger, OutTimer, downloadImg } from '../modules/utils';
+import { prepare } from '../modules/yau';
 
 import { genHTML as generateManga } from '../modules/generator';
 import { ProgressBar } from '../modules/progressBar';
 
 // 漫画信息的接口
 interface Info {
+    title: string;
+    pics: number;
     cid: string;
     mid: string;
     sign: string;
     signdate: string;
-    msg: string;
-    pics: number;
 }
 
 let mangaUrl = '';
@@ -34,13 +34,14 @@ let savePath = '';
 let crawlLimit = 0;
 let crawlList: string[] = [];
 let mangaInfo: Info = {
+    title: '',
+    pics: 0,
     cid: '',
     mid: '',
     sign: '',
     signdate: '',
-    msg: '',
-    pics: 0,
 };
+
 let dlTime = 0;
 // 节点列表
 let nodeList = [
@@ -60,73 +61,51 @@ function dongmanwu(): void {
             process.exit(1);
         } else {
             ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
-            getMangaInfo().catch((err): void => {
-                // 发生错误，结束浏览器进程
-                Logger.err(`${err} [M-0x0101]\n`);
-                process.exit(1);
-            });
+            getMangaInfo();
         }
     });
 }
 
-function getInfo(): void {
+function getMangaInfo(): void {
     dlTime = new Date().getTime();
     Logger.info("Fetching manga's information...\n");
     axios.get(mangaUrl).then(({ data }: ResponseData): void => {
         const $ = cheerio.load(data);
-        const mangaTypeElement = $('div#chapterpager');
+        let fetchedInfo = 0;
         const infoList = $('head').children('script').last().html().split(';');
+        infoList.map((val): string => {
+            if (val.match('DM5_CTITLE')) {
+                mangaInfo.title = val.split('"')[1];
+                fetchedInfo += 1;
+            } else if (val.match('DM5_IMAGE_COUNT')) {
+                mangaInfo.pics = parseInt(val.split('=')[1], 10);
+                fetchedInfo += 1;
+            } else if (val.match('DM5_CID')) {
+                mangaInfo.cid = val.split('=')[1];
+                fetchedInfo += 1;
+            } else if (val.match('DM5_MID')) {
+                mangaInfo.mid = val.split('=')[1];
+                fetchedInfo += 1;
+            } else if (val.match('DM5_VIEWSIGN=')) {
+                mangaInfo.sign = val.split('"')[1];
+                fetchedInfo += 1;
+            } else if (val.match('DM5_VIEWSIGN_DT')) {
+                mangaInfo.signdate = encodeURIComponent(val.split('"')[1]);
+                fetchedInfo += 1;
+            }
+            return '';
+        });
 
-
-        Logger.debug(infoList);
+        Logger.info(`Title: ${mangaInfo.title}`);
+        const mangaTypeElement = $('div#chapterpager');
         if (mangaTypeElement.length > 0) {
-            Logger.info(`Manga type: A | Pictures: ${}`);
+            Logger.info('Type: A');
         } else {
-            Logger.info(`Manga type: B | Pictures: ${}`);
+            Logger.info('Type: B');
         }
+        Logger.info(`Pictures: ${mangaInfo.pics}`);
+        resolveImages();
     });
-}
-
-async function getMangaInfo(): Promise<void> {
-    dlTime = new Date().getTime();
-    Logger.info('Starting browser...\n');
-    const browser = await puppeteer.launch();
-    Logger.info('Opening page...\n');
-    const page = await browser.newPage();
-    await page.goto(mangaUrl, { waitUntil: 'networkidle2' });
-    Logger.info('Fetching some information...\n');
-    // 获取漫画信息，用户信息（请求参数）
-    const $ = cheerio.load(await page.content());
-    const element = $('div.chapterpager');
-    if (element.length > 0) {
-        mangaInfo.pics = parseInt(element.eq(0).children('a').last().text(), 10);
-        mangaInfo.msg = Logger.str.info(`Manga type: A | Pictures: ${mangaInfo.pics}\n`);
-    } else {
-        mangaInfo.pics = $('img.load-src').length;
-        mangaInfo.msg = Logger.str.info(`Manga type: B | Pictures: ${mangaInfo.pics}\n`);
-    }
-
-    mangaInfo = await page.evaluate(
-        (pics: number, msg: string): Info => {
-            return {
-                // @ts-ignore
-                cid: window.DM5_CID,
-                // @ts-ignore
-                mid: window.DM5_MID,
-                // @ts-ignore
-                sign: window.DM5_VIEWSIGN,
-                // @ts-ignore
-                signdate: window.DM5_VIEWSIGN_DT,
-                pics,
-                msg,
-            };
-        },
-        mangaInfo.pics,
-        mangaInfo.msg,
-    );
-    console.log(mangaInfo.msg);
-    await browser.close();
-    resolveImages();
 }
 
 function resolveImages(): void {
@@ -146,7 +125,7 @@ function resolveImages(): void {
             `gtk=6`,
             `_cid=${mangaInfo.cid}`,
             `_mid=${mangaInfo.mid}`,
-            `_dt=${encodeURIComponent(mangaInfo.signdate)}`,
+            `_dt=${mangaInfo.signdate}`,
             `_sign=${mangaInfo.sign}`,
         ].join('&');
 
@@ -170,6 +149,7 @@ function resolveImages(): void {
     // 全部成功后触发
     getPicUrl.drain((): void => {
         timer.clear();
+        resolvePB.clear();
         Logger.newLine(1);
         Logger.info('Checking server node list...\n');
         checkNode(crawlList[0]);
@@ -266,6 +246,7 @@ function downloadImages(node: string): void {
     // 全部完成时触发
     download.drain((): void => {
         timer.clear();
+        downloadPB.clear();
         Logger.newLine(1);
         Logger.info('Generating HTML format file...\n');
         generateManga({

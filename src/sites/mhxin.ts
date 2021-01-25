@@ -11,7 +11,8 @@ import * as async from 'async';
 import * as cheerio from 'cheerio';
 
 // 本地模块
-import { WorkerDownloadParam, CallbackFn, OutTimer, prepare, Logger, downloadImg } from '../modules/utils';
+import { WorkerDownloadParam, CallbackFn, OutTimer, Logger, downloadImg } from '../modules/utils';
+import { prepare } from '../modules/yau';
 
 import { genHTML as generateManga } from '../modules/generator';
 import { ProgressBar } from '../modules/progressBar';
@@ -92,6 +93,7 @@ function resolveImages(): void {
     // 全部成功后触发
     resolveUrl.drain((): void => {
         timer.clear();
+        resolvePB.clear();
         downloadImages();
     });
 
@@ -138,6 +140,7 @@ function downloadImages(): void {
 
     download.drain((): void => {
         timer.clear();
+        downloadPB.clear();
         Logger.newLine(1);
         Logger.info('Generating HTML format file...\n');
         generateManga({

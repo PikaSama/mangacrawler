@@ -1,7 +1,7 @@
 {
-    "name": "spider-manga",
-    "version": "1.4.0-rc.1",
-    "description": "Download manga by using axios and puppeteer.",
+    "name": "mangacrawler",
+    "version": "1.4.0-rc.3",
+    "description": "Download manga by using axios.",
     "main": "./dist/main.js",
     "dependencies": {
         "async": "^3.2.0",
@@ -11,7 +11,6 @@
         "ejs": "^3.1.5",
         "html-minifier": "^4.0.0",
         "inquirer": "^7.3.3",
-        "puppeteer": "^5.5.0",
         "single-line-log": "^1.1.2"
     },
     "devDependencies": {
@@ -29,6 +28,7 @@
         "eslint": "^7.18.0",
         "eslint-config-alloy": "^3.10.0",
         "prettier": "^2.2.1",
+        "puppeteer": "^5.5.0",
         "typescript": "^4.1.3"
     },
     "scripts": {
@@ -36,18 +36,19 @@
         "test": "node ./dist/codes/test.js",
         "depend": "dpdm ./src/**/*.ts --warning false",
         "format": "prettier --write ./src/**/*.ts ./*.js ./*.json",
-        "clean": "rm -rf ./dist/**"
+        "clean": "rm -rf ./dist/**",
+        "build": "yarn format && yarn depend && yarn clean && tsc"
     },
-    "repository": "git+https://github.com/pikasama/spider-manga.git",
+    "repository": "https://github.com/pikasama/mangacrawler.git",
     "keywords": [
         "manga",
         "spider",
-        "puppeteer",
         "axios",
+        "cheerio",
         "typescript"
     ],
     "author": "Zorin",
-    "license": "GPL-3.0",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/pikasama/spider-manga/issues"
     },
