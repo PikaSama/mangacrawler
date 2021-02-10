@@ -7,7 +7,7 @@
         "async": "^3.2.0",
         "axios": "^0.21.0",
         "chalk": "^4.1.0",
-        "cheerio": "^1.0.0-rc.3",
+        "cheerio": "^1.0.0-rc.5",
         "ejs": "^3.1.5",
         "html-minifier": "^4.0.0",
         "inquirer": "^7.3.3",
@@ -15,7 +15,7 @@
     },
     "devDependencies": {
         "@types/async": "^3.2.5",
-        "@types/cheerio": "^0.22.22",
+        "@types/cheerio": "^0.22.23",
         "@types/ejs": "^3.0.5",
         "@types/html-minifier": "^4.0.0",
         "@types/inquirer": "^7.3.1",
