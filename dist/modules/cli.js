@@ -4,7 +4,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: CLI界面模块
- * License: GPL-3.0
+ * License: MIT
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cli = void 0;

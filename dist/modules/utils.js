@@ -4,7 +4,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: 工具模块
- * License: GPL-3.0
+ * License: MIT
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.downloadImg = exports.OutTimer = exports.Logger = void 0;
@@ -20,7 +20,7 @@ const Logger = {
     info: (msg) => console.log(`${chalk.bgBlue(' INFO ')} ${msg}`),
     done: (msg) => console.log(`${chalk.bgGreen(' DONE ')} ${msg}`),
     upd: (msg) => console.log(`${chalk.bgYellow(' UPDATE ')} ${msg}`),
-    debug: (msg) => console.log(`${chalk.bgGray('DEBUG')}`, msg),
+    debug: (msg) => console.log(`${chalk.bgGray(' DEBUG ')}`, msg),
     newLine: (lines) => console.log('\n'.repeat(lines)),
     str: {
         err: (msg) => `${chalk.bgRed(' ERROR ')} ${msg}`,

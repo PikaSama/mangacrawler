@@ -4,7 +4,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: 进度条模块，参考于：https://www.jianshu.com/p/00d8f71d367d
- * License: GPL-3.0
+ * License: MIT
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProgressBar = void 0;

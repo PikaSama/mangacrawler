@@ -61,56 +61,86 @@ function dongmanwu(): void {
             process.exit(1);
         } else {
             ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
-            getMangaInfo();
+            getMangaInfo((err): void => {
+                if (err) {
+                    Logger.err(err);
+                    process.exit(1);
+                } else {
+                    resolveImages();
+                }
+            });
         }
     });
 }
 
-function getMangaInfo(): void {
+function getMangaInfo(callback: CallbackFn): void {
     dlTime = new Date().getTime();
     Logger.info("Fetching manga's information...\n");
-    axios.get(mangaUrl).then(({ data }: ResponseData): void => {
-        const $ = cheerio.load(data);
-        let fetchedInfo = 0;
-        const infoList = $('head').children('script').last().html().split(';');
-        infoList.map((val): string => {
-            if (val.match('DM5_CTITLE')) {
-                mangaInfo.title = val.split('"')[1];
-                fetchedInfo += 1;
-            } else if (val.match('DM5_IMAGE_COUNT')) {
-                mangaInfo.pics = parseInt(val.split('=')[1], 10);
-                fetchedInfo += 1;
-            } else if (val.match('DM5_CID')) {
-                mangaInfo.cid = val.split('=')[1];
-                fetchedInfo += 1;
-            } else if (val.match('DM5_MID')) {
-                mangaInfo.mid = val.split('=')[1];
-                fetchedInfo += 1;
-            } else if (val.match('DM5_VIEWSIGN=')) {
-                mangaInfo.sign = val.split('"')[1];
-                fetchedInfo += 1;
-            } else if (val.match('DM5_VIEWSIGN_DT')) {
-                mangaInfo.signdate = encodeURIComponent(val.split('"')[1]);
-                fetchedInfo += 1;
+    axios
+        .get(mangaUrl)
+        .then(({ data }: ResponseData): void => {
+            const $ = cheerio.load(data);
+            let fetchedInfo = 0;
+            const infoList = $('head').children('script').last().html().split(';');
+            infoList.map((val): string => {
+                switch (true) {
+                    case Boolean(val.match('DM5_CTITLE')): {
+                        mangaInfo.title = val.split('"')[1];
+                        fetchedInfo += 1;
+                        break;
+                    }
+                    case Boolean(val.match('DM5_IMAGE_COUNT')): {
+                        mangaInfo.pics = parseInt(val.split('=')[1], 10);
+                        fetchedInfo += 1;
+                        break;
+                    }
+                    case Boolean(val.match('DM5_CID')): {
+                        mangaInfo.cid = val.split('=')[1];
+                        fetchedInfo += 1;
+                        break;
+                    }
+                    case Boolean(val.match('DM5_MID')): {
+                        mangaInfo.mid = val.split('=')[1];
+                        fetchedInfo += 1;
+                        break;
+                    }
+                    case Boolean(val.match('DM5_VIEWSIGN=')): {
+                        mangaInfo.sign = val.split('"')[1];
+                        fetchedInfo += 1;
+                        break;
+                    }
+                    case Boolean(val.match('DM5_VIEWSIGN_DT')): {
+                        mangaInfo.signdate = encodeURIComponent(val.split('"')[1]);
+                        fetchedInfo += 1;
+                        break;
+                    }
+                    default: {
+                        Logger.debug('Passed');
+                    }
+                }
+                return '';
+            });
+            if (fetchedInfo === 6) {
+                Logger.info(`Title: ${mangaInfo.title}`);
+                const mangaTypeElement = $('div#chapterpager');
+                if (mangaTypeElement.length > 0) {
+                    Logger.info('Type: A');
+                } else {
+                    Logger.info('Type: B');
+                }
+                Logger.info(`Pictures: ${mangaInfo.pics}`);
+                Logger.debug(mangaInfo);
+                callback(null);
+            } else {
+                callback('Cannot get enough information.');
             }
-            return '';
-        });
-
-        Logger.info(`Title: ${mangaInfo.title}`);
-        const mangaTypeElement = $('div#chapterpager');
-        if (mangaTypeElement.length > 0) {
-            Logger.info('Type: A');
-        } else {
-            Logger.info('Type: B');
-        }
-        Logger.info(`Pictures: ${mangaInfo.pics}`);
-        resolveImages();
-    });
+        })
+        .catch((err): void => callback(err));
 }
 
 function resolveImages(): void {
     Logger.info('Resolving images...\n');
-    const timer = new OutTimer(30, '0x0201');
+    const timer = new OutTimer(40, '0x0201');
     // 获取图片的进度条
     let resolvedImgs = 0;
     const resolvePB = new ProgressBar(mangaInfo.pics);
@@ -134,7 +164,7 @@ function resolveImages(): void {
                 headers: {
                     Referer: mangaUrl,
                 },
-                timeout: 10000,
+                timeout: 30000,
             })
             .then(({ data }: ResponseData): void => {
                 let statement = data.split('}');
@@ -212,7 +242,7 @@ function checkNode(node: string): void {
 function downloadImages(node: string): void {
     Logger.newLine(1);
     Logger.info('Downloading manga...\n');
-    const timer = new OutTimer(30, '0x0301');
+    const timer = new OutTimer(40, '0x0301');
     // 替换节点
     crawlList.map((_val, index): string => {
         let url = crawlList[index].split('/');
@@ -238,7 +268,7 @@ function downloadImages(node: string): void {
                 headers: {
                     Referer: mangaUrl,
                 },
-                timeout: 10000,
+                timeout: 30000,
             },
         );
     }, crawlLimit);

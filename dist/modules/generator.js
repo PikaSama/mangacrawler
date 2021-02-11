@@ -4,7 +4,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: html文件生成模块
- * License: GPL-3.0
+ * License: MIT
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.genHTML = void 0;

@@ -26,6 +26,7 @@ interface Results {
 // Worker下载参数 -- 漫画
 interface WorkerDownloadParam {
     url: string;
+    page?: number;
 }
 
 // 回调函数 -- 模块
@@ -38,7 +39,7 @@ const Logger = {
     info: (msg: string): void => console.log(`${chalk.bgBlue(' INFO ')} ${msg}`),
     done: (msg: string): void => console.log(`${chalk.bgGreen(' DONE ')} ${msg}`),
     upd: (msg: string): void => console.log(`${chalk.bgYellow(' UPDATE ')} ${msg}`),
-    debug: (msg: any): void => console.log(`${chalk.bgGray('DEBUG')}`, msg),
+    debug: (msg: any): void => console.log(`${chalk.bgGray(' DEBUG ')}`, msg),
     newLine: (lines: number): void => console.log('\n'.repeat(lines)),
     str: {
         err: (msg: ErrorSets): string => `${chalk.bgRed(' ERROR ')} ${msg}`,

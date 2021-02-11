@@ -4,7 +4,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: 漫画站点“漫画芯”的漫画下载模块
- * License: GPL-3.0
+ * License: MIT
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.manhuaxin = void 0;
@@ -19,25 +19,31 @@ const progressBar_1 = require("../modules/progressBar");
 let mangaUrl = '';
 let savePath = '';
 let crawlLimit = 0;
-let crawlList = [];
+let crawlList = new Map();
 let mangaImages = 0;
 let dlTime = 0;
 function manhuaxin() {
     yau_1.prepare('mhxin', (err, result) => {
-        ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
-        getMangaInfo();
+        if (err) {
+            utils_1.Logger.err(err);
+            process.exit(1);
+        }
+        else {
+            ({ url: mangaUrl, path: savePath, limit: crawlLimit } = result);
+            getMangaInfo();
+        }
     });
 }
 exports.manhuaxin = manhuaxin;
 function getUrl(params, callback) {
-    const { url, getPages } = params;
+    const { url, page, getPages } = params;
     axios_1.default
-        .get(url, { timeout: 6000 })
+        .get(url, { timeout: 30000 })
         .then(({ data }) => {
         const $ = cheerio.load(data);
         const imgElement = $('img#image');
         const imgUrl = imgElement.attr('src');
-        crawlList.push(imgUrl);
+        crawlList.set(page, imgUrl);
         if (getPages) {
             mangaImages = parseInt(imgElement.next().text().split('/')[1], 10);
         }
@@ -46,12 +52,13 @@ function getUrl(params, callback) {
         .catch((err) => callback(err));
 }
 function getMangaInfo() {
-    const timer = new utils_1.OutTimer(10, '0x0002');
+    const timer = new utils_1.OutTimer(40, '0x0002');
     dlTime = new Date().getTime();
     utils_1.Logger.info('Fetching some information...\n');
     // 第一次解析图片地址，获取漫画页数
     getUrl({
         url: mangaUrl,
+        page: 1,
         getPages: 1,
     }, (err) => {
         if (err) {
@@ -67,7 +74,7 @@ function getMangaInfo() {
     });
 }
 function resolveImages() {
-    const timer = new utils_1.OutTimer(30, '0x0102');
+    const timer = new utils_1.OutTimer(40, '0x0102');
     // 获取图片的进度条
     let resolvedImgs = 1;
     const resolvePB = new progressBar_1.ProgressBar(mangaImages);
@@ -81,9 +88,9 @@ function resolveImages() {
         downloadImages();
     });
     // 推送任务至队列
-    for (let i = 2; i < mangaImages + 1; i += 1) {
+    for (let i = 2; i <= mangaImages; i += 1) {
         // 错误时，结束进程
-        resolveUrl.push({ url: `${mangaUrl.slice(0, mangaUrl.length - 5)}-${i}.html` }, (err) => {
+        resolveUrl.push({ url: `${mangaUrl.slice(0, mangaUrl.length - 5)}-${i}.html`, page: i }, (err) => {
             if (err) {
                 utils_1.Logger.newLine(1);
                 utils_1.Logger.err(`${err} \n`);
@@ -100,12 +107,11 @@ function resolveImages() {
 function downloadImages() {
     utils_1.Logger.newLine(1);
     utils_1.Logger.info('Downloading manga...\n');
-    const timer = new utils_1.OutTimer(30, '0x0202');
+    const timer = new utils_1.OutTimer(40, '0x0202');
     // 下载图片(并发控制)
     const download = async.queue((param, callback) => {
-        const { url } = param;
-        const pic = url.split('/')[url.split('/').length - 1];
-        const path = `${savePath}/split/${parseInt(pic, 10) + 1}.jpg`;
+        const { url, page } = param;
+        const path = `${savePath}/split/${page}.jpg`;
         utils_1.downloadImg({
             url,
             path,
@@ -134,8 +140,8 @@ function downloadImages() {
     const downloadPB = new progressBar_1.ProgressBar(mangaImages);
     downloadPB.render(downloadedImages, mangaImages);
     // 推送任务至队列
-    crawlList.map((_val, index) => {
-        download.push({ url: crawlList[index] }, (err) => {
+    for (const urlArray of crawlList.entries()) {
+        download.push({ url: urlArray[1], page: urlArray[0] }, (err) => {
             if (err) {
                 utils_1.Logger.newLine(1);
                 utils_1.Logger.err(`${err} \n`);
@@ -147,6 +153,5 @@ function downloadImages() {
                 downloadPB.render(downloadedImages, mangaImages);
             }
         });
-        return '';
-    });
+    }
 }

@@ -10,39 +10,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = require("axios");
 const utils_1 = require("../modules/utils");
 const cheerio = require("cheerio");
+const fs = require("fs");
 axios_1.default
-    .get('https://www.dm5.com/m170924')
+    .get('https://m.mhxin.com/manhua/douluodalu4zhongjidouluo/1077515.html', { timeout: 30000 })
     .then(({ data }) => {
     const $ = cheerio.load(data);
-    const ele = $('head').children('script').last().html().split(';');
-    console.log(ele);
-    let resolvedVariables = 0;
-    let cid = '';
-    let mid = '';
-    let viewSign = '';
-    let viewSignDate = '';
-    ele.map((val) => {
-        if (val.match('DM5_CID')) {
-            cid = val.split('=')[1];
-            resolvedVariables += 1;
+    fs.writeFile('test.html', data, (err) => {
+        if (err) {
+            utils_1.Logger.err(err);
         }
-        else if (val.match('DM5_MID')) {
-            mid = val.split('=')[1];
-            resolvedVariables += 1;
+        else {
+            utils_1.Logger.done('Done');
         }
-        else if (val.match('DM5_VIEWSIGN=')) {
-            viewSign = val.split('"')[1];
-            resolvedVariables += 1;
-        }
-        else if (val.match('DM5_VIEWSIGN_DT')) {
-            viewSignDate = encodeURIComponent(val.split('"')[1]);
-            resolvedVariables += 1;
-        }
-        return '';
     });
-    utils_1.Logger.info(`${[cid, mid, viewSign, viewSignDate]}`);
-    if (resolvedVariables === 4) {
-        utils_1.Logger.info('All collected.');
-    }
 })
     .catch((err) => utils_1.Logger.err(err));

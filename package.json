@@ -33,10 +33,13 @@
     },
     "scripts": {
         "app": "node ./dist/main.js",
-        "depend": "dpdm ./src/**/*.ts --warning false",
-        "format": "prettier --write ./src/**/*.ts ./*.js ./.*.js ./*.json",
+        "test": "tsc && node ./dist/codes/test.js",
+        "depend": "dpdm ./src/**/*.ts ./src/*.ts --warning false",
+        "lint": "eslint ./src/**/*.ts ./src/*.ts",
+        "format": "prettier --write ./src/**/*.ts ./src/*.ts ./*.js ./.*.js ./*.json",
         "clean": "rm -rf ./dist/**",
-        "build": "yarn format && yarn depend && yarn clean && tsc"
+        "build": "yarn lint && yarn format && yarn depend && yarn clean && tsc",
+        "dev": "yarn build && yarn app"
     },
     "repository": "https://github.com/pikasama/mangacrawler.git",
     "keywords": [
