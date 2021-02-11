@@ -24,6 +24,7 @@ let crawlLimit = 0;
 let crawlList = [];
 let mangaInfo = {
     title: '',
+    chapter: '',
     pics: 0,
     cid: '',
     mid: '',
@@ -104,13 +105,16 @@ function getMangaInfo(callback) {
                     break;
                 }
                 default: {
-                    utils_1.Logger.debug('Passed');
+                    // Logger.debug('Passed');
+                    break;
                 }
             }
             return '';
         });
+        mangaInfo.chapter = $('span').eq(1).text().trim();
         if (fetchedInfo === 6) {
             utils_1.Logger.info(`Title: ${mangaInfo.title}`);
+            utils_1.Logger.info(`Chapter: ${mangaInfo.chapter}`);
             const mangaTypeElement = $('div#chapterpager');
             if (mangaTypeElement.length > 0) {
                 utils_1.Logger.info('Type: A');
@@ -119,7 +123,6 @@ function getMangaInfo(callback) {
                 utils_1.Logger.info('Type: B');
             }
             utils_1.Logger.info(`Pictures: ${mangaInfo.pics}`);
-            utils_1.Logger.debug(mangaInfo);
             callback(null);
         }
         else {

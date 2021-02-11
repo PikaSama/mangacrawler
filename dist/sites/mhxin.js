@@ -36,7 +36,7 @@ function manhuaxin() {
 }
 exports.manhuaxin = manhuaxin;
 function getUrl(params, callback) {
-    const { url, page, getPages } = params;
+    const { url, page, getInfo } = params;
     axios_1.default
         .get(url, { timeout: 30000 })
         .then(({ data }) => {
@@ -44,8 +44,14 @@ function getUrl(params, callback) {
         const imgElement = $('img#image');
         const imgUrl = imgElement.attr('src');
         crawlList.set(page, imgUrl);
-        if (getPages) {
+        if (getInfo) {
+            const title = $('[name="keywords"]').attr('content').split(' ')[0];
+            const chapter = $('a.BarTit').text().trim();
             mangaImages = parseInt(imgElement.next().text().split('/')[1], 10);
+            utils_1.Logger.info(`Title: ${title}`);
+            utils_1.Logger.info(`Chapter: ${chapter}`);
+            utils_1.Logger.info(`Pictures: ${mangaImages}`);
+            utils_1.Logger.info('Resolving images...\n');
         }
         callback(null);
     })
@@ -55,11 +61,11 @@ function getMangaInfo() {
     const timer = new utils_1.OutTimer(40, '0x0002');
     dlTime = new Date().getTime();
     utils_1.Logger.info('Fetching some information...\n');
-    // 第一次解析图片地址，获取漫画页数
+    // 第一次解析图片地址，获取漫画信息
     getUrl({
         url: mangaUrl,
         page: 1,
-        getPages: 1,
+        getInfo: 1,
     }, (err) => {
         if (err) {
             utils_1.Logger.newLine(1);

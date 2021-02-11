@@ -22,6 +22,7 @@ import { ProgressBar } from '../modules/progressBar';
 // 漫画信息的接口
 interface Info {
     title: string;
+    chapter: string;
     pics: number;
     cid: string;
     mid: string;
@@ -35,6 +36,7 @@ let crawlLimit = 0;
 let crawlList: string[] = [];
 let mangaInfo: Info = {
     title: '',
+    chapter: '',
     pics: 0,
     cid: '',
     mid: '',
@@ -115,13 +117,16 @@ function getMangaInfo(callback: CallbackFn): void {
                         break;
                     }
                     default: {
-                        Logger.debug('Passed');
+                        // Logger.debug('Passed');
+                        break;
                     }
                 }
                 return '';
             });
+            mangaInfo.chapter = $('span').eq(1).text().trim();
             if (fetchedInfo === 6) {
                 Logger.info(`Title: ${mangaInfo.title}`);
+                Logger.info(`Chapter: ${mangaInfo.chapter}`);
                 const mangaTypeElement = $('div#chapterpager');
                 if (mangaTypeElement.length > 0) {
                     Logger.info('Type: A');
@@ -129,7 +134,6 @@ function getMangaInfo(callback: CallbackFn): void {
                     Logger.info('Type: B');
                 }
                 Logger.info(`Pictures: ${mangaInfo.pics}`);
-                Logger.debug(mangaInfo);
                 callback(null);
             } else {
                 callback('Cannot get enough information.');

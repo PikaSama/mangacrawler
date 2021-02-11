@@ -40,16 +40,16 @@ function manhuaxin(): void {
  * 解析图片地址函数参数
  * @property url 漫画地址(单页)
  * @property page 当前图片的页数
- * @property getPages 获取漫画页数
+ * @property getInfo 获取漫画信息
  */
 interface resolveParams {
     url: string;
     page: number;
-    getPages?: number;
+    getInfo?: number;
 }
 
 function getUrl(params: resolveParams, callback: CallbackFn): void {
-    const { url, page, getPages } = params;
+    const { url, page, getInfo } = params;
     axios
         .get(url, { timeout: 30000 })
         .then(({ data }) => {
@@ -57,8 +57,14 @@ function getUrl(params: resolveParams, callback: CallbackFn): void {
             const imgElement = $('img#image');
             const imgUrl = imgElement.attr('src');
             crawlList.set(page, imgUrl);
-            if (getPages) {
+            if (getInfo) {
+                const title = $('[name="keywords"]').attr('content').split(' ')[0];
+                const chapter = $('a.BarTit').text().trim();
                 mangaImages = parseInt(imgElement.next().text().split('/')[1], 10);
+                Logger.info(`Title: ${title}`);
+                Logger.info(`Chapter: ${chapter}`);
+                Logger.info(`Pictures: ${mangaImages}`);
+                Logger.info('Resolving images...\n');
             }
             callback(null);
         })
@@ -69,12 +75,12 @@ function getMangaInfo(): void {
     const timer = new OutTimer(40, '0x0002');
     dlTime = new Date().getTime();
     Logger.info('Fetching some information...\n');
-    // 第一次解析图片地址，获取漫画页数
+    // 第一次解析图片地址，获取漫画信息
     getUrl(
         {
             url: mangaUrl,
             page: 1,
-            getPages: 1,
+            getInfo: 1,
         },
         (err): void => {
             if (err) {
