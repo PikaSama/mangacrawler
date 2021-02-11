@@ -34,7 +34,7 @@
     "scripts": {
         "app": "node ./dist/main.js",
         "depend": "dpdm ./src/**/*.ts --warning false",
-        "format": "prettier --write ./src/**/*.ts ./*.js ./*.json",
+        "format": "prettier --write ./src/**/*.ts ./*.js ./.*.js ./*.json",
         "clean": "rm -rf ./dist/**",
         "build": "yarn format && yarn depend && yarn clean && tsc"
     },
