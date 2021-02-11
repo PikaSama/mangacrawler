@@ -3,7 +3,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: 工具模块
- * License: GPL-3.0
+ * License: MIT
  */
 
 import * as chalk from 'chalk';

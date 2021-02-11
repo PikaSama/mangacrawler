@@ -3,7 +3,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: 主要模块（桥接模块），漫画站点选择菜单
- * License: GPL-3.0
+ * License: MIT
  */
 
 import * as inquirer from 'inquirer';

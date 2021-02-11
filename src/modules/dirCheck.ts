@@ -3,7 +3,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: 目录检查模块
- * License: GPL-3.0
+ * License: MIT
  */
 
 import * as fs from 'fs';

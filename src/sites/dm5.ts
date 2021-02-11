@@ -3,7 +3,7 @@
  * Github: https://github.com/PikaSama
  * Project: Spider-Manga
  * Description: 漫画站点“动漫屋”的漫画下载模块
- * License: GPL-3.0
+ * License: MIT
  */
 
 // import { default as axios } form 'axios';
