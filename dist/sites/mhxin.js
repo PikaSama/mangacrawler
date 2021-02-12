@@ -39,21 +39,26 @@ function getUrl(params, callback) {
     const { url, page, getInfo } = params;
     axios_1.default
         .get(url, { timeout: 30000 })
-        .then(({ data }) => {
-        const $ = cheerio.load(data);
-        const imgElement = $('img#image');
-        const imgUrl = imgElement.attr('src');
-        crawlList.set(page, imgUrl);
-        if (getInfo) {
-            const title = $('[name="keywords"]').attr('content').split(' ')[0];
-            const chapter = $('a.BarTit').text().trim();
-            mangaImages = parseInt(imgElement.next().text().split('/')[1], 10);
-            utils_1.Logger.info(`Title: ${title}`);
-            utils_1.Logger.info(`Chapter: ${chapter}`);
-            utils_1.Logger.info(`Pictures: ${mangaImages}`);
-            utils_1.Logger.info('Resolving images...\n');
+        .then((resp) => {
+        if (resp.request._redirectable._redirectCount) {
+            callback('Unsupport manga.');
         }
-        callback(null);
+        else {
+            const $ = cheerio.load(resp.data);
+            const imgElement = $('img#image');
+            const imgUrl = imgElement.attr('src');
+            crawlList.set(page, imgUrl);
+            if (getInfo) {
+                const title = $('[name="keywords"]').attr('content').split(' ')[0];
+                const chapter = $('a.BarTit').text().trim();
+                mangaImages = parseInt(imgElement.next().text().split('/')[1], 10);
+                utils_1.Logger.info(`Title: ${title}`);
+                utils_1.Logger.info(`Chapter: ${chapter}`);
+                utils_1.Logger.info(`Pictures: ${mangaImages}`);
+                utils_1.Logger.info('Resolving images...\n');
+            }
+            callback(null);
+        }
     })
         .catch((err) => callback(err));
 }
@@ -68,7 +73,6 @@ function getMangaInfo() {
         getInfo: 1,
     }, (err) => {
         if (err) {
-            utils_1.Logger.newLine(1);
             utils_1.Logger.err(`${err} \n`);
             utils_1.Logger.err('Oops! Something went wrong, try again? [M-0x0001]');
             process.exit(1);

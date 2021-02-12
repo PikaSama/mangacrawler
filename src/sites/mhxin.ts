@@ -52,21 +52,25 @@ function getUrl(params: resolveParams, callback: CallbackFn): void {
     const { url, page, getInfo } = params;
     axios
         .get(url, { timeout: 30000 })
-        .then(({ data }) => {
-            const $ = cheerio.load(data);
-            const imgElement = $('img#image');
-            const imgUrl = imgElement.attr('src');
-            crawlList.set(page, imgUrl);
-            if (getInfo) {
-                const title = $('[name="keywords"]').attr('content').split(' ')[0];
-                const chapter = $('a.BarTit').text().trim();
-                mangaImages = parseInt(imgElement.next().text().split('/')[1], 10);
-                Logger.info(`Title: ${title}`);
-                Logger.info(`Chapter: ${chapter}`);
-                Logger.info(`Pictures: ${mangaImages}`);
-                Logger.info('Resolving images...\n');
+        .then((resp): void => {
+            if (resp.request._redirectable._redirectCount) {
+                callback('Unsupport manga.');
+            } else {
+                const $ = cheerio.load(resp.data);
+                const imgElement = $('img#image');
+                const imgUrl = imgElement.attr('src');
+                crawlList.set(page, imgUrl);
+                if (getInfo) {
+                    const title = $('[name="keywords"]').attr('content').split(' ')[0];
+                    const chapter = $('a.BarTit').text().trim();
+                    mangaImages = parseInt(imgElement.next().text().split('/')[1], 10);
+                    Logger.info(`Title: ${title}`);
+                    Logger.info(`Chapter: ${chapter}`);
+                    Logger.info(`Pictures: ${mangaImages}`);
+                    Logger.info('Resolving images...\n');
+                }
+                callback(null);
             }
-            callback(null);
         })
         .catch((err): void => callback(err));
 }
@@ -84,7 +88,6 @@ function getMangaInfo(): void {
         },
         (err): void => {
             if (err) {
-                Logger.newLine(1);
                 Logger.err(`${err} \n`);
                 Logger.err('Oops! Something went wrong, try again? [M-0x0001]');
                 process.exit(1);
