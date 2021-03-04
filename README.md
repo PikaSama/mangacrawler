@@ -1,13 +1,12 @@
 # MangaCrawler
 
-[![Join the chat at https://gitter.im/PikaSama/MangaCrawler](https://badges.gitter.im/PikaSama/MangaCrawler.svg)](https://gitter.im/PikaSama/MangaCrawler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ![Author](https://img.shields.io/static/v1?label=Author&message=Zorin&color=royalblue&style=for-the-badge)
 ![Platform](https://img.shields.io/static/v1?label=Platform&message=Linux&color=cornflowerblue&style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/PikaSama/spider-manga?color=limegreen&style=for-the-badge)
-![Node version](https://img.shields.io/static/v1?label=node&message=>=12&color=success&style=for-the-badge)
+![Gitter](https://img.shields.io/gitter/room/PikaSama/MangaCrawler?color=ff69b4&style=for-the-badge)
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/PikaSama/spider-manga?color=ff69b4&style=for-the-badge)
+![Node version](https://img.shields.io/static/v1?label=node&message=>=12&color=success&style=for-the-badge)
 ![GitHub top language](https://img.shields.io/github/languages/top/pikasama/spider-manga?style=for-the-badge&color=00648C)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/PikaSama/spider-manga?color=%23007ec6&include_prereleases&style=for-the-badge)
 
