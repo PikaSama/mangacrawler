@@ -5,7 +5,7 @@
 ![Gitter](https://img.shields.io/gitter/room/PikaSama/MangaCrawler?color=ff69b4&style=for-the-badge)
 
 ![Platform](https://img.shields.io/static/v1?label=Platform&message=Linux&color=cornflowerblue&style=for-the-badge)
-![Node version](https://img.shields.io/static/v1?label=node&message=>=12&color=success&style=for-the-badge)
+![Node version](https://img.shields.io/static/v1?label=node&message=>=12&color=limegreen&style=for-the-badge)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/PikaSama/spider-manga?color=%23007ec6&include_prereleases&style=for-the-badge)
 
 ## 介绍
