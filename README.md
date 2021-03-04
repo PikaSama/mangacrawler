@@ -1,4 +1,7 @@
 # MangaCrawler
+
+[![Join the chat at https://gitter.im/PikaSama/MangaCrawler](https://badges.gitter.im/PikaSama/MangaCrawler.svg)](https://gitter.im/PikaSama/MangaCrawler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ![Author](https://img.shields.io/static/v1?label=Author&message=Zorin&color=royalblue&style=for-the-badge)
 ![Platform](https://img.shields.io/static/v1?label=Platform&message=Linux&color=cornflowerblue&style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/PikaSama/spider-manga?color=limegreen&style=for-the-badge)
