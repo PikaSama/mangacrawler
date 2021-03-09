@@ -127,7 +127,7 @@ function cli(mgSite: string, callback: CallbackFn): void {
                 {
                     type: 'input',
                     name: 'path',
-                    message: 'Please enter the path to save it :',
+                    message: 'Where do you want to save the manga? :',
                     validate(val: string): ValidationSets {
                         // 判断末尾是否含斜杠
                         if (val.slice(-1) === '/' && val.length > 1) {
@@ -148,7 +148,7 @@ function cli(mgSite: string, callback: CallbackFn): void {
                 {
                     type: 'input',
                     name: 'request',
-                    message: 'Download requests limit (1-16) :',
+                    message: 'How many requests do you want to set to download the manga at a time?(1-16) :',
                     validate(val: string): ValidationSets {
                         const parsedVal = parseInt(val, 10);
                         // 判断输入数字是否合法
