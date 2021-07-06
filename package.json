@@ -14,7 +14,7 @@
         "single-line-log": "^1.1.2"
     },
     "devDependencies": {
-        "@types/async": "3.2.6",
+        "@types/async": "3.2.7",
         "@types/cheerio": "0.22.29",
         "@types/ejs": "3.0.6",
         "@types/html-minifier": "4.0.0",
